@@ -26,6 +26,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking.wireless.enable = true; # Enables wpa_supplicant
 
   # Set your time zone.
   time.timeZone = "Europe/Madrid";
@@ -45,15 +46,14 @@
     LC_TIME = "es_ES.UTF-8";
   };
 
-  # Enable the X11 windowing system.
+  # Enable X11 and GNOME (for login manager and secondary rescuer)
   services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true; 
+  services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
   # Enable Hyrpland Desktop Enviroment.
   programs.hyprland.enable = true;
+
   # Optional, hint electron apps to use wayland:
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
@@ -94,17 +94,20 @@
     description = "user";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      waybar
+      yazi
       kitty
       helix
       brave
       fzf
       hyprlauncher
       nushell
+      zoxide
+      veracrypt
+      git
+      teams-for-linux
     ];
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -112,7 +115,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    neovim
+    keepass
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -162,4 +166,8 @@
       exec nu
     fi
   '';
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+  ];
 }
