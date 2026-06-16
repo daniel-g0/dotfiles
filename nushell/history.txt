@@ -384,3 +384,88 @@ ls
 rm -rf nixos/ 
 cp /etc/nixos/ nixos
 cp -r /etc/nixos/ nixos
+cp -r ~/.config/nushell/ .
+ls
+git add .
+gc
+gp
+rm -rf nixos/ nushell/
+ln -s /etc/nixos .
+ln -s /home/user/.config/nushell/ .
+ls
+rm -rf kitty/ 
+ln -s /home/user/.config/kitty/ .
+cd nixos/
+ls
+..
+ls
+ln -s /home/user/.config/helix/ .
+rm -rf helix/
+ln -s /home/user/.config/helix/ .
+ls
+rm -rf wallpapers/
+chmod +x wallpapers/
+sudo chown user wallpapers/
+ls
+rm ~/.config/wallpapers && mv wallpapers/ /home/user/.config/wallpapers
+rm ~/.config/wallpapers ; mv wallpapers/ /home/user/.config/wallpapers
+ls
+ln -s /home/user/.config/wallpapers/ .
+git lfs
+git lfs insall
+git lfs install
+ls wallpapers/
+git lfs track "*.jpg"<\n>
+la
+ls -la
+cd wallpapers/
+ls
+ls -la
+chown user *
+sudo chown user *
+exit
+exit
+..
+ls
+git lfs track "*.jpg"<\n>
+git lfs track "*.webp"<\n>
+git add .gitattributes<\n>git commit -m "Configure Git LFS tracking"   
+git lfs ls-files   
+git push
+git lfs ls-files   
+cat .gitattributes
+tree
+ls
+ls wallpapers/
+git add wallpapers/   
+git add wallpapers
+git lfs ls-filesCopied!   
+git lfs ls-filesC
+git lfs ls-files
+gs
+git status
+git add .
+gs
+git status
+ls
+git lfs ls-files
+rm helix/
+ls
+rm -f helix/
+rm helix
+rm kitty/
+rm kitty
+mv /home/user/.config/helix/ .
+ln -s helix/ /home/user/.config/helix
+ls
+mv /home/user/.config/kitty/ .
+ln -s kitty/ /home/user/.config/kitty
+ls
+rm nixos
+mv /etc/nixos .
+sudo mv /etc/nixos .
+ln -s nixos/ /etc/nixos
+sudo ln -s nixos/ /etc/nixos
+ls
+ls -la
+rm nushell
