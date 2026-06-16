@@ -95,28 +95,67 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       waybar
+      starship
       yazi
       kitty
-      helix
       brave
       fzf
       hyprlauncher
-      nushell
       zoxide
       veracrypt
       git
+      git-lfs
       teams-for-linux
+      keepass
+      bat
+      chezmoi
+      tldr
+      uv
     ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  
+  # Enable docker
+  virtualisation.docker.enable = true;
+  # Set it to rootless mode (for normal, remove this lines and add user to docker group)
+  virtualisation.docker.rootless.enable = true;
+  virtualisation.docker.rootless.setSocketVariable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nushell
+    starship
+    helix
     neovim
-    keepass
+    veracrypt
+  ];
+
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        ids = [ "*" ];
+        settings = {
+          main = {
+            capslock = "esc";
+          };
+        };
+      };
+    };
+  };
+
+  # Nushell exec
+  programs.bash.interactiveShellInit = ''
+    if ! [ "$TERM" = "dumb" ] && [ -z "$BASH_EXECUTION_STRING" ]; then
+      exec nu
+    fi
+  '';
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -145,29 +184,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "26.05"; # Did you read the comment?
-
-  services.keyd = {
-    enable = true;
-    keyboards = {
-      default = {
-        ids = [ "*" ];
-        settings = {
-          main = {
-            capslock = "esc";
-          };
-        };
-      };
-    };
-  };
-
-  # Nushell exec
-  programs.bash.interactiveShellInit = ''
-    if ! [ "$TERM" = "dumb" ] && [ -z "$BASH_EXECUTION_STRING" ]; then
-      exec nu
-    fi
-  '';
-
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-  ];
 }
