@@ -1,7 +1,7 @@
 # starship.toml — Tokyo Night, no background, minimal
 
 format = """
-[ ](fg:#7aa2f7)\
+[ ](fg:#7aa2f7)\
 $directory\
 $git_branch\
 $git_status\
