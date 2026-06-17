@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Nushell history (plain-text and sqlite stay out of the repo)
+nushell/history.txt
+nushell/history.sqlite3

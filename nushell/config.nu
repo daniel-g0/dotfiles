@@ -21,6 +21,14 @@ $env.EDITOR               = "nvim"
 $env.VISUAL               = "nvim"
 $env.config.show_banner   = false
 
+# -- History -------------------------------------------------------------------------
+# SQLite history lives in the config dir as history.sqlite3 (gitignored).
+# SQLite adds per-session isolation, timestamps, and dedup — better than plain-text.
+$env.config.history.file_format   = "sqlite"
+$env.config.history.max_size      = 100_000
+$env.config.history.sync_on_enter = true
+$env.config.history.isolation     = false
+
 # -- Theme ---------------------------------------------------------------------------
 source ~/.config/nushell/themes/black-metal-dark-funeral.nu
 
