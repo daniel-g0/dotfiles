@@ -94,14 +94,15 @@
     description = "user";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      swaynotificationcenter
       waybar
+      zoxide
       starship
       yazi
       kitty
       brave
       fzf
       hyprlauncher
-      zoxide
       veracrypt
       git
       git-lfs
@@ -127,8 +128,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     nushell
-    starship
-    helix
     neovim
     veracrypt
   ];

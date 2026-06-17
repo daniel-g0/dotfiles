@@ -185,6 +185,7 @@ export alias gru = git reset --
 export alias grup = git remote update
 export alias grv = git remote --verbose
 
+export alias gs = git status
 export alias gsb = git status --short --branch
 export alias gsd = git svn dcommit
 export alias gsh = git show

@@ -27,8 +27,8 @@ source /home/user/.config/zoxide/config.nu
 # -- Vim mode ---------------------------------------------------------------------
 $env.config.edit_mode = 'vi'
 $env.config.cursor_shape = { vi_insert: line, vi_normal: block }
-$env.PROMPT_INDICATOR_VI_INSERT = "> "
-$env.PROMPT_INDICATOR_VI_NORMAL = "$ "   
+$env.PROMPT_INDICATOR_VI_INSERT = "ι "
+$env.PROMPT_INDICATOR_VI_NORMAL = "η "   
 
 # -- Preferences -----------------------------------------------------------------
 $env.config.buffer_editor = "hx"

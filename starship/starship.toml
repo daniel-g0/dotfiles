@@ -1,0 +1,141 @@
+format = """
+[ ❄️ ](bg:#303030 fg:#c7c7c7)\
+[](bg:#303030 fg:#707070)\
+$directory\
+$git_branch\
+$git_status\
+[](#303030)\
+$fill\
+[](#303030)\
+$status\
+$cmd_duration\
+[ ](bg:#303030 fg:#909090)\
+$username\
+$hostname\
+[ ](bg:#303030 fg:#909090)\
+$time\
+[ ](bg:#303030 fg:#567676)"""
+
+# Disable the blank line at the start of the prompt
+add_newline = false
+
+# You can also replace your username with a neat symbol like   or disable this
+# and use the os module below
+[username]
+show_always = true
+style_user = "fg:#b69676 bg:#303030"
+style_root = "fg:#b69676 bg:#303030"
+format = '[$user]($style)'
+disabled = false
+
+[status]
+style = 'bg:#303030'
+symbol = '[✘ ](fg:red bg:#303030)'
+success_symbol = '[✔ ](fg:green bg:#303030)'
+format = '[[$signal_name ](fg:red bg:#303030)$symbol]($style)'
+map_symbol = false
+disabled = false
+
+[character]
+success_symbol = '[✔](fg:green bg:#303030)'
+error_symbol = '[✘](fg:red bg:#303030)'
+
+[cmd_duration]
+min_time = 1
+style = 'bg:#303030 fg:#909090'
+format = '[ took [$duration](bold fg:#909090 bg:#303030)  ]($style)'
+
+[hostname]
+ssh_only = false
+style = 'fg:#b69676 bg:#303030'
+format = '[@$hostname ]($style)'
+disabled = false
+
+# An alternative to the username module which displays a symbol that
+# represents the current operating system
+[os]
+style = "bg:#303030"
+disabled = true # Disabled by default
+
+[directory]
+style = "fg:#0a96d6 bg:#303030"
+format = "[  $path ]($style)"
+truncation_length = 9
+truncation_symbol = "…/"
+truncate_to_repo = true
+home_symbol = '~'
+
+# Here is how you can shorten some long paths by text replacement
+# similar to mapped_locations in Oh My Posh:
+[directory.substitutions]
+#"~/" = "~./"
+"~" = " ~"
+
+
+[fill]
+symbol = ' '
+#symbol = '・'
+
+[c]
+symbol = ""
+style = "bg:#303030"
+format = '[ $symbol ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:#303030"
+format = '[ $symbol $context ]($style) $path'
+
+[git_branch]
+style = "fg:#56b60a bg:#303030"
+format = '[](fg:#707070 bg:#303030)[  ](fg:#56b60a bg:#303030)[ $branch ](bold $style)'
+
+[git_status]
+style = "fg:#0a96d6 bg:#303030"
+conflicted = "~"
+up_to_date = " "
+untracked = "?"
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+stashed = "*"
+modified = " "
+staged = '[++\($count\)](fg:#56b60a bg:#303030)'
+renamed = " "
+deleted = " "
+format = '[$all_status$ahead_behind ]($style)'
+
+[golang]
+symbol = "go"
+style = "fg:#FFFFFF bg:#303030"
+format = '[ $symbol ](bold $style)'
+
+[java]
+symbol = ""
+style = "fg:#0a96d6 bg:#303030"
+format = '[ $symbol ]($style)'
+
+[nodejs]
+symbol = ""
+style = "fg:#0a96d6 bg:#303030"
+format = '[ $symbol ]($style)'
+
+[python]
+# Display the version of python from inside a local venv.
+#
+# Note this will only work when the venv is inside the project and it will only
+# work in the directory that contains the venv dir but maybe this is ok?
+symbol = ' '
+style = "fg:#0a96d6 bg:#303030"
+format = '[ $symbol ]($style)'
+
+[rust]
+symbol = ""
+style = "fg:#0a96d6 bg:#303030"
+format = '[ $symbol ]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#303030 fg:#567676"
+format = '[$time ]($style)'
