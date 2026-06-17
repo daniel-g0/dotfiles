@@ -1,6 +1,6 @@
 -- hyprland.lua — Hyprland compositor config (Lua API).
 -- Docs: https://wiki.hypr.land/Configuring/Start/
--- Theme: Tokyo Night — borders rgba(7aa2f7) → rgba(bb9af7), blur size 16 passes 6.
+-- Theme: Tokyo Night — borders rgba(7aa2f7) → rgba(bb9af7), blur size 20 passes 8.
 
 
 ------------------
@@ -104,8 +104,8 @@ hl.config({
         rounding_power = 2,
 
         -- Change transparency of focused and unfocused windows
-        active_opacity   = 1.0,
-        inactive_opacity = 0.85,
+        active_opacity   = 0.92,
+        inactive_opacity = 0.75,
 
         shadow = {
             enabled      = true,
@@ -116,9 +116,9 @@ hl.config({
 
         blur = {
             enabled   = true,
-            size      = 16,
-            passes    = 6,
-            vibrancy  = 0.3,
+            size      = 20,
+            passes    = 8,
+            vibrancy  = 0.4,
             noise     = 0.02,
             new_optimizations = true,
         },
