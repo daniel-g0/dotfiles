@@ -21,6 +21,53 @@ $env.EDITOR               = "nvim"
 $env.VISUAL               = "nvim"
 $env.config.show_banner   = false
 
+# -- fzf -------------------------------------------------------------------------
+# Tokyo Night colors + useful keybinds:
+#   Ctrl+R → fuzzy history search
+#   Ctrl+T → fuzzy file picker (insert path)
+#   Alt+C  → fuzzy cd
+$env.FZF_DEFAULT_OPTS = [
+    "--height=40%"
+    "--reverse"
+    "--border"
+    "--color=bg+:#1a1b26,bg:#1a1b26,spinner:#bb9af7,hl:#f7768e"
+    "--color=fg:#c0caf5,header:#7aa2f7,info:#7dcfff,pointer:#bb9af7"
+    "--color=marker:#9ece6a,fg+:#c0caf5,prompt:#7aa2f7,hl+:#f7768e"
+] | str join " "
+
+$env.config.keybindings = ($env.config.keybindings | append [
+    {
+        name: fzf_history
+        modifier: control
+        keycode: char_r
+        mode: [vi_insert vi_normal]
+        event: {
+            send: executehostcommand
+            cmd: "commandline edit --replace (history | get command | reverse | uniq | str join (char -u '0a') | fzf +s --tac | str trim)"
+        }
+    }
+    {
+        name: fzf_files
+        modifier: control
+        keycode: char_t
+        mode: [vi_insert]
+        event: {
+            send: executehostcommand
+            cmd: "commandline edit --insert (fd --type f | fzf | str trim)"
+        }
+    }
+    {
+        name: fzf_cd
+        modifier: alt
+        keycode: char_c
+        mode: [vi_insert]
+        event: {
+            send: executehostcommand
+            cmd: "cd (fd --type d | fzf | str trim)"
+        }
+    }
+])
+
 # -- History -------------------------------------------------------------------------
 # SQLite history lives in the config dir as history.sqlite3 (gitignored).
 # SQLite adds per-session isolation, timestamps, and dedup — better than plain-text.
@@ -40,6 +87,7 @@ use ~/.config/nushell/aliases/git/git-aliases.nu         *
 use ~/.config/nushell/aliases/nixos/nixos-aliases.nu     *
 use ~/.config/nushell/aliases/nvim/nvim-aliases.nu       *
 use ~/.config/nushell/aliases/rip/rip-aliases.nu         *
+use ~/.config/nushell/aliases/utils/utils-aliases.nu     *
 
 # -- Completions ---------------------------------------------------------------------
 use ~/.config/nushell/custom-completions/bat/bat-completions.nu       *

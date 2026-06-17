@@ -94,6 +94,16 @@
       dos2unix
       jq
       wget
+      ripgrep
+      fd
+      delta
+      btop
+      dust
+
+      # Wayland utilities
+      wl-clipboard
+      grim
+      slurp
 
       # Development
       git
