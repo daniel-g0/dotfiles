@@ -31,7 +31,9 @@ $env.PROMPT_INDICATOR_VI_INSERT = "ι "
 $env.PROMPT_INDICATOR_VI_NORMAL = "η "   
 
 # -- Preferences -----------------------------------------------------------------
-$env.config.buffer_editor = "hx"
+$env.config.buffer_editor = "nvim"
+$env.EDITOR = "nvim"
+$env.VISUAL = "nvim"
 $env.config.show_banner = false
 
 # -- Visuals ---------------------------------------------------------------------
@@ -43,6 +45,7 @@ use ~/.config/nushell/aliases/chezmoi/chezmoi-aliases.nu *
 use ~/.config/nushell/aliases/docker/docker-aliases.nu *
 use ~/.config/nushell/aliases/git/git-aliases.nu *
 use ~/.config/nushell/aliases/nixos/nixos-aliases.nu *
+use ~/.config/nushell/aliases/nvim/nvim-aliases.nu *
 # I left out more availiable under the aliases, I'm using what I need.
 
 
