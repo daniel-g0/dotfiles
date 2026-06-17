@@ -1,13 +1,6 @@
-	-- This is an example Hyprland Lua config file.
--- Refer to the wiki for more information.
--- https://wiki.hypr.land/Configuring/Start/
-
--- Please note not all available settings / options are set here.
--- For a full list, see the wiki
-
--- You can (and should!!) split this configuration into multiple files
--- Create your files separately and then require them like this:
--- require("myColors")
+-- hyprland.lua — Hyprland compositor config (Lua API).
+-- Docs: https://wiki.hypr.land/Configuring/Start/
+-- Theme: Tokyo Night — borders rgba(7aa2f7) → rgba(bb9af7), blur size 16 passes 6.
 
 
 ------------------

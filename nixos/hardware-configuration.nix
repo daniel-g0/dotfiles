@@ -26,6 +26,8 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
+  # SHARED-PART NTFS partition — nofail means boot succeeds even if drive is absent.
+  # x-systemd.automount defers mount until first access; timeouts prevent boot hang.
   fileSystems."/home/user/Volumes/shared-part" = {
     device  = "/dev/disk/by-uuid/70725C43725C1068";
     fsType  = "ntfs-3g";

@@ -1,127 +1,139 @@
 return {
+  -- Formatter — configure formatters in lua/configs/conform.lua
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    -- event = 'BufWritePre', -- uncomment to format on save
     config = function()
       require "configs.conform"
     end,
   },
 
-   {
-     "neovim/nvim-lspconfig",
-     config = function()
-       require("nvchad.configs.lspconfig").defaults()
-       require "configs.lspconfig"
-     end,
-   },
+  -- LSP configs — configure servers in lua/configs/lspconfig.lua
   {
-  	"williamboman/mason.nvim",
-  	opts = {
- 		ensure_installed = {
-  			"lua-language-server", "stylua",
-  			"html-lsp", "css-lsp" , "prettier"
-  		},
-  	},
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("nvchad.configs.lspconfig").defaults()
+      require "configs.lspconfig"
+    end,
   },
- {
- 	"nvim-treesitter/nvim-treesitter",
- 	opts = {
- 		ensure_installed = {
- 			"vim", "lua", "vimdoc",
-      "html", "css"
- 		},
 
- 	},
- },
+  -- Mason — auto-install LSP servers, linters, formatters
   {
-      'nvim-lualine/lualine.nvim',
-      dependencies = { 'nvim-tree/nvim-web-devicons' }
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "lua-language-server", "stylua",
+        "html-lsp", "css-lsp", "prettier",
+      },
+    },
   },
+
+  -- Treesitter — syntax highlighting and parsing
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim", "lua", "vimdoc",
+        "html", "css",
+      },
+    },
+  },
+
+  -- Lualine statusline
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+
+  -- Cyberdream colorscheme (active, loaded eagerly at max priority)
   {
     "scottmckendry/cyberdream.nvim",
-    lazy = false,
+    lazy     = false,
     priority = 1000,
   },
-  {'akinsho/toggleterm.nvim', version = "*", config = true},
+
+  -- Toggleterm — persistent floating/split terminal windows
+  { 'akinsho/toggleterm.nvim', version = "*", config = true },
+
+  -- Zen mode — distraction-free writing at 75% editor width
   {
     "folke/zen-mode.nvim",
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
+    opts = {},
   },
+
+  -- LeetCode (disabled — uncomment opts and init.lua setup to enable)
   -- {
-  --     "kawre/leetcode.nvim",
-  --     build = ":TSUpdate html",
-  --     dependencies = {
-  --         "nvim-telescope/telescope.nvim",
-  --         "nvim-lua/plenary.nvim", -- required by telescope
-  --         "MunifTanjim/nui.nvim",
-  --
-  --         -- optional
-  --         "nvim-treesitter/nvim-treesitter",
-  --         -- "rcarriga/nvim-notify",
-  --         "nvim-tree/nvim-web-devicons",
-  --     },
-  --     opts = {
-  --         -- configuration goes here
-  --     },
+  --   "kawre/leetcode.nvim",
+  --   build = ":TSUpdate html",
+  --   dependencies = {
+  --     "nvim-telescope/telescope.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "nvim-tree/nvim-web-devicons",
+  --   },
+  --   opts = {},
   -- },
+
+  -- Tabnine AI completion (disabled)
   -- { 'codota/tabnine-nvim', build = "./dl_binaries.sh" },
+
+  -- Neogit — Magit-style git interface inside Neovim
   {
     "NeogitOrg/neogit",
     dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "sindrets/diffview.nvim",        -- optional - Diff integration
-
-      -- Only one of these is needed, not both.
-      "nvim-telescope/telescope.nvim", -- optional
-      "ibhagwan/fzf-lua",              -- optional
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",        -- diff integration
+      "nvim-telescope/telescope.nvim", -- only one of telescope/fzf needed
+      "ibhagwan/fzf-lua",
     },
-    config = true
+    config = true,
   },
+
+  -- Toggle Python f-strings with <leader>f
   {
     "roobert/f-string-toggle.nvim",
     config = function()
       require("f-string-toggle").setup({
-        key_binding = "<leader>f",
-        key_binding_desc = "Toggle f-string"
+        key_binding      = "<leader>f",
+        key_binding_desc = "Toggle f-string",
       })
     end,
   },
+
+  -- Dashboard — startup screen
   {
     'nvimdev/dashboard-nvim',
     event = 'VimEnter',
     config = function()
-      require('dashboard').setup {
-        -- config
-      }
+      require('dashboard').setup {}
     end,
-    dependencies = { {'nvim-tree/nvim-web-devicons'}}
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
+
+  -- Hardtime — enforces good vim motion habits
   {
-     "m4xshen/hardtime.nvim",
-     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-     opts = {}
+    "m4xshen/hardtime.nvim",
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    opts = {},
   },
-  {'romgrk/barbar.nvim',
+
+  -- Barbar — tab bar with git status and file icons
+  {
+    'romgrk/barbar.nvim',
     dependencies = {
-      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
-      'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+      'lewis6991/gitsigns.nvim',
+      'nvim-tree/nvim-web-devicons',
     },
-    init = function() vim.g.barbar_auto_setup = false end,
-    opts = {
-      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
-      -- animation = true,
-      -- insert_at_start = true,
-      -- …etc.
-    },
-    version = '^1.0.0', -- optional: only update when a new 1.x version is released
+    init    = function() vim.g.barbar_auto_setup = false end,
+    opts    = {},
+    version = '^1.0.0',
   },
+
+  -- Trouble — pretty diagnostics, references, quickfix list
   {
     "folke/trouble.nvim",
-    branch = "dev", -- IMPORTANT!
+    branch = "dev",
     keys = {
       {
         "<leader>xx",
@@ -141,7 +153,7 @@ return {
       {
         "<leader>cl",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP Definitions / references / ... (Trouble)",
+        desc = "LSP Definitions / references / ...",
       },
       {
         "<leader>xL",
@@ -154,9 +166,11 @@ return {
         desc = "Quickfix List (Trouble)",
       },
     },
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {},
   },
+
+  -- mistake.nvim — highlights common writing/coding mistakes
   {
     "https://github.com/ck-zhang/mistake.nvim",
-  }
+  },
 }

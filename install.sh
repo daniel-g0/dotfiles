@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
+# install.sh — Symlinks dotfiles into ~/.config and /etc/nixos.
+# Safe to re-run: backs up existing dirs, overwrites stale symlinks.
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Backs up any real (non-symlink) target before creating the symlink.
 link() {
     local src="$1" dst="$2"
     mkdir -p "$(dirname "$dst")"
@@ -14,19 +17,20 @@ link() {
     echo "linked: $dst → $src"
 }
 
-link "$DOTFILES/nushell"              "$HOME/.config/nushell"
-link "$DOTFILES/nvim"                 "$HOME/.config/nvim"
+# User config symlinks
+link "$DOTFILES/nushell"                "$HOME/.config/nushell"
+link "$DOTFILES/nvim"                   "$HOME/.config/nvim"
 link "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"
-link "$DOTFILES/wayland/hypr"         "$HOME/.config/hypr"
-link "$DOTFILES/kitty"                "$HOME/.config/kitty"
-link "$DOTFILES/wallpapers"           "$HOME/.config/wallpapers"
+link "$DOTFILES/wayland/hypr"           "$HOME/.config/hypr"
+link "$DOTFILES/kitty"                  "$HOME/.config/kitty"
+link "$DOTFILES/wallpapers"             "$HOME/.config/wallpapers"
 
-# NixOS — requires sudo (only configuration.nix; hardware-configuration.nix stays per-machine)
+# NixOS system config — hardware-configuration.nix excluded (machine-specific, regenerate with nixos-generate-config)
 if command -v nixos-rebuild &>/dev/null; then
     if sudo ln -sfn "$DOTFILES/nixos/configuration.nix" /etc/nixos/configuration.nix 2>/dev/null; then
         echo "linked: /etc/nixos/configuration.nix → $DOTFILES/nixos/configuration.nix"
     else
-        echo "skipped: /etc/nixos/configuration.nix (run with sudo or enter password when prompted)"
+        echo "skipped: /etc/nixos/configuration.nix (needs sudo)"
     fi
 fi
 
