@@ -35,11 +35,16 @@
   };
 
   # -- Display & desktop ---------------------------------------------------------
-  # GDM + GNOME as login manager fallback; Hyprland as primary compositor.
-  services.xserver.enable             = true;
-  services.displayManager.gdm.enable  = true;
+  services.xserver.enable              = true;
+  services.displayManager.gdm.enable   = true;
   services.desktopManager.gnome.enable = true;
-  programs.hyprland.enable            = true;
+  programs.hyprland = {
+    enable   = true;
+    withUWSM = true;
+  };
+
+  security.polkit.enable = true;
+  programs.dconf.enable  = true;
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";  # hint electron apps to use wayland
 
@@ -106,6 +111,7 @@
       slurp
 
       # Development
+      neovim
       git
       git-lfs
       gcc
@@ -126,7 +132,6 @@
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     nushell
-    neovim
     veracrypt
     python3
   ];

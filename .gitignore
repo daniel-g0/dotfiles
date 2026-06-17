@@ -220,3 +220,5 @@ __marimo__/
 # Nushell history (plain-text and sqlite stay out of the repo)
 nushell/history.txt
 nushell/history.sqlite3
+nushell/history.sqlite3-wal
+nushell/history.sqlite3-shm

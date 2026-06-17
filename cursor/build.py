@@ -1,76 +1,64 @@
 #!/usr/bin/env python3
-# Builds a NixOS cursor theme from the 󱄅 glyph in JetBrainsMono Nerd Font.
+# Builds a NixOS cursor from the official NixOS snowflake SVG (nixos-artwork repo).
+# Recolors to Tokyo Night blue (#7aa2f7) before rendering.
+# Run: nix-shell -p librsvg --run 'python3 cursor/build.py'
 
-import os, subprocess, struct, zlib
-from PIL import Image, ImageDraw, ImageFont
+import os, re, subprocess, glob, shutil, urllib.request
 
-FONT = "/nix/store/s7wwsmqyscxqdxcdk26lznf9kaa7z0b5-nerd-fonts-jetbrains-mono-3.4.0+2.304/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFontMono-Regular.ttf"
-# Find actual font path
-import glob
-matches = glob.glob("/nix/store/*nerd-fonts-jetbrains*/**/JetBrainsMonoNerdFontMono-Regular.ttf", recursive=True)
-if matches:
-    FONT = matches[0]
+SVG_URL    = "https://raw.githubusercontent.com/NixOS/nixos-artwork/master/logo/nix-snowflake-colours.svg"
+TOKYO_BLUE = "#7aa2f7"
 
-GLYPH   = ""   # NixOS snowflake (U+F313, linux-nixos in nerd fonts)
-COLOR   = (122, 162, 247, 255)   # Tokyo Night blue #7aa2f7
-OUTLINE = (26, 27, 38, 180)      # subtle dark outline
 SIZES   = [24, 32, 48, 64]
-OUT_DIR = "/tmp/NixCursor"
+# Output directly into the repo so built files can be committed and reused.
+# install.sh symlinks ~/.config/cursors → dotfiles/cursor/, making it live from there.
+OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nix-logo")
 PNG_DIR = f"{OUT_DIR}/pngs"
 CUR_DIR = f"{OUT_DIR}/cursors"
 
 os.makedirs(PNG_DIR, exist_ok=True)
 os.makedirs(CUR_DIR, exist_ok=True)
 
-def render(size):
-    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
+# Download official SVG
+svg_raw = f"{OUT_DIR}/nix-snowflake.svg"
+print(f"Downloading NixOS snowflake SVG...")
+urllib.request.urlretrieve(SVG_URL, svg_raw)
 
-    # Load font sized to fill ~90% of the image
-    font_size = int(size * 0.88)
-    try:
-        font = ImageFont.truetype(FONT, font_size)
-    except Exception as e:
-        print(f"Font load fail: {e}")
-        return None
+# Recolor all hex colors → Tokyo Night blue
+with open(svg_raw) as f:
+    svg = f.read()
+svg = re.sub(r'#[0-9a-fA-F]{6}', TOKYO_BLUE, svg)
+svg = re.sub(r'#[0-9a-fA-F]{3}\b', TOKYO_BLUE, svg)
 
-    # Measure glyph bounding box and center it
-    bbox = font.getbbox(GLYPH)
-    gw, gh = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    x = (size - gw) // 2 - bbox[0]
-    y = (size - gh) // 2 - bbox[1]
+svg_colored = f"{OUT_DIR}/nix-snowflake-tokyo.svg"
+with open(svg_colored, "w") as f:
+    f.write(svg)
 
-    # Draw outline (offset 1px in each direction)
-    for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
-        draw.text((x+dx, y+dy), GLYPH, font=font, fill=OUTLINE)
+# Render PNGs with rsvg-convert
+print("Rendering PNGs...")
+for size in SIZES:
+    out = f"{PNG_DIR}/nix-{size}.png"
+    subprocess.run(["rsvg-convert", "-w", str(size), "-h", str(size), svg_colored, "-o", out], check=True)
+    print(f"  {size}px → {out}")
 
-    # Draw glyph in Tokyo Night blue
-    draw.text((x, y), GLYPH, font=font, fill=COLOR)
-
-    path = f"{PNG_DIR}/nix-{size}.png"
-    img.save(path)
-    print(f"  rendered {size}px → {path}")
-    return path
-
-# Render all sizes
-print("Rendering glyphs...")
-for s in SIZES:
-    render(s)
-
-# Write xcursorgen config: size hotspot_x hotspot_y file
+# xcursorgen config
 cfg_path = f"{OUT_DIR}/nix.cursor"
 with open(cfg_path, "w") as f:
     for s in SIZES:
-        hx, hy = s // 2, s // 2   # hotspot = center
-        f.write(f"{s} {hx} {hy} {PNG_DIR}/nix-{s}.png\n")
+        f.write(f"{s} {s//2} {s//2} {PNG_DIR}/nix-{s}.png\n")
 
-# Build cursor file
-xcursorgen = "/nix/store/78c4rgfb812p5jz65fdr1q1irqsf6qih-xcursorgen-1.0.9/bin/xcursorgen"
+# Find xcursorgen
+xcursorgen = shutil.which("xcursorgen")
+if not xcursorgen:
+    matches = glob.glob("/nix/store/*xcursorgen*/bin/xcursorgen")
+    xcursorgen = matches[0] if matches else None
+if not xcursorgen:
+    raise RuntimeError("xcursorgen not found — run: nix-shell -p xorg.xcursorgen")
+
 cursor_out = f"{CUR_DIR}/default"
 subprocess.run([xcursorgen, cfg_path, cursor_out], check=True)
 print(f"  cursor → {cursor_out}")
 
-# Symlink all standard cursor names to default
+# Symlinks
 CURSOR_NAMES = [
     "left_ptr", "arrow", "top_left_arrow", "right_ptr",
     "hand1", "hand2", "pointing_hand", "grab", "grabbing",
@@ -88,15 +76,15 @@ CURSOR_NAMES = [
 ]
 for name in CURSOR_NAMES:
     link = f"{CUR_DIR}/{name}"
-    if not os.path.exists(link):
-        os.symlink("default", link)
+    if os.path.exists(link) or os.path.islink(link):
+        os.remove(link)
+    os.symlink("default", link)
 
-# Write theme files
 with open(f"{OUT_DIR}/cursor.theme", "w") as f:
     f.write("[Icon Theme]\nName=NixCursor\n")
-
 with open(f"{OUT_DIR}/index.theme", "w") as f:
     f.write("[Icon Theme]\nName=NixCursor\nComment=NixOS snowflake cursor — Tokyo Night blue\n")
 
-print(f"\nDone! Theme at: {OUT_DIR}")
-print(f"Install: cp -r {OUT_DIR} ~/.local/share/icons/NixCursor")
+print(f"\nDone! Files at: {OUT_DIR}")
+print(f"  Run install.sh to symlink ~/.config/cursors → dotfiles/cursor/")
+print(f"  Then: hyprctl setcursor NixCursor 24")

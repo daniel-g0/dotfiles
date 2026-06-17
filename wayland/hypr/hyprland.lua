@@ -50,13 +50,15 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_THEME",   "NixCursor")
-hl.env("XCURSOR_SIZE",    "24")
-hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME",   "nix-logo")
+hl.env("XCURSOR_SIZE",    "20")
+hl.env("HYPRCURSOR_SIZE", "20")
+hl.env("XCURSOR_PATH",    "/home/user/.config/cursors")
 
 hl.config({
     cursor = {
         no_hardware_cursors = true,
+        inactive_timeout    = 0,    -- never hide
     },
 })
 

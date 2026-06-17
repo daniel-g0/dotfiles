@@ -24,6 +24,7 @@ link "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"
 link "$DOTFILES/wayland/hypr"           "$HOME/.config/hypr"
 link "$DOTFILES/kitty"                  "$HOME/.config/kitty"
 link "$DOTFILES/wallpapers"             "$HOME/.config/wallpapers"
+link "$DOTFILES/cursor"                 "$HOME/.config/cursors"
 
 # NixOS system config — hardware-configuration.nix excluded (machine-specific, regenerate with nixos-generate-config)
 if command -v nixos-rebuild &>/dev/null; then
