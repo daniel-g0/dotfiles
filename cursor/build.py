@@ -11,7 +11,7 @@ matches = glob.glob("/nix/store/*nerd-fonts-jetbrains*/**/JetBrainsMonoNerdFontM
 if matches:
     FONT = matches[0]
 
-GLYPH   = "\U000f1305"   # 󱄅 NixOS nerd font icon (U+F1305)
+GLYPH   = ""   # NixOS snowflake (U+F313, linux-nixos in nerd fonts)
 COLOR   = (122, 162, 247, 255)   # Tokyo Night blue #7aa2f7
 OUTLINE = (26, 27, 38, 180)      # subtle dark outline
 SIZES   = [24, 32, 48, 64]
