@@ -1,31 +1,22 @@
-# starship.toml — Tokyo Night theme
-# Palette: bg #1a1b26, blue #7aa2f7, green #9ece6a, gold #e0af68,
-#          purple #bb9af7, red #f7768e, cyan #7dcfff, comment #565f89
+# starship.toml — Tokyo Night, no background, minimal
 
 format = """
-[󱄅 ](bg:#1a1b26 fg:#7aa2f7)\
-[](bg:#1a1b26 fg:#3b4261)\
+[󱄅 ](fg:#7aa2f7)\
 $directory\
 $git_branch\
 $git_status\
 $c$python$nodejs$rust$golang$java$docker_context\
-[](fg:#1a1b26)\
 $fill\
-[](fg:#1a1b26)\
-$status\
 $cmd_duration\
-[ ](bg:#1a1b26 fg:#bb9af7)\
 $username$hostname\
-[  ](bg:#1a1b26 fg:#565f89)\
-$time\
-[ ](bg:#1a1b26 fg:#414868)"""
+"""
 
 add_newline = false
 
 # -- Directory -------------------------------------------------------------------
 [directory]
-style            = "fg:#7aa2f7 bg:#1a1b26"
-format           = "[  $path ]($style)"
+style             = "fg:#7aa2f7"
+format            = "[  $path ]($style)"
 truncation_length = 9
 truncation_symbol = "…/"
 truncate_to_repo  = true
@@ -36,102 +27,94 @@ home_symbol       = '~'
 
 # -- Git -------------------------------------------------------------------------
 [git_branch]
-style  = "fg:#9ece6a bg:#1a1b26"
-format = '[](fg:#3b4261 bg:#1a1b26)[  ](fg:#9ece6a bg:#1a1b26)[ $branch ](bold $style)'
+style  = "fg:#9ece6a"
+format = '[  $branch ]($style)'
 
 [git_status]
-style       = "fg:#e0af68 bg:#1a1b26"
-conflicted  = "~"
-up_to_date  = " "
-untracked   = "?"
-ahead       = "⇡${count}"
-diverged    = "⇕⇡${ahead_count}⇣${behind_count}"
-behind      = "⇣${count}"
-stashed     = "*"
-modified    = " "
-staged      = '[++\($count\)](fg:#9ece6a bg:#1a1b26)'
-renamed     = " "
-deleted     = " "
-format      = '[$all_status$ahead_behind ]($style)'
+style      = "fg:#e0af68"
+conflicted = "~"
+up_to_date = ""
+untracked  = "?"
+ahead      = "⇡${count}"
+diverged   = "⇕⇡${ahead_count}⇣${behind_count}"
+behind     = "⇣${count}"
+stashed    = "*"
+modified   = " "
+staged     = '[++\($count\)](fg:#9ece6a)'
+renamed    = " "
+deleted    = " "
+format     = '[$all_status$ahead_behind ]($style)'
 
-# -- Status & duration -----------------------------------------------------------
-[status]
-style          = 'bg:#1a1b26'
-symbol         = '[✘ ](fg:#f7768e bg:#1a1b26)'
-success_symbol = '[✔ ](fg:#9ece6a bg:#1a1b26)'
-format         = '[[$signal_name ](fg:#f7768e bg:#1a1b26)$symbol]($style)'
-map_symbol     = false
-disabled       = false
-
-[character]
-success_symbol = '[✔](fg:#9ece6a bg:#1a1b26)'
-error_symbol   = '[✘](fg:#f7768e bg:#1a1b26)'
-
+# -- Duration --------------------------------------------------------------------
 [cmd_duration]
-min_time = 1
-style    = 'bg:#1a1b26 fg:#e0af68'
-format   = '[ took [$duration](bold fg:#e0af68 bg:#1a1b26)  ]($style)'
+min_time = 2000
+style    = "fg:#e0af68"
+format   = '[ $duration ]($style)'
 
-# -- User / host / time ----------------------------------------------------------
+# -- User / host -----------------------------------------------------------------
 [username]
 show_always = true
-style_user  = "fg:#bb9af7 bg:#1a1b26"
-style_root  = "fg:#f7768e bg:#1a1b26"
+style_user  = "fg:#bb9af7"
+style_root  = "fg:#f7768e"
 format      = '[$user]($style)'
 disabled    = false
 
 [hostname]
 ssh_only = false
-style    = 'fg:#565f89 bg:#1a1b26'
+style    = "fg:#565f89"
 format   = '[@$hostname ]($style)'
 disabled = false
 
-[time]
-disabled    = false
-time_format = "%R"
-style       = "bg:#1a1b26 fg:#565f89"
-format      = '[$time ]($style)'
+# -- Disabled --------------------------------------------------------------------
+[status]
+disabled = true
 
-# -- Fill (spacer between left and right) ----------------------------------------
+[time]
+disabled = true
+
+[character]
+success_symbol = ""
+error_symbol   = '[✘](fg:#f7768e)'
+
+# -- Fill (spacer) ---------------------------------------------------------------
 [fill]
 symbol = ' '
 
 # -- Language symbols ------------------------------------------------------------
 [c]
 symbol = ""
-style  = "bg:#1a1b26 fg:#7dcfff"
+style  = "fg:#7dcfff"
 format = '[ $symbol ]($style)'
 
 [python]
 symbol = ' '
-style  = "fg:#e0af68 bg:#1a1b26"
+style  = "fg:#e0af68"
 format = '[ $symbol ]($style)'
 
 [nodejs]
 symbol = ""
-style  = "fg:#9ece6a bg:#1a1b26"
+style  = "fg:#9ece6a"
 format = '[ $symbol ]($style)'
 
 [rust]
 symbol = ""
-style  = "fg:#ff9e64 bg:#1a1b26"
+style  = "fg:#ff9e64"
 format = '[ $symbol ]($style)'
 
 [golang]
 symbol = "go"
-style  = "fg:#7dcfff bg:#1a1b26"
+style  = "fg:#7dcfff"
 format = '[ $symbol ](bold $style)'
 
 [java]
 symbol = ""
-style  = "fg:#f7768e bg:#1a1b26"
+style  = "fg:#f7768e"
 format = '[ $symbol ]($style)'
 
 [docker_context]
 symbol = " "
-style  = "bg:#1a1b26 fg:#7dcfff"
+style  = "fg:#7dcfff"
 format = '[ $symbol $context ]($style)'
 
 [os]
-style    = "bg:#1a1b26"
 disabled = true
