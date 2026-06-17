@@ -276,7 +276,7 @@ end
 
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+-- hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))  -- moved to screenshot
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
@@ -286,9 +286,9 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- Screenshots (grim + slurp): full screen saved to ~/Pictures, region to clipboard
-hl.bind("PRINT",              hl.dsp.exec_cmd("grim ~/Pictures/$(date '+%Y%m%d_%H%M%S').png"))
-hl.bind(mainMod .. " + PRINT", hl.dsp.exec_cmd("slurp | grim -g - - | wl-copy"))
+-- Screenshots: PRINT=full→~/Pictures, SUPER+SHIFT+S=region→clipboard
+hl.bind("PRINT",                      hl.dsp.exec_cmd("grim ~/Pictures/$(date '+%Y%m%d_%H%M%S').png"))
+hl.bind(mainMod .. " + SHIFT + S",   hl.dsp.exec_cmd("slurp | grim -g - - | wl-copy"))
 
 -- Laptop multimedia keys for volume and LCD brightness
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
