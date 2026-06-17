@@ -18,6 +18,8 @@ link "$DOTFILES/nushell"              "$HOME/.config/nushell"
 link "$DOTFILES/nvim"                 "$HOME/.config/nvim"
 link "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"
 link "$DOTFILES/wayland/hypr"         "$HOME/.config/hypr"
+link "$DOTFILES/kitty"                "$HOME/.config/kitty"
+link "$DOTFILES/wallpapers"           "$HOME/.config/wallpapers"
 
 # NixOS — requires sudo (only configuration.nix; hardware-configuration.nix stays per-machine)
 if command -v nixos-rebuild &>/dev/null; then

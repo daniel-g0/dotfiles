@@ -37,6 +37,11 @@ return {
       'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
+  {
+    "scottmckendry/cyberdream.nvim",
+    lazy = false,
+    priority = 1000,
+  },
   {'akinsho/toggleterm.nvim', version = "*", config = true},
   {
     "folke/zen-mode.nvim",
@@ -64,11 +69,6 @@ return {
   --     },
   -- },
   -- { 'codota/tabnine-nvim', build = "./dl_binaries.sh" },
-  {
-    "scottmckendry/cyberdream.nvim",
-    lazy = false,
-    priority = 1000,
-  },
   {
     "NeogitOrg/neogit",
     dependencies = {

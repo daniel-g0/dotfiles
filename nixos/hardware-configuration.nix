@@ -26,6 +26,19 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
+  fileSystems."/home/user/Volumes/shared-part" = {
+    device  = "/dev/disk/by-uuid/70725C43725C1068";
+    fsType  = "ntfs-3g";
+    options = [
+      "uid=1000" "gid=1000"
+      "dmask=007" "fmask=117"
+      "nofail"
+      "x-systemd.automount"
+      "x-systemd.device-timeout=5"
+      "x-systemd.mount-timeout=5"
+    ];
+  };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

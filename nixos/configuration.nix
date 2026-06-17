@@ -48,8 +48,8 @@
 
   # Enable X11 and GNOME (for login manager and secondary rescuer)
   services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Enable Hyrpland Desktop Enviroment.
   programs.hyprland.enable = true;
@@ -97,12 +97,18 @@
       swaynotificationcenter
       waybar
       zoxide
+      file
+      dos2unix
+      tree
       starship
       yazi
       kitty
       brave
       fzf
       hyprlauncher
+      hyprlock
+      hypridle
+      awww
       veracrypt
       git
       git-lfs
@@ -112,6 +118,15 @@
       chezmoi
       tldr
       uv
+      gcc
+      wget # for utils! don't use wget in nushell, use http command
+      jq
+      waybar
+      hyprpicker 
+      blueman
+      bluez
+      claude-code
+      nodejs
     ];
   };
 
@@ -153,9 +168,13 @@
     fi
   '';
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-  ];
+   fonts = {
+    enableDefaultPackages = true; # Optional: installs basic fonts for Unicode coverage
+    packages = with pkgs; [
+      nerd-fonts.jetbrains-mono
+      material-icons
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
