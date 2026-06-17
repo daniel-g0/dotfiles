@@ -2,3 +2,4 @@
 # Restore last deleted: rip -u
 
 export alias rm = rip
+export alias rd = rip -u
