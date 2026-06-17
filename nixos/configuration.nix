@@ -83,6 +83,7 @@
       # Terminal & shell tools
       kitty
       starship
+      rm-improved
       zoxide
       yazi
       fzf
