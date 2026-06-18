@@ -14,6 +14,7 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `kitty/` | `~/.config/kitty` |
 | `wallpapers/` | `~/.config/wallpapers` |
 | `jiffy/` | `~/.config/jiffy` |
+| `wallrizz/` | `~/.config/wallrizz` |
 | `wayland/hypr/` | `~/.config/hypr` |
 | `wayland/swaync/` | `~/.config/swaync` |
 | `nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
@@ -28,9 +29,12 @@ Run `bash install.sh` to (re)create all symlinks. Safe to re-run.
 - NixOS: edit `nixos/configuration.nix`, then `nixos-re-sw` (alias → `sudo nixos-rebuild switch`).
 - Hyprland config is Lua-based (`wayland/hypr/hyprland.lua`).
 - Lock screen config: `wayland/hypr/hyprlock.conf`. Idle timers: `wayland/hypr/hypridle.conf`.
-- Wallpaper set via `awww` on Hyprland start. Files in `wallpapers/`.
+- Wallpaper set via `awww` on Hyprland start. Files in `wallpapers/`. Wallrizz config in `wallrizz/`.
 - Kitty: Tokyo Night colors + 75% opacity + frosted blur (via Hyprland).
 - NvChad base with `tokyodark` theme set in `nvim/lua/chadrc.lua`.
+- Notifications: swaync (`wayland/swaync/`).
+- Waybar nix logo (󱄅): opens kitty with fastfetch + fortune banner. Uses `NU_BANNER=1` env var — nushell `config.nu` gates the banner on this var. All other terminals open silently.
+- Waybar nix menu (󰍜): GTK menu for NixOS ops (rebuild/test/update/gc/gens). Each action opens kitty, tees output to `/tmp/nix-<action>.log`, waits for Enter before closing.
 
 ## Useful aliases (nushell)
 
