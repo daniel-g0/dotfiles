@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# doller — dotfile installer  (bash 3.2+ compatible)
+# doller — dotfile installer
 set -euo pipefail
 
 # ── Tokyo Night palette ────────────────────────────────────────────────────────
@@ -20,95 +20,39 @@ for arg in "$@"; do
     case "$arg" in
         --dry-run|-n) DRY=1 ;;
         --force|-y)   FORCE=1 ;;
-        --help|-h) printf "Usage: doller [--dry-run|-n] [--force|-y]\n"; exit 0 ;;
+        --help|-h)
+            echo "Usage: doller [--dry-run|-n] [--force|-y]"
+            exit 0 ;;
     esac
 done
 
-# ── Layout ─────────────────────────────────────────────────────────────────────
-COLS=$(tput cols 2>/dev/null || echo 80)
-BOX_W=74
-
-# Print n copies of a character — UTF-8 safe (no tr)
-hline() {
-    local char="$1" n="$2" i=0
-    while [ "$i" -lt "$n" ]; do printf '%s' "$char"; i=$((i+1)); done
-}
-
-# Center-print a string, color optional
-cprint() {
-    local color="$1" text="$2" vislen="${3:-}"  # vislen = printable length (no escapes)
-    [ -z "$vislen" ] && vislen=${#text}
-    local pad=$(( (COLS - vislen) / 2 ))
-    [ "$pad" -lt 0 ] && pad=0
-    printf "%${pad}s${color}%s${RS}\n" "" "$text"
-}
-
-# ── Box helpers ────────────────────────────────────────────────────────────────
-_box_pad() { printf "%$(( (COLS - BOX_W - 2) / 2 ))s" ""; }
-
-box_top() {
-    local title="${1:-}"
-    _box_pad; printf "${DIM}┌"
-    if [ -n "$title" ]; then
-        local t=" $title "
-        local tlen=${#t}
-        local left=$(( (BOX_W - tlen) / 2 ))
-        local right=$(( BOX_W - tlen - left ))
-        hline "─" $left
-        printf "${RS}${BD}${FG}%s${RS}${DIM}" "$t"
-        hline "─" $right
-    else
-        hline "─" $BOX_W
-    fi
-    printf "┐${RS}\n"
-}
-
-box_btm() { _box_pad; printf "${DIM}└"; hline "─" $BOX_W; printf "┘${RS}\n"; }
-box_sep() { _box_pad; printf "${DIM}├"; hline "─" $BOX_W; printf "┤${RS}\n"; }
-box_row() { _box_pad; printf "${DIM}│${RS}%-${BOX_W}s${DIM}│${RS}\n" "$1"; }
-box_blank() { _box_pad; printf "${DIM}│%${BOX_W}s│${RS}\n" ""; }
-
 # ── Header ─────────────────────────────────────────────────────────────────────
 header() {
-    clear; printf "\n"
-
-    local logo=(
-        "██████╗  ██████╗ ██╗     ██╗     ███████╗██████╗ "
-        "██╔══██╗██╔═══██╗██║     ██║     ██╔════╝██╔══██╗"
-        "██║  ██║██║   ██║██║     ██║     █████╗  ██████╔╝"
-        "██║  ██║██║   ██║██║     ██║     ██╔══╝  ██╔══██╗"
-        "██████╔╝╚██████╔╝███████╗███████╗███████╗██║  ██║"
-        "╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝"
-    )
-    local logo_w=51 pad=$(( (COLS - 51) / 2 ))
-    printf "${PRP}${BD}"
-    for line in "${logo[@]}"; do printf "%${pad}s%s\n" "" "$line"; done
-    printf "${RS}\n"
-
-    cprint "$DIM" "dotfile installer"
-    cprint "$DIM" "$DOTS" ${#DOTS}
-    printf "\n"
+    clear
+    echo
+    echo -e "${PRP}${BD}"
+    echo '    ██████╗  ██████╗ ██╗     ██╗     ███████╗██████╗ '
+    echo '    ██╔══██╗██╔═══██╗██║     ██║     ██╔════╝██╔══██╗'
+    echo '    ██║  ██║██║   ██║██║     ██║     █████╗  ██████╔╝'
+    echo '    ██║  ██║██║   ██║██║     ██║     ██╔══╝  ██╔══██╗'
+    echo '    ██████╔╝╚██████╔╝███████╗███████╗███████╗██║  ██║'
+    echo '    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝'
+    echo -e "${RS}"
+    echo -e "    ${DIM}dotfile installer  ·  ${DOTS}${RS}"
+    echo
 }
 
 # ── OS detection ───────────────────────────────────────────────────────────────
 detect_os() {
-    if   command -v nixos-rebuild >/dev/null 2>&1;           then printf "nixos"
-    elif [ "$(uname)" = "Darwin" ];                          then printf "macos"
-    elif grep -qi microsoft /proc/version 2>/dev/null;       then printf "wsl"
-    else printf "linux"
+    if command -v nixos-rebuild &>/dev/null; then echo "nixos"
+    elif [[ "$(uname)" == "Darwin" ]];       then echo "macos"
+    elif grep -qi microsoft /proc/version 2>/dev/null; then echo "wsl"
+    else echo "linux"
     fi
 }
 
-os_label() {
-    case "$1" in
-        nixos) printf "${PRP} NixOS${RS}" ;;
-        macos) printf "${BLU} macOS${RS}" ;;
-        wsl)   printf "${CYN} WSL${RS}"   ;;
-        *)     printf "${GRN} Linux${RS}"  ;;
-    esac
-}
-
 # ── Symlink map: "repo_path|destination|os_filter" ────────────────────────────
+# os_filter: all | linux | nixos | macos  (linux applies to nixos+wsl too)
 ALL_LINK_DEFS=(
     "nushell|$HOME/.config/nushell|all"
     "nvim|$HOME/.config/nvim|all"
@@ -129,68 +73,56 @@ link_applies() {
     local filter="$1" os="$2"
     case "$filter" in
         all)   return 0 ;;
-        linux) [ "$os" = "linux" ] || [ "$os" = "nixos" ] || [ "$os" = "wsl" ] && return 0 ;;
-        nixos) [ "$os" = "nixos" ] && return 0 ;;
-        macos) [ "$os" = "macos" ] && return 0 ;;
-        wsl)   [ "$os" = "wsl" ]   && return 0 ;;
+        linux) [[ "$os" == "linux" || "$os" == "nixos" || "$os" == "wsl" ]] && return 0 ;;
+        nixos) [[ "$os" == "nixos" ]] && return 0 ;;
+        macos) [[ "$os" == "macos" ]] && return 0 ;;
     esac
     return 1
 }
 
-needs_sudo() { [ "$1" = "nixos" ] && return 0; return 1; }
+needs_sudo() { [[ "$1" == "nixos" ]]; }
 
-check_link() {
+# ── Check a single symlink ─────────────────────────────────────────────────────
+check() {
     local src="$DOTS/$1" dst="$2"
-    [ ! -e "$src" ] && printf "no_source" && return
-    if [ -L "$dst" ]; then
-        [ "$(readlink "$dst")" = "$src" ] && printf "ok" || printf "conflict"
-    elif [ -e "$dst" ]; then printf "conflict"
-    else printf "will_link"
+    [[ ! -e "$src" ]]  && echo "no_source" && return
+    if [[ -L "$dst" ]]; then
+        [[ "$(readlink "$dst")" == "$src" ]] && echo "ok" || echo "conflict"
+    elif [[ -e "$dst" ]]; then echo "conflict"
+    else echo "will_link"
     fi
 }
 
 # ── Status table ───────────────────────────────────────────────────────────────
 print_table() {
     local os="$1" current_section=""
-    local C1=28 C2=30  # col widths: src, dst
-
-    box_row "$(printf " ${DIM}%-${C1}s  %-${C2}s  %-10s${RS}" "Source" "Destination" "Status")"
-    box_sep
+    printf "    ${DIM}%-32s %-34s %s${RS}\n" "Source" "Destination" "Status"
+    echo -e "    ${DIM}$(printf '─%.0s' {1..72})${RS}"
 
     for entry in "${ALL_LINK_DEFS[@]}"; do
         IFS='|' read -r src dst filter <<< "$entry"
         link_applies "$filter" "$os" || continue
 
-        # Section header
-        if   [ "$filter" = "all"   ] && [ "$current_section" != "all"   ]; then
-            box_row "$(printf " ${DIM}%-$((BOX_W-1))s${RS}" "  Universal")"
-            current_section="all"
-        elif [ "$filter" = "linux" ] && [ "$current_section" != "linux" ]; then
-            box_sep
-            box_row "$(printf " ${DIM}%-$((BOX_W-1))s${RS}" "  Linux / Wayland")"
-            current_section="linux"
-        elif [ "$filter" = "nixos" ] && [ "$current_section" != "nixos" ]; then
-            box_sep
-            box_row "$(printf " ${PRP}%-$((BOX_W-1))s${RS}" "  NixOS  (sudo)")"
-            current_section="nixos"
-        elif [ "$filter" = "macos" ] && [ "$current_section" != "macos" ]; then
-            box_sep
-            box_row "$(printf " ${BLU}%-$((BOX_W-1))s${RS}" "  macOS")"
-            current_section="macos"
+        if   [[ "$filter" == "all"   && "$current_section" != "all"   ]]; then
+            echo -e "    ${DIM}Universal${RS}"; current_section="all"
+        elif [[ "$filter" == "linux" && "$current_section" != "linux" ]]; then
+            echo -e "\n    ${DIM}Linux / Wayland${RS}"; current_section="linux"
+        elif [[ "$filter" == "nixos" && "$current_section" != "nixos" ]]; then
+            echo -e "\n    ${PRP}NixOS system (sudo)${RS}"; current_section="nixos"
+        elif [[ "$filter" == "macos" && "$current_section" != "macos" ]]; then
+            echo -e "\n    ${BLU}macOS${RS}"; current_section="macos"
         fi
 
-        local st; st="$(check_link "$src" "$dst")"
+        local st; st="$(check "$src" "$dst")"
         local sdst="${dst/$HOME/\~}"
-        needs_sudo "$filter" && sdst="[sudo] ${sdst}"
+        needs_sudo "$filter" && sdst="[sudo] $sdst"
 
-        local row
         case "$st" in
-            ok)        row="$(printf " ${DIM}%-${C1}s  %-${C2}s  ${GRN}✓ linked${RS}"      "$src" "$sdst")" ;;
-            will_link) row="$(printf " %-${C1}s  %-${C2}s  ${CYN}+ will link${RS}"         "$src" "$sdst")" ;;
-            conflict)  row="$(printf " %-${C1}s  %-${C2}s  ${YLW}! conflict${RS}"          "$src" "$sdst")" ;;
-            no_source) row="$(printf " ${DIM}%-${C1}s  %-${C2}s  ? no source${RS}"         "$src" "$sdst")" ;;
+            ok)        printf "    ${DIM}%-32s %-34s ${GRN}✓ linked${RS}\n"       "$src" "$sdst" ;;
+            will_link) printf "    %-32s %-34s ${CYN}+ will link${RS}\n"          "$src" "$sdst" ;;
+            conflict)  printf "    %-32s %-34s ${YLW}! conflict → .bak${RS}\n"   "$src" "$sdst" ;;
+            no_source) printf "    ${DIM}%-32s %-34s ? no source${RS}\n"          "$src" "$sdst" ;;
         esac
-        box_row "$row"
     done
 }
 
@@ -202,67 +134,64 @@ apply_all() {
         IFS='|' read -r src dst filter <<< "$entry"
         link_applies "$filter" "$os" || continue
 
-        local st; st="$(check_link "$src" "$dst")"
-        [ "$st" = "no_source" ] && continue
-        if [ "$st" = "ok" ]; then ok=$((ok+1)); continue; fi
+        local st; st="$(check "$src" "$dst")"
+        [[ "$st" == "no_source" ]] && continue
+        if [[ "$st" == "ok" ]]; then (( ok++ )); continue; fi
 
         local use_sudo=0; needs_sudo "$filter" && use_sudo=1
         local full_src="$DOTS/$src"
         local parent; parent="$(dirname "$dst")"
-        if [ "$use_sudo" = "1" ]; then sudo mkdir -p "$parent"; else mkdir -p "$parent"; fi
+        if (( use_sudo )); then sudo mkdir -p "$parent"; else mkdir -p "$parent"; fi
 
-        if [ "$st" = "conflict" ]; then
+        if [[ "$st" == "conflict" ]]; then
             local bak="${dst}.bak.$(date +%s)"
-            if [ "$use_sudo" = "1" ]; then sudo mv "$dst" "$bak"; else mv "$dst" "$bak"; fi
-            box_row "$(printf " ${YLW}↶${RS}  backed up ${DIM}%s${RS} → .bak" "$(basename "$dst")")"
+            if (( use_sudo )); then sudo mv "$dst" "$bak"; else mv "$dst" "$bak"; fi
+            echo -e "    ${YLW}↶${RS} ${DIM}backed up $(basename "$dst") → .bak${RS}"
         fi
 
-        if [ "$use_sudo" = "1" ]; then sudo ln -sfn "$full_src" "$dst" && r=0 || r=1
+        if (( use_sudo )); then sudo ln -sfn "$full_src" "$dst" && r=0 || r=1
         else ln -sfn "$full_src" "$dst" && r=0 || r=1; fi
 
         local sdst="${dst/$HOME/\~}"
-        if [ "$r" = "0" ]; then
-            box_row "$(printf " ${GRN}✓${RS}  ${FG}%-28s${RS}  ${DIM}→${RS}  ${CYN}%s${RS}" "$src" "$sdst")"
-            new=$((new+1))
+        if (( r == 0 )); then
+            echo -e "    ${GRN}✓${RS} ${FG}$src${RS} ${DIM}→${RS} ${CYN}$sdst${RS}"
+            (( new++ ))
         else
-            box_row "$(printf " ${RED}✗${RS}  failed: %s" "$dst")"
-            failed=$((failed+1))
+            echo -e "    ${RED}✗${RS} failed: $dst"
+            (( failed++ ))
         fi
     done
 
-    box_sep
-    box_row "$(printf "  ${GRN}%d linked${RS}   ${CYN}%d created${RS}   ${RED}%d failed${RS}" "$ok" "$new" "$failed")"
+    echo
+    echo -e "    ${GRN}${ok} already linked${RS}  ${CYN}${new} created${RS}  ${RED}${failed} failed${RS}"
 }
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 header
 
 OS="$(detect_os)"
+echo -e "    ${DIM}OS:${RS} ${BLU}${OS}${RS}"
+echo
 
-box_top "$(printf " Status  ·  %s " "$(os_label "$OS")")"
-box_blank
+echo -e "    ${BD}${FG}Symlink status${RS}"
+echo
 print_table "$OS"
-box_blank
-box_btm
+echo
 
-printf "\n"
-[ "$DRY" = "1" ] && cprint "$DIM" "dry run — nothing changed." && printf "\n" && exit 0
+[[ "$DRY" == "1" ]] && echo -e "    ${DIM}Dry run — nothing changed.${RS}\n" && exit 0
 
-if [ "$FORCE" != "1" ]; then
-    cprint "" "$(printf "${BD}Apply?${RS} ${DIM}[Y/n]${RS} ")" 10
+if [[ "$FORCE" != "1" ]]; then
+    echo -ne "    ${BD}Apply?${RS} ${DIM}[Y/n]${RS} "
     read -r confirm; confirm="${confirm:-y}"
-    confirm="$(printf "%s" "$confirm" | tr '[:upper:]' '[:lower:]')"
-    [ "$confirm" != "y" ] && printf "\n" && cprint "$DIM" "Aborted." && printf "\n" && exit 0
+    [[ "${confirm,,}" != "y" ]] && echo -e "\n    ${DIM}Aborted.${RS}\n" && exit 0
 fi
 
-printf "\n"
-box_top " Linking "
-box_blank
+echo
+echo -e "    ${BD}${FG}Linking…${RS}"
+echo
 apply_all "$OS"
-box_blank
-box_btm
 
-printf "\n"
-cprint "${BD}${GRN}" "Done!"
-[ "$OS" = "nixos" ] && cprint "$DIM" "run nixos-re-sw to rebuild"
-printf "\n"
+echo
+echo -e "    ${BD}${GRN}Done!${RS}"
+[[ "$OS" == "nixos" ]] && echo -e "    ${DIM}Run ${RS}${CYN}nixos-re-sw${RS}${DIM} to rebuild.${RS}"
+echo
