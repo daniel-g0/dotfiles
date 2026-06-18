@@ -220,6 +220,15 @@ in
     ];
   };
 
+  # Symlink /usr/bin/bash for tools that hardcode it (e.g. WallRizz)
+  system.activationScripts.usrbinbash = {
+    text = ''
+      mkdir -p /usr/bin
+      ln -sfn /run/current-system/sw/bin/bash /usr/bin/bash
+    '';
+    deps = [];
+  };
+
   # This value pins the NixOS release for stateful data defaults.
   # Change only when intentionally migrating state. See: man configuration.nix
   system.stateVersion = "26.05";
