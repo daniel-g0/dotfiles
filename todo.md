@@ -2,7 +2,7 @@
 
 ## Active
 
-- customize waybar
+- ~~customize waybar~~ ✓ (mechabar + Tokyo Night — done)
 - customize starship
 - customize nushell
 - customize kitty
@@ -14,7 +14,7 @@
 - replace hyprlauncher with rofi or keep — decide
 - create cheatsheet (tool-generated) of all keybinds, aliases, features across full stack
 - add hello/motd on shell start
-- set up claude-code properly
+- set up claude-code properly (patch security settings — MCP, permissions, hooks)
 
 ## Future (when Windows removed / no longer dual boot)
 

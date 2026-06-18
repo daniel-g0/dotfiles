@@ -40,7 +40,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("waybar")
   hl.exec_cmd("hypridle")
   hl.exec_cmd("awww-daemon")
-  hl.exec_cmd("awww img /home/user/.config/wallpapers/tokyo_water.jpg --transition-type fade --transition-duration 2")
+  hl.exec_cmd("awww img /home/user/.config/wallpapers/nix-tokyonight.png --transition-type fade --transition-duration 2")
 end)
 
 

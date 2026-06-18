@@ -85,6 +85,10 @@
       hyprpicker
       blueman
       bluez
+      libnotify
+      fastfetch
+      fortune
+      lolcat
 
       # Terminal & shell tools
       kitty

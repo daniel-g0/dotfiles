@@ -1,0 +1,44 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+    "logo": {
+        "source": "nixos",
+        "color": {
+            "1": "38;2;122;162;247",
+            "2": "38;2;187;154;247"
+        }
+    },
+
+    "display": {
+        "separator": " 󰁕 ",
+        "color": {
+            "keys":  "38;2;122;162;247",
+            "title": "38;2;187;154;247"
+        }
+    },
+
+    "modules": [
+        {
+            "type": "title",
+            "keyColor": "38;2;187;154;247",
+            "color": {
+                "user":   "38;2;122;162;247",
+                "at":     "38;2;125;207;255",
+                "host":   "38;2;187;154;247"
+            }
+        },
+        "separator",
+        { "type": "os",      "key": "  OS"      },
+        { "type": "kernel",  "key": "  Kernel"  },
+        { "type": "uptime",  "key": "  Uptime"  },
+        { "type": "shell",   "key": "  Shell"   },
+        { "type": "wm",      "key": "  WM"      },
+        "separator",
+        { "type": "cpu",     "key": "  CPU"     },
+        { "type": "gpu",     "key": "  GPU"     },
+        { "type": "memory",  "key": "  Memory"  },
+        { "type": "disk",    "key": "  Disk"    },
+        "separator",
+        { "type": "colors", "symbol": "circle" }
+    ]
+}

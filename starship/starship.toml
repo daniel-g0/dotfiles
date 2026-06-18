@@ -1,14 +1,12 @@
-# starship.toml — Tokyo Night, no background, minimal
+# starship.toml — Tokyo Night, single line, vi mode via nushell indicator
 
 format = """
-[ ](fg:#7aa2f7)\
 $directory\
 $git_branch\
 $git_status\
 $c$python$nodejs$rust$golang$java$docker_context\
-$fill\
 $cmd_duration\
-$username$hostname\
+$character\
 """
 
 add_newline = false
@@ -16,19 +14,19 @@ add_newline = false
 # -- Directory -------------------------------------------------------------------
 [directory]
 style             = "fg:#7aa2f7"
-format            = "[  $path ]($style)"
-truncation_length = 9
+format            = "[ $path ]($style)"
+truncation_length = 5
 truncation_symbol = "…/"
 truncate_to_repo  = true
-home_symbol       = '~'
+home_symbol       = "~"
 
 [directory.substitutions]
-"~" = " ~"
+"~" = "~"
 
 # -- Git -------------------------------------------------------------------------
 [git_branch]
 style  = "fg:#9ece6a"
-format = '[  $branch ]($style)'
+format = "[ $branch ]($style)"
 
 [git_status]
 style      = "fg:#e0af68"
@@ -43,62 +41,52 @@ modified   = " "
 staged     = '[++\($count\)](fg:#9ece6a)'
 renamed    = " "
 deleted    = " "
-format     = '[$all_status$ahead_behind ]($style)'
+format     = "[$all_status$ahead_behind ]($style)"
+
+# -- Prompt character (success/error indicator, no symbol — mode handled by nushell) --
+[character]
+success_symbol = ""
+error_symbol   = "[✗](fg:#f7768e)"
+format         = "$symbol"
 
 # -- Duration (only shows when cmd takes >2s) ------------------------------------
 [cmd_duration]
 min_time = 2000
 style    = "fg:#e0af68"
-format   = '[ $duration ]($style)'
-
-# -- User / host -----------------------------------------------------------------
-[username]
-show_always = true
-style_user  = "fg:#bb9af7"
-style_root  = "fg:#f7768e"
-format      = '[$user]($style)'
-
-[hostname]
-ssh_only = false
-style    = "fg:#565f89"
-format   = '[@$hostname ]($style)'
-
-# -- Fill (spacer between left and right) ----------------------------------------
-[fill]
-symbol = ' '
+format   = "[ $duration ]($style)"
 
 # -- Language symbols (only appear when in a relevant project dir) ----------------
 [c]
 symbol = ""
 style  = "fg:#7dcfff"
-format = '[ $symbol ]($style)'
+format = "[ $symbol ]($style)"
 
 [python]
-symbol = ' '
+symbol = " "
 style  = "fg:#e0af68"
-format = '[ $symbol ]($style)'
+format = "[ $symbol ]($style)"
 
 [nodejs]
 symbol = ""
 style  = "fg:#9ece6a"
-format = '[ $symbol ]($style)'
+format = "[ $symbol ]($style)"
 
 [rust]
 symbol = ""
 style  = "fg:#ff9e64"
-format = '[ $symbol ]($style)'
+format = "[ $symbol ]($style)"
 
 [golang]
 symbol = "go"
 style  = "fg:#7dcfff"
-format = '[ $symbol ](bold $style)'
+format = "[ $symbol ](bold $style)"
 
 [java]
 symbol = ""
 style  = "fg:#f7768e"
-format = '[ $symbol ]($style)'
+format = "[ $symbol ]($style)"
 
 [docker_context]
 symbol = " "
 style  = "fg:#7dcfff"
-format = '[ $symbol $context ]($style)'
+format = "[ $symbol $context ]($style)"

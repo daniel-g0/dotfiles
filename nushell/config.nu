@@ -9,11 +9,11 @@ starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.n
 source /home/user/.config/zoxide/config.nu
 
 # -- Vi mode -------------------------------------------------------------------------
-# Block cursor in normal mode, line cursor in insert. Greek letters as mode indicators.
+# Block cursor in normal mode, line cursor in insert. Logo+mode inline.
 $env.config.edit_mode           = 'vi'
 $env.config.cursor_shape        = { vi_insert: line, vi_normal: block }
-$env.PROMPT_INDICATOR_VI_INSERT = "ι "
-$env.PROMPT_INDICATOR_VI_NORMAL = "η "
+$env.PROMPT_INDICATOR_VI_INSERT = "󱄅 I "
+$env.PROMPT_INDICATOR_VI_NORMAL = "󱄅 N "
 
 # -- Editor & preferences ------------------------------------------------------------
 $env.config.buffer_editor = "nvim"
@@ -103,3 +103,23 @@ use ~/.config/nushell/custom-completions/tar/tar-completions.nu       *
 use ~/.config/nushell/custom-completions/tldr/tldr-completions.nu     *
 use ~/.config/nushell/custom-completions/uv/uv-completions.nu         *
 use ~/.config/nushell/custom-completions/zoxide/zoxide-completions.nu *
+
+# -- Greeting (login shell only) -----------------------------------------------------
+if $nu.is-interactive and not ($env | get -o GREETED | default false) {
+    $env.GREETED = true
+    fastfetch
+    let cols = (term size).columns
+    let title = "✦  Quote of the Day"
+    let sep = $"(ansi purple)("" | fill --character "━" --width $cols)(ansi reset)"
+    let centered_title = $"(ansi blue)($title | fill --alignment center --width $cols)(ansi reset)"
+    let quote_lines = (fortune | lines | each {|l| $"(ansi white_bold)($l | fill --alignment center --width $cols)(ansi reset)" })
+    print ""
+    print $sep
+    print $centered_title
+    print $sep
+    print ""
+    $quote_lines | each {|l| print $l }
+    print ""
+    print $sep
+    print ""
+}

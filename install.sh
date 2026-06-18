@@ -25,6 +25,8 @@ link "$DOTFILES/wayland/hypr"           "$HOME/.config/hypr"
 link "$DOTFILES/kitty"                  "$HOME/.config/kitty"
 link "$DOTFILES/wallpapers"             "$HOME/.config/wallpapers"
 link "$DOTFILES/cursor"                 "$HOME/.config/cursors"
+link "$DOTFILES/wayland/waybar"         "$HOME/.config/waybar"
+link "$DOTFILES/fastfetch"              "$HOME/.config/fastfetch"
 
 # NixOS system config — hardware-configuration.nix excluded (machine-specific, regenerate with nixos-generate-config)
 if command -v nixos-rebuild &>/dev/null; then
