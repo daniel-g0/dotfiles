@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+# doller — dotfile installer
+set -euo pipefail
+
+# ── Tokyo Night palette ────────────────────────────────────────────────────────
+RS='\033[0m'; BD='\033[1m'; DM='\033[2m'
+RED='\033[38;2;247;118;142m'
+YLW='\033[38;2;224;175;104m'
+GRN='\033[38;2;158;206;106m'
+CYN='\033[38;2;125;207;255m'
+BLU='\033[38;2;122;162;247m'
+PRP='\033[38;2;187;154;247m'
+FG='\033[38;2;192;202;245m'
+DIM='\033[38;2;86;95;137m'
+
+DOTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DRY=0; FORCE=0
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n) DRY=1 ;;
+        --force|-y)   FORCE=1 ;;
+        --help|-h)
+            echo "Usage: doller [--dry-run|-n] [--force|-y]"
+            exit 0 ;;
+    esac
+done
+
+# ── Header ─────────────────────────────────────────────────────────────────────
+header() {
+    clear
+    echo
+    echo -e "${PRP}${BD}"
+    echo '    ██████╗  ██████╗ ██╗     ██╗     ███████╗██████╗ '
+    echo '    ██╔══██╗██╔═══██╗██║     ██║     ██╔════╝██╔══██╗'
+    echo '    ██║  ██║██║   ██║██║     ██║     █████╗  ██████╔╝'
+    echo '    ██║  ██║██║   ██║██║     ██║     ██╔══╝  ██╔══██╗'
+    echo '    ██████╔╝╚██████╔╝███████╗███████╗███████╗██║  ██║'
+    echo '    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝'
+    echo -e "${RS}"
+    echo -e "    ${DIM}dotfile installer  ·  ${DOTS}${RS}"
+    echo
+}
+
+# ── OS detection ───────────────────────────────────────────────────────────────
+detect_os() {
+    if command -v nixos-rebuild &>/dev/null; then echo "nixos"
+    elif [[ "$(uname)" == "Darwin" ]];       then echo "macos"
+    elif grep -qi microsoft /proc/version 2>/dev/null; then echo "wsl"
+    else echo "linux"
+    fi
+}
+
+# ── Symlink map: "repo_path|destination" ──────────────────────────────────────
+USER_LINKS=(
+    "nushell|$HOME/.config/nushell"
+    "nvim|$HOME/.config/nvim"
+    "starship/starship.toml|$HOME/.config/starship.toml"
+    "kitty|$HOME/.config/kitty"
+    "wallpapers|$HOME/.config/wallpapers"
+    "cursor|$HOME/.config/cursors"
+    "fastfetch|$HOME/.config/fastfetch"
+    "jiffy|$HOME/.config/jiffy"
+    "wallrizz|$HOME/.config/WallRizz"
+    "wayland/hypr|$HOME/.config/hypr"
+    "wayland/waybar|$HOME/.config/waybar"
+    "wayland/swaync|$HOME/.config/swaync"
+)
+
+NIXOS_LINKS=(
+    "nixos/configuration.nix|/etc/nixos/configuration.nix"
+)
+
+# ── Check a single symlink ─────────────────────────────────────────────────────
+# Outputs: ok | will_link | conflict | no_source
+check() {
+    local src="$DOTS/$1" dst="$2"
+    [[ ! -e "$src" ]]          && echo "no_source" && return
+    if [[ -L "$dst" ]]; then
+        [[ "$(readlink "$dst")" == "$src" ]] && echo "ok" || echo "conflict"
+    elif [[ -e "$dst" ]];      then echo "conflict"
+    else                            echo "will_link"
+    fi
+}
+
+# ── Status table ───────────────────────────────────────────────────────────────
+print_table() {
+    local -n _links=$1
+    local sudo_prefix="${2:-}"
+    printf "    ${DIM}%-32s %-34s %s${RS}\n" "Source" "Destination" "Status"
+    echo -e "    ${DIM}$(printf '─%.0s' {1..72})${RS}"
+    for entry in "${_links[@]}"; do
+        IFS='|' read -r src dst <<< "$entry"
+        local st; st="$(check "$src" "$dst")"
+        local sdst="${dst/$HOME/\~}"
+        [[ -n "$sudo_prefix" ]] && sdst="[sudo] $sdst"
+        case "$st" in
+            ok)        printf "    ${DIM}%-32s %-34s ${GRN}✓ linked${RS}\n"    "$src" "$sdst" ;;
+            will_link) printf "    %-32s %-34s ${CYN}+ will link${RS}\n"      "$src" "$sdst" ;;
+            conflict)  printf "    %-32s %-34s ${YLW}! conflict → .bak${RS}\n" "$src" "$sdst" ;;
+            no_source) printf "    ${DIM}%-32s %-34s ${DIM}? no source${RS}\n" "$src" "$sdst" ;;
+        esac
+    done
+}
+
+# ── Apply one link ─────────────────────────────────────────────────────────────
+apply_one() {
+    local src="$DOTS/$1" dst="$2" use_sudo="${3:-0}"
+    local st; st="$(check "$1" "$2")"
+    [[ "$st" == "no_source" || "$st" == "ok" ]] && return 0
+
+    local parent; parent="$(dirname "$dst")"
+    if [[ "$use_sudo" == "1" ]]; then sudo mkdir -p "$parent"
+    else mkdir -p "$parent"; fi
+
+    if [[ "$st" == "conflict" ]]; then
+        local bak="${dst}.bak.$(date +%s)"
+        if [[ "$use_sudo" == "1" ]]; then sudo mv "$dst" "$bak"
+        else mv "$dst" "$bak"; fi
+        echo -e "    ${YLW}↶${RS} ${DIM}backed up $(basename "$dst") → .bak${RS}"
+    fi
+
+    if [[ "$use_sudo" == "1" ]]; then sudo ln -sfn "$src" "$dst"
+    else ln -sfn "$src" "$dst"; fi
+
+    local sdst="${dst/$HOME/\~}"
+    echo -e "    ${GRN}✓${RS} ${FG}$1${RS} ${DIM}→${RS} ${CYN}$sdst${RS}"
+}
+
+apply_all() {
+    local -n _links=$1
+    local use_sudo="${2:-0}"
+    local ok=0 new=0 failed=0
+    for entry in "${_links[@]}"; do
+        IFS='|' read -r src dst <<< "$entry"
+        local st; st="$(check "$src" "$dst")"
+        if [[ "$st" == "ok" ]]; then (( ok++ )); continue; fi
+        if [[ "$st" == "no_source" ]]; then continue; fi
+        if apply_one "$src" "$dst" "$use_sudo"; then (( new++ ))
+        else
+            echo -e "    ${RED}✗${RS} failed: $dst"
+            (( failed++ ))
+        fi
+    done
+    echo -e "\n    ${GRN}${ok} already linked${RS}  ${CYN}${new} created${RS}  ${RED}${failed} failed${RS}"
+}
+
+# ── Main ───────────────────────────────────────────────────────────────────────
+header
+
+OS="$(detect_os)"
+echo -e "    ${DIM}OS:${RS} ${BLU}${OS}${RS}"
+echo
+
+# Build link set
+ALL_LINKS=("${USER_LINKS[@]}")
+SHOW_NIXOS=0
+[[ "$OS" == "nixos" ]] && SHOW_NIXOS=1
+
+echo -e "    ${BD}${FG}Symlink status${RS}"
+echo
+print_table USER_LINKS
+if [[ "$SHOW_NIXOS" == "1" ]]; then
+    echo
+    echo -e "    ${PRP}NixOS system configs (sudo)${RS}"
+    echo
+    print_table NIXOS_LINKS "sudo"
+fi
+echo
+
+[[ "$DRY" == "1" ]] && echo -e "    ${DIM}Dry run — nothing changed.${RS}\n" && exit 0
+
+# Confirm
+if [[ "$FORCE" != "1" ]]; then
+    echo -ne "    ${BD}Apply?${RS} ${DIM}[Y/n]${RS} "
+    read -r confirm; confirm="${confirm:-y}"
+    [[ "${confirm,,}" != "y" ]] && echo -e "\n    ${DIM}Aborted.${RS}\n" && exit 0
+fi
+
+echo
+echo -e "    ${BD}${FG}Linking…${RS}"
+echo
+apply_all USER_LINKS 0
+if [[ "$SHOW_NIXOS" == "1" ]]; then
+    echo
+    echo -e "    ${PRP}System configs${RS}"
+    echo
+    apply_all NIXOS_LINKS 1
+fi
+
+echo
+echo -e "    ${BD}${GRN}Done!${RS}"
+[[ "$OS" == "nixos" ]] && echo -e "    ${DIM}Run ${RS}${CYN}nixos-re-sw${RS}${DIM} to rebuild.${RS}"
+echo

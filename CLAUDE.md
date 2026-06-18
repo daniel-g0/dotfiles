@@ -20,7 +20,7 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
 | `nixos/hardware-configuration.nix` | `/etc/nixos/hardware-configuration.nix` (sudo) |
 
-Run `bash install.sh` to (re)create all symlinks. Safe to re-run.
+Run `./doller` to (re)create all symlinks. TUI shows status per link, backs up conflicts. `--dry-run` to preview, `--force` to skip prompt. `install.sh` is a shim that calls it.
 
 ---
 

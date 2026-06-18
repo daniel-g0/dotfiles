@@ -31,10 +31,15 @@ Personal NixOS + Hyprland dotfiles. Tokyo Night themed end-to-end. Everything sy
 ```bash
 git clone <repo> ~/dotfiles
 cd ~/dotfiles
-bash install.sh
+./doller
 ```
 
-`install.sh` symlinks everything into `~/.config`. On NixOS it also links both nixos configs (requires sudo).
+`doller` is a TUI installer — shows symlink status for every config, backs up conflicts, then links everything into `~/.config`. On NixOS it also links system configs (requires sudo).
+
+```
+./doller --dry-run   # preview only, no changes
+./doller --force     # skip confirmation prompt
+```
 
 Then rebuild NixOS to install all packages:
 

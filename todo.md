@@ -2,18 +2,18 @@
 
 ## Active
 
-- ~~customize waybar~~ ✓ (mechabar + Tokyo Night — done)
-- customize starship
-- customize nushell
-- customize kitty
-- set wallpaper
+- ~~customize waybar~~ ✓
+- ~~customize starship~~ ✓
+- ~~customize nushell~~ ✓
+- ~~customize kitty~~ ✓ (tab bar, tokyo night, opacity, blur)
+- ~~set wallpaper~~ ✓ (awww + wallrizz)
+- ~~set custom cursor~~ ✓ (nix-logo, size 20)
+- ~~replace hyprlauncher with rofi or keep~~ ✓ (jiffy)
+- ~~create cheatsheet of all keybinds/aliases/features~~ ✓ (README + CLAUDE.md)
+- ~~add hello/motd on shell start~~ ✓ (fastfetch + fortune via NU_BANNER)
 - improve nvim config (add claude integration)
-- find clean way to update configs (beyond symlinks — consider chezmoi or home-manager)
+- ~~find clean way to update configs~~ ✓ (keeping symlinks; doller TUI installer replaces install.sh)
 - fix screen issues
-- set custom cursor
-- replace hyprlauncher with rofi or keep — decide
-- create cheatsheet (tool-generated) of all keybinds, aliases, features across full stack
-- add hello/motd on shell start
 - set up claude-code properly (patch security settings — MCP, permissions, hooks)
 
 ## Future (when Windows removed / no longer dual boot)
