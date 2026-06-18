@@ -1,12 +1,33 @@
 # configuration.nix — NixOS system configuration.
 # Edit here, then apply: nixos-re-sw (alias for: sudo nixos-rebuild switch)
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+let
+  jiffy = pkgs.stdenv.mkDerivation {
+    pname = "jiffy";
+    version = "1.6.3";
+    src = pkgs.fetchurl {
+      url = "https://github.com/5hubham5ingh/jiffy/releases/download/v1.6.3/jiffy-linux-86_64.tar.gz";
+      hash = "sha256-6JJyVe+wjLNzPf5WINv5Zt4GuOrUsVUPhWYtBfdVYOA=";
+    };
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    buildInputs = [ pkgs.stdenv.cc.cc.lib ];
+    unpackPhase = "tar -xzf $src";
+    installPhase = ''
+      mkdir -p $out/bin
+      install -m755 jiffy $out/bin/jiffy
+    '';
+  };
+in
 
 {
   imports = [
     ./hardware-configuration.nix
   ];
+
+  # -- Nix settings --------------------------------------------------------------
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # -- Boot ----------------------------------------------------------------------
   boot.loader.systemd-boot.enable             = true;
@@ -41,7 +62,7 @@
   services.xserver.enable = true;
   programs.hyprland = {
     enable   = true;
-    withUWSM = true;
+    withUWSM = false;
   };
 
   security.polkit.enable = true;
@@ -73,12 +94,11 @@
   users.users."user" = {
     isNormalUser = true;
     description  = "user";
-    extraGroups  = [ "networkmanager" "wheel" ];
+    extraGroups  = [ "networkmanager" "wheel" "video" ];
     packages     = with pkgs; [
       # Wayland / desktop
       swaynotificationcenter
       waybar
-      hyprlauncher
       hyprlock
       hypridle
       awww
@@ -89,6 +109,9 @@
       fastfetch
       fortune
       lolcat
+      fzf
+      jiffy
+      brightnessctl
 
       # Terminal & shell tools
       kitty
