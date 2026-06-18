@@ -78,24 +78,24 @@ box_top() {
         local left_dashes=$(( (BOX_W - ${#t}) / 2 ))
         local right_dashes=$(( BOX_W - left_dashes - ${#t} ))
         local pad=$(( (COLS - BOX_W - 2) / 2 ))
-        printf "${DIM}%${pad}s╭" ""
+        printf "${DIM}%${pad}s┌" ""
         printf '%*s' "$left_dashes" '' | tr ' ' '─'
         printf "${RS}${BD}${FG}%s${RS}${DIM}" "$t"
         printf '%*s' "$right_dashes" '' | tr ' ' '─'
-        printf "╮${RS}\n"
+        printf "┐${RS}\n"
     else
         local pad=$(( (COLS - BOX_W - 2) / 2 ))
-        printf "${DIM}%${pad}s╭" ""
+        printf "${DIM}%${pad}s┌" ""
         printf '%*s' "$BOX_W" '' | tr ' ' '─'
-        printf "╮${RS}\n"
+        printf "┐${RS}\n"
     fi
 }
 
 box_bottom() {
     local pad=$(( (COLS - BOX_W - 2) / 2 ))
-    printf "${DIM}%${pad}s╰" ""
+    printf "${DIM}%${pad}s└" ""
     printf '%*s' "$BOX_W" '' | tr ' ' '─'
-    printf "╯${RS}\n"
+    printf "┘${RS}\n"
 }
 
 box_sep() {
