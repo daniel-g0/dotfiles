@@ -19,6 +19,22 @@ let
       install -m755 jiffy $out/bin/jiffy
     '';
   };
+
+  wallrizz = pkgs.stdenv.mkDerivation {
+    pname = "wallrizz";
+    version = "1.4.0";
+    src = pkgs.fetchurl {
+      url = "https://github.com/5hubham5ingh/WallRizz/releases/download/v1.4.0/WallRizz-linux-86_64.tar.gz";
+      hash = "sha256-qBwd6yN8m1YKCVCma81UZFxQ2//ymk/ZRFNHigAnKBk=";
+    };
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    buildInputs = [ pkgs.stdenv.cc.cc.lib ];
+    unpackPhase = "tar -xzf $src";
+    installPhase = ''
+      mkdir -p $out/bin
+      install -m755 WallRizz $out/bin/WallRizz
+    '';
+  };
 in
 
 {
@@ -110,7 +126,9 @@ in
       fortune
       lolcat
       fzf
+      timg
       jiffy
+      wallrizz
       brightnessctl
 
       # Terminal & shell tools

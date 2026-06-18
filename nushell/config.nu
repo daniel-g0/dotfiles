@@ -6,7 +6,7 @@ mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
 
 # -- Zoxide (smart directory jumping) ------------------------------------------------
-source ($nu.home-path | path join ".config/zoxide/config.nu")
+source ~/.config/zoxide/config.nu
 
 # -- Vi mode -------------------------------------------------------------------------
 # Block cursor in normal mode, line cursor in insert. Logo+mode inline.
@@ -16,10 +16,13 @@ $env.PROMPT_INDICATOR_VI_INSERT = "󱄅 I "
 $env.PROMPT_INDICATOR_VI_NORMAL = "󱄅 N "
 
 # -- Editor & preferences ------------------------------------------------------------
-$env.config.buffer_editor = "nvim"
-$env.EDITOR               = "nvim"
-$env.VISUAL               = "nvim"
-$env.config.show_banner   = false
+$env.config.buffer_editor        = "nvim"
+$env.EDITOR                      = "nvim"
+$env.VISUAL                      = "nvim"
+$env.WALLPAPER_DIR               = ($env.HOME | path join ".config/wallpapers")
+$env.config.show_banner          = false
+$env.config.error_style        = "fancy"
+$env.config.use_kitty_protocol = true
 
 # -- fzf -------------------------------------------------------------------------
 # Tokyo Night colors + useful keybinds:
@@ -104,9 +107,46 @@ use ~/.config/nushell/custom-completions/tldr/tldr-completions.nu     *
 use ~/.config/nushell/custom-completions/uv/uv-completions.nu         *
 use ~/.config/nushell/custom-completions/zoxide/zoxide-completions.nu *
 
+# -- Terminal title (kitty tab bar) --------------------------------------------------
+# Updates title on every prompt: "~/path 󰊢 branch [+3 ~1] | 12f 4d"
+$env.config.hooks.pre_prompt = ($env.config.hooks.pre_prompt? | default [] | append {||
+    let dir = ($env.PWD | str replace $env.HOME "~")
+
+    let git = (try {
+        let branch = (^git branch --show-current err> /dev/null | str trim)
+        if ($branch | is-empty) { "" } else {
+            let status    = (^git status --porcelain err> /dev/null | lines)
+            let staged    = ($status | where {|l| ($l | str substring 0..1) != " " and ($l | str substring 0..1) != "?" } | length)
+            let modified  = ($status | where {|l| ($l | str substring 1..2) == "M" } | length)
+            let untracked = ($status | where {|l| ($l | str substring 0..2) == "??" } | length)
+            let dirty     = (
+                [
+                    (if $staged    > 0 { $"+($staged)"    } else { "" })
+                    (if $modified  > 0 { $"~($modified)"  } else { "" })
+                    (if $untracked > 0 { $"?($untracked)" } else { "" })
+                ] | where {|s| not ($s | is-empty) } | str join " "
+            )
+            let dirty_part = if ($dirty | is-empty) { "" } else { $" [($dirty)]" }
+            $" 󰊢 ($branch)($dirty_part)"
+        }
+    } catch { "" })
+
+    let all   = (try { ls -a | length } catch { 0 })
+    let dirs  = (try { ls -a | where type == "dir" | length } catch { 0 })
+    let counts = $" | ($all - $dirs)f ($dirs)d"
+
+    print -n $"\e]0;($dir)($git)($counts)\a"
+})
+
+# -- Clear on cd (scrollback preserved) ---------------------------------------------
+$env.config.hooks.env_change.PWD = (
+    $env.config.hooks.env_change.PWD? | default [] | append {|before, after|
+        if $after != $env.HOME { clear }
+    }
+)
+
 # -- Greeting (login shell only) -----------------------------------------------------
-if $nu.is-interactive and not ($env | get -o GREETED | default false) {
-    $env.GREETED = true
+if ("NU_BANNER" in $env) {
     fastfetch
     let cols = (term size).columns
     let title = "✦  Quote of the Day"

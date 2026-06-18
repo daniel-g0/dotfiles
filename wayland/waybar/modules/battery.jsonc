@@ -1,7 +1,7 @@
 {
 	"battery": {
-		// "bat":
-		// "adapter":
+		"bat": "BAT0",
+		"adapter": "AC",
 		// "design-capacity":
 		// "full-at":
 		// "interval":

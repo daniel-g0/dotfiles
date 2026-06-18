@@ -1,7 +1,7 @@
 * {
 	font-family: "JetBrainsMono Nerd Font";
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 17px;
 }
 
 #window label,
@@ -13,16 +13,16 @@ tooltip label {
 #workspaces button.active label,
 #workspaces button.focused label,
 #custom-distro {
-	font-size: 15px;
+	font-size: 19px;
 }
 
 #custom-power {
-	font-size: 14px;
+	font-size: 17px;
 }
 
 #custom-left_div,
 #custom-left_inv,
 #custom-right_div,
 #custom-right_inv {
-	font-size: 17px;
+	font-size: 21px;
 }

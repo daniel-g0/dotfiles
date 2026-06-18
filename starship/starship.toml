@@ -1,15 +1,20 @@
 # starship.toml — Tokyo Night, single line, vi mode via nushell indicator
 
 format = """
-$directory\
-$git_branch\
-$git_status\
 $c$python$nodejs$rust$golang$java$docker_context\
-$cmd_duration\
 $character\
 """
 
+right_format = """$username"""
+
 add_newline = false
+
+# -- Username (right prompt) -----------------------------------------------------
+[username]
+style_user  = "fg:#bb9af7"
+style_root  = "fg:#f7768e"
+format      = "[$user]($style)"
+show_always = true
 
 # -- Directory -------------------------------------------------------------------
 [directory]
@@ -46,14 +51,8 @@ format     = "[$all_status$ahead_behind ]($style)"
 # -- Prompt character (success/error indicator, no symbol — mode handled by nushell) --
 [character]
 success_symbol = ""
-error_symbol   = "[✗](fg:#f7768e)"
+error_symbol   = ""
 format         = "$symbol"
-
-# -- Duration (only shows when cmd takes >2s) ------------------------------------
-[cmd_duration]
-min_time = 2000
-style    = "fg:#e0af68"
-format   = "[ $duration ]($style)"
 
 # -- Language symbols (only appear when in a relevant project dir) ----------------
 [c]

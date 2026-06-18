@@ -23,7 +23,8 @@ hl.monitor({
 -- Set programs that you use
 local terminal    = "kitty"
 local fileManager = "kitty -e yazi"
-local menu        = "hyprlauncher"
+local menu        = "$HOME/.config/jiffy/launch.sh"
+local wallpaper   = "$HOME/.config/WallRizz/launch.sh"
 
 
 -------------------
@@ -38,6 +39,7 @@ local menu        = "hyprlauncher"
 hl.on("hyprland.start", function ()
   hl.exec_cmd(terminal)
   hl.exec_cmd("waybar")
+  hl.exec_cmd("swaync")
   hl.exec_cmd("hypridle")
   hl.exec_cmd("awww-daemon")
   hl.exec_cmd("awww img $HOME/.config/wallpapers/nix-tokyonight.png --transition-type fade --transition-duration 2")
@@ -92,10 +94,11 @@ hl.config({
         gaps_in  = 5,
         gaps_out = 20,
 
-        border_size = 2,
+        border_size = 3,
 
         col = {
-            active_border   = { colors = {"rgba(7aa2f7ee)", "rgba(bb9af7ee)"}, angle = 45 },
+            -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
+            active_border   = { colors = {"rgba(7aa2f7ee)", "rgba(bb9af7ee)", "rgba(2ac3deee)", "rgba(7dcfffee)", "rgba(7aa2f7ee)"}, angle = 0 },
             inactive_border = "rgba(414868aa)",
         },
 
@@ -117,10 +120,11 @@ hl.config({
         inactive_opacity = 1,
 
         shadow = {
-            enabled      = true,
-            range        = 20,
-            render_power = 3,
-            color        = "rgba(1a1b26ee)",
+            enabled        = true,
+            range          = 6,
+            render_power   = 2,
+            color          = "rgba(7aa2f738)",
+            color_inactive = "rgba(1a1b2620)",
         },
 
         blur = {
@@ -150,6 +154,7 @@ hl.curve("easy",           { type = "spring", mass = 1, stiffness = 71.2633, dam
 
 hl.animation({ leaf = "global",        enabled = true,  speed = 10,   bezier = "default" })
 hl.animation({ leaf = "border",        enabled = true,  speed = 5.39, bezier = "easeOutQuint" })
+hl.animation({ leaf = "borderangle",   enabled = true,  speed = 40,   bezier = "linear",       style = "loop" })
 hl.animation({ leaf = "windows",       enabled = true,  speed = 4.79, spring = "easy" })
 hl.animation({ leaf = "windowsIn",     enabled = true,  speed = 4.1,  spring = "easy",         style = "popin 87%" })
 hl.animation({ leaf = "windowsOut",    enabled = true,  speed = 1.49, bezier = "linear",       style = "popin 87%" })
@@ -267,6 +272,8 @@ hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload"))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(wallpaper))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t"))
 hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))    -- dwindle only
 
 -- Move focus with mainMod + arrow keys
@@ -362,4 +369,22 @@ hl.window_rule({
 
     move  = "20 monitor_h-120",
     float = true,
+})
+
+-- Jiffy launcher windowrule
+hl.window_rule({
+    name   = "float-jiffy",
+    match  = { class = "jiffy" },
+    float  = true,
+    size   = "700 500",
+    center = true,
+})
+
+-- WallRizz wallpaper picker windowrule
+hl.window_rule({
+    name   = "float-wallrizz",
+    match  = { class = "wallrizz" },
+    float  = true,
+    size   = "900 600",
+    center = true,
 })

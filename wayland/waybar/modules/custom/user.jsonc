@@ -1,43 +1,18 @@
 {
 	"custom/user": {
-		// "exec":
-		// "exec-if":
-		// "exec-on-event":
-		// "hide-empty-text":
-		// "return-type":
-		// "interval":
-		// "restart-interval":
-		// "signal":
 		"format": "󰍜",
-		// "format-icons":
-		// "rotate":
 		"min-length": 4,
 		"max-length": 4,
-		// "align":
-		// "justify":
-		// "on-click":
-		// "on-click-middle":
-		// "on-click-right":
-		// "on-update":
-		// "on-scroll-up":
-		// "on-scroll-down":
-		// "smooth-scrolling-threshold":
-		// "tooltip":
-		"tooltip-format": "Power Menu",
+		"tooltip-format": "NixOS",
 		"menu": "on-click",
-		"menu-file": "~/.config/waybar/menus/power.xml",
+		"menu-file": "~/.config/waybar/menus/nix.xml",
 		"menu-actions": {
-			"lock":      "loginctl lock-session",
-			"suspend":   "systemctl suspend",
-			"hibernate": "systemctl hibernate",
-			"reboot":    "systemctl reboot",
-			"shutdown":  "systemctl poweroff",
-			"logout":    "loginctl terminate-user $USER"
+			"edit":    "kitty -e nvim $(readlink -f /etc/nixos/configuration.nix)",
+			"rebuild": "kitty -e bash -c 'sudo nixos-rebuild switch --flake $(dirname $(dirname $(readlink -f /etc/nixos/configuration.nix)))#nixos 2>&1 | tee /tmp/nix-rebuild.log; echo; echo Press Enter to close...; read'",
+			"test":    "kitty -e bash -c 'sudo nixos-rebuild test --flake $(dirname $(dirname $(readlink -f /etc/nixos/configuration.nix)))#nixos 2>&1 | tee /tmp/nix-test.log; echo; echo Press Enter to close...; read'",
+			"update":  "kitty -e bash -c 'cd /etc/nixos && sudo nix flake update 2>&1 | tee /tmp/nix-update.log; echo; echo Press Enter to close...; read'",
+			"gc":      "kitty -e bash -c 'sudo nix-collect-garbage --delete-older-than 7d 2>&1 | tee /tmp/nix-gc.log; echo; echo Press Enter to close...; read'",
+			"gens":    "kitty -e bash -c 'sudo nix-env --list-generations --profile /nix/var/nix/profiles/system 2>&1 | tee /tmp/nix-gens.log; echo; echo Press Enter to close...; read'"
 		}
-		// "escape":
-		// "menu":
-		// "menu-file":
-		// "menu-actions":
-		// "expand":
 	}
 }

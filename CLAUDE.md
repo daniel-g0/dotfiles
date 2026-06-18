@@ -13,7 +13,9 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `starship/starship.toml` | `~/.config/starship.toml` |
 | `kitty/` | `~/.config/kitty` |
 | `wallpapers/` | `~/.config/wallpapers` |
+| `jiffy/` | `~/.config/jiffy` |
 | `wayland/hypr/` | `~/.config/hypr` |
+| `wayland/swaync/` | `~/.config/swaync` |
 | `nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
 | `nixos/hardware-configuration.nix` | `/etc/nixos/hardware-configuration.nix` (sudo) |
 

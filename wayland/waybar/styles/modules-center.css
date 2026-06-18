@@ -45,7 +45,7 @@
 	color: @accent;
 }
 #custom-distro {
-	padding: 0 10px 0 5px;
+	padding: 0 12px 0 7px;
 	background-color: @accent;
 	color: @main-bg;
 }
@@ -66,7 +66,7 @@
 ----------*/
 
 #clock.time {
-	padding-right: 6px;
+	padding-right: 8px;
 	background-color: @time;
 }
 #custom-right_div.3 {
@@ -79,7 +79,7 @@
 ----------*/
 
 #clock.date {
-	padding-left: 6px;
+	padding-left: 8px;
 	background-color: @date;
 }
 #custom-right_div.4 {
@@ -93,15 +93,24 @@
 
 #network {
 	background-color: @tray;
-	padding: 0 6px 0 4px;
+	padding: 0 8px 0 4px;
 }
 #bluetooth {
 	background-color: @tray;
-	padding: 0 5px;
+	padding: 0 7px;
 }
+#custom-notifications {
+	background-color: @tray;
+	padding: 0 8px;
+}
+#custom-notifications.dnd-none,
+#custom-notifications.dnd-notification {
+	color: @hover-fg;
+}
+
 #custom-update {
 	background-color: @tray;
-	padding: 0 8px 0 2px;
+	padding: 0 10px 0 2px;
 }
 #custom-right_div.5 {
 	color: @tray;

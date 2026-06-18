@@ -3,7 +3,7 @@
 ----------------*/
 
 #mpris {
-	padding: 0 12px;
+	padding: 0 14px;
 }
 
 /*------------
@@ -50,8 +50,8 @@
 ----------------*/
 
 #custom-power {
-	border-radius: 16px;
-	padding: 0 19px 0 16px;
+	border-radius: 20px;
+	padding: 0 23px 0 20px;
 	color: @accent;
 }
 #custom-power:hover {
