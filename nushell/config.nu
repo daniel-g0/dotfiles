@@ -6,7 +6,7 @@ mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
 
 # -- Zoxide (smart directory jumping) ------------------------------------------------
-source /home/user/.config/zoxide/config.nu
+source ($nu.home-path | path join ".config/zoxide/config.nu")
 
 # -- Vi mode -------------------------------------------------------------------------
 # Block cursor in normal mode, line cursor in insert. Logo+mode inline.
@@ -77,7 +77,7 @@ $env.config.history.sync_on_enter = true
 $env.config.history.isolation     = false
 
 # -- Theme ---------------------------------------------------------------------------
-source ~/.config/nushell/themes/black-metal-dark-funeral.nu
+source ~/.config/nushell/themes/tokyo-night.nu
 
 # -- Aliases -------------------------------------------------------------------------
 use ~/.config/nushell/aliases/bat/bat-aliases.nu         *

@@ -32,7 +32,7 @@
 			"hibernate": "systemctl hibernate",
 			"reboot":    "systemctl reboot",
 			"shutdown":  "systemctl poweroff",
-			"logout":    "loginctl terminate-session $XDG_SESSION_ID"
+			"logout":    "loginctl terminate-user $USER"
 		}
 		// "escape":
 		// "menu":

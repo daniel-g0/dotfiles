@@ -6,7 +6,11 @@
 #
 # Requires: nix, jq, systemd (for notifications)
 
-FLAKE_DIR="/home/user/Projects/personal/dotfiles"
+FLAKE_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles"
+# fallback: resolve from script location
+if [[ ! -f "$FLAKE_DIR/flake.lock" ]]; then
+	FLAKE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+fi
 LOCK_FILE="$FLAKE_DIR/flake.lock"
 
 FG_BLUE="\e[34m"

@@ -40,7 +40,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("waybar")
   hl.exec_cmd("hypridle")
   hl.exec_cmd("awww-daemon")
-  hl.exec_cmd("awww img /home/user/.config/wallpapers/nix-tokyonight.png --transition-type fade --transition-duration 2")
+  hl.exec_cmd("awww img $HOME/.config/wallpapers/nix-tokyonight.png --transition-type fade --transition-duration 2")
 end)
 
 
@@ -53,7 +53,7 @@ end)
 hl.env("XCURSOR_THEME",   "nix-logo")
 hl.env("XCURSOR_SIZE",    "20")
 hl.env("HYPRCURSOR_SIZE", "20")
-hl.env("XCURSOR_PATH",    "/home/user/.config/cursors")
+hl.env("XCURSOR_PATH",    "$HOME/.config/cursors")
 
 hl.config({
     cursor = {
