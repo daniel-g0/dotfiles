@@ -9,9 +9,12 @@
   ];
 
   # -- Boot ----------------------------------------------------------------------
-  boot.loader.systemd-boot.enable      = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages                  = pkgs.linuxPackages_latest;
+  boot.loader.systemd-boot.enable             = true;
+  boot.loader.systemd-boot.configurationLimit = 3;
+  boot.loader.efi.canTouchEfiVariables        = true;
+  boot.kernelPackages                         = pkgs.linuxPackages_latest;
+  boot.kernelParams                           = [ "quiet" ];
+  boot.initrd.verbose                         = false;
 
   # -- Networking ----------------------------------------------------------------
   networking.hostName              = "nixos";
@@ -35,9 +38,7 @@
   };
 
   # -- Display & desktop ---------------------------------------------------------
-  services.xserver.enable              = true;
-  services.displayManager.gdm.enable   = true;
-  services.desktopManager.gnome.enable = true;
+  services.xserver.enable = true;
   programs.hyprland = {
     enable   = true;
     withUWSM = true;

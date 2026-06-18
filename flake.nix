@@ -12,8 +12,8 @@
 
   outputs = { self, nixpkgs, qylock, ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
       modules = [
+        { nixpkgs.hostPlatform = "x86_64-linux"; }
         ./nixos/configuration.nix
         qylock.nixosModules.default
         {
@@ -23,6 +23,7 @@
             sddm.enable = true;
           };
 
+          services.displayManager.sddm.enable         = true;
           services.displayManager.sddm.wayland.enable = true;
         }
       ];
