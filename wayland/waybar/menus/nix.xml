@@ -3,7 +3,7 @@
   <object class="GtkMenu" id="menu">
     <child>
       <object class="GtkMenuItem" id="edit">
-        <property name="label"> Edit Config</property>
+        <property name="label">󰏫 Edit Config</property>
       </object>
     </child>
     <child>
@@ -29,7 +29,7 @@
     </child>
     <child>
       <object class="GtkMenuItem" id="gc">
-        <property name="label"> Garbage Collect</property>
+        <property name="label">󰩺 Garbage Collect</property>
       </object>
     </child>
     <child>
