@@ -69,6 +69,7 @@ ALL_LINK_DEFS=(
     "kitty|$HOME/.config/kitty|all"
     "wallpapers|$HOME/.config/wallpapers|all"
     "fastfetch|$HOME/.config/fastfetch|all"
+    "zoxide/config.nu|$HOME/.config/zoxide/config.nu|all"
     "cursor|$HOME/.config/cursors|linux"
     "jiffy|$HOME/.config/jiffy|linux"
     "rofi|$HOME/.config/rofi|linux"
