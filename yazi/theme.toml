@@ -20,7 +20,6 @@ marker_selected = { fg = "#7aa2f7", bg = "#7aa2f7" }
 # Tab
 tab_active   = { fg = "#1a1b26", bg = "#7aa2f7" }
 tab_inactive = { fg = "#a9b1d6", bg = "#24283b" }
-tab_width    = 1
 
 # Count
 count_copied   = { fg = "#1a1b26", bg = "#9ece6a" }
