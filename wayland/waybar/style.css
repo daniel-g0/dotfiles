@@ -81,17 +81,7 @@
 	margin: 0 2px;
 }
 
-/* ── Tokyo Night icon-only module colors ─────────────────────────────────── */
-/* mixed icon+text modules use <span> markup in format strings instead */
-
-#bluetooth            { color: @blue; }
-#network              { color: @cyan; }
-#pulseaudio.output    { color: @green; }
-#pulseaudio.input     { color: @purple; }
-#custom-notifications { color: @yellow; }
-#custom-update        { color: @orange; }
-#backlight            { color: @yellow; }
-#battery              { color: @green; }
+/* right-side icons use default fg — no extra color */
 
 /* ── Module paddings ─────────────────────────────────────────────────────── */
 
