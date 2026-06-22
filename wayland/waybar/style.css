@@ -83,13 +83,13 @@
 
 /* ── Semantic icon colors ────────────────────────────────────────────────── */
 
-#bluetooth            { color: #0082fc; }
-#network              { color: #00b894; }
-#pulseaudio.output    { color: #00cec9; }
-#pulseaudio.input     { color: #6c5ce7; }
-#custom-notifications { color: #fdcb6e; }
-#backlight            { color: #f9ca24; }
-#battery              { color: #00b894; }
+#bluetooth            { color: #7aa2f7; }
+#network              { color: #7dcfff; }
+#pulseaudio.output    { color: #9ece6a; }
+#pulseaudio.input     { color: #bb9af7; }
+#custom-notifications { color: #e0af68; }
+#backlight            { color: #ff9e64; }
+#battery              { color: #9ece6a; }
 
 /* ── Module paddings ─────────────────────────────────────────────────────── */
 
