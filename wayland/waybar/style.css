@@ -81,7 +81,15 @@
 	margin: 0 2px;
 }
 
-/* right-side icons use default fg — no extra color */
+/* ── Semantic icon colors ────────────────────────────────────────────────── */
+
+#bluetooth            { color: #0082fc; }
+#network              { color: #00b894; }
+#pulseaudio.output    { color: #00cec9; }
+#pulseaudio.input     { color: #6c5ce7; }
+#custom-notifications { color: #fdcb6e; }
+#backlight            { color: #f9ca24; }
+#battery              { color: #00b894; }
 
 /* ── Module paddings ─────────────────────────────────────────────────────── */
 

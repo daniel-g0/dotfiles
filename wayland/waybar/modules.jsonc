@@ -103,8 +103,8 @@
 	// ─── System modules ───────────────────────────────────────────────────────────
 
 	"mpris": {
-		"format": "<span color='#7dcfff'>{player_icon}</span> {title} - {artist}",
-		"format-paused": "<span color='#414868'>{status_icon}</span> {title} - {artist}",
+		"format": "<span color='#fd79a8'>{player_icon}</span> {title} - {artist}",
+		"format-paused": "<span color='#636e72'>{status_icon}</span> {title} - {artist}",
 		"tooltip-format": "{album}",
 		"player-icons": { "default": "󰐊" },
 		"status-icons": { "paused": "󰏤" },
@@ -114,32 +114,32 @@
 	"temperature": {
 		"critical-threshold": 90,
 		"interval": 10,
-		"format": "<span color='#ff9e64'>{icon}</span> {temperatureC}°",
-		"format-critical": "<span color='#f7768e'>󰀦</span> {temperatureC}°",
+		"format": "<span color='#ff4757'>{icon}</span> {temperatureC}°",
+		"format-critical": "<span color='#ff0000'>󰀦</span> {temperatureC}°",
 		"format-icons": ["󱃃", "󰔏", "󱃂"],
 		"tooltip-format": "{temperatureF}°F"
 	},
 
 	"memory": {
 		"interval": 10,
-		"format": "<span color='#bb9af7'>󰘚</span> {percentage}%",
-		"format-warning": "<span color='#e0af68'>󰀧</span> {percentage}%",
-		"format-critical": "<span color='#f7768e'>󰀧</span> {percentage}%",
+		"format": "<span color='#a29bfe'>󰘚</span> {percentage}%",
+		"format-warning": "<span color='#fdcb6e'>󰀧</span> {percentage}%",
+		"format-critical": "<span color='#ff4757'>󰀧</span> {percentage}%",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip-format": "{used:0.1f}/{total:0.1f} GiB"
 	},
 
 	"cpu": {
 		"interval": 10,
-		"format": "<span color='#7aa2f7'>󰍛</span> {usage}%",
-		"format-warning": "<span color='#e0af68'>󰀨</span> {usage}%",
-		"format-critical": "<span color='#f7768e'>󰀨</span> {usage}%",
+		"format": "<span color='#74b9ff'>󰍛</span> {usage}%",
+		"format-warning": "<span color='#fdcb6e'>󰀨</span> {usage}%",
+		"format-critical": "<span color='#ff4757'>󰀨</span> {usage}%",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip": false
 	},
 
 	"clock": {
-		"format": "{:%-d/%-m/%y %H:%M}",
+		"format": "{:%d/%m/%y %H:%M}",
 		"format-alt": "{:%A, %d %B %Y}",
 		"tooltip-format": "<tt><small>{calendar}</small></tt>",
 		"calendar": {
