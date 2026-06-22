@@ -319,6 +319,12 @@ in
   '';
 
   # -- Fonts ---------------------------------------------------------------------
+  # GTK3 font — affects Brave UI, file pickers, GTK apps
+  environment.etc."gtk-3.0/settings.ini".text = ''
+    [Settings]
+    gtk-font-name=JetBrainsMono Nerd Font 13
+  '';
+
   fonts = {
     enableDefaultPackages = true;
     packages              = with pkgs; [
