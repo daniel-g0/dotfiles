@@ -108,9 +108,9 @@ rules = [
   # Code / text
   { mime = "text/*", fg = "#9ece6a" },
   # Symlinks
-  { name = "*/", fg = "#7aa2f7" },
+  { url = "*/", fg = "#7aa2f7" },
   # Executables
-  { name = "*", is = "exec", fg = "#9ece6a" },
+  { url = "*", is = "exec", fg = "#9ece6a" },
   # Fallback
-  { name = "*", fg = "#c0caf5" },
+  { url = "*", fg = "#c0caf5" },
 ]
