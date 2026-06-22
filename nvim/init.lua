@@ -28,8 +28,11 @@ require("lazy").setup({
 }, lazy_config)
 
 -- Apply NvChad base46 theme cache and register autocmds/mappings
-dofile(vim.g.base46_cache .. "defaults")
-dofile(vim.g.base46_cache .. "statusline")
+-- Guard against first-run where cache doesn't exist yet (plugins not installed)
+if vim.loop.fs_stat(vim.g.base46_cache .. "defaults") then
+  dofile(vim.g.base46_cache .. "defaults")
+  dofile(vim.g.base46_cache .. "statusline")
+end
 require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
@@ -80,48 +83,51 @@ vim.api.nvim_create_user_command("WallRun", crun, {})
 vim.api.nvim_set_keymap("n", "<F10>", ":WallRun<CR>", { noremap = true, silent = true })
 
 -- Cyberdream colorscheme — transparent bg, custom comment/property highlights
-require("cyberdream").setup({
-  transparent          = true,
-  italic_comments      = true,
-  hide_fillchars       = ' ',
-  borderless_telescope = true,
-  terminal_colors      = true,
-  theme = {
-    variant    = "default",
-    highlights = {
-      Comment = { fg = "#696969", bg = "NONE", italic = true },
+local ok_cd, cyberdream = pcall(require, "cyberdream")
+if ok_cd then
+  cyberdream.setup({
+    transparent          = true,
+    italic_comments      = true,
+    hide_fillchars       = ' ',
+    borderless_telescope = true,
+    terminal_colors      = true,
+    theme = {
+      variant    = "default",
+      highlights = {
+        Comment = { fg = "#696969", bg = "NONE", italic = true },
+      },
+      overrides = function(colors)
+        return {
+          Comment       = { fg = colors.green, bg = "NONE", italic = true },
+          ["@property"] = { fg = colors.magenta, bold = true },
+        }
+      end,
+      colors = {
+        bg      = "#000000",
+        green   = "#00ff00",
+        magenta = "#ff00ff",
+      },
     },
-    overrides = function(colors)
-      return {
-        Comment       = { fg = colors.green, bg = "NONE", italic = true },
-        ["@property"] = { fg = colors.magenta, bold = true },
-      }
-    end,
-    colors = {
-      bg      = "#000000",
-      green   = "#00ff00",
-      magenta = "#ff00ff",
+    extensions = {
+      telescope = true,
+      notify    = false,
+      mini      = true,
     },
-  },
-  extensions = {
-    telescope = true,
-    notify    = false,
-    mini      = true,
-  },
-})
-vim.cmd("colorscheme cyberdream")
+  })
+  vim.cmd("colorscheme cyberdream")
+end
 
 -- Neogit — git interface (setup must run after lazy loads the plugin)
-local neogit = require('neogit')
-neogit.setup {}
+local ok_ng, neogit = pcall(require, "neogit")
+if ok_ng then neogit.setup {} end
 
 -- Zen mode — focused editing at 75% editor width
-require("zen-mode").setup({
-  window = { width = .75 }
-})
+local ok_zm, zenmode = pcall(require, "zen-mode")
+if ok_zm then zenmode.setup({ window = { width = .75 } }) end
 
 -- Toggleterm — persistent terminal windows
-require("toggleterm").setup{}
+local ok_tt, toggleterm = pcall(require, "toggleterm")
+if ok_tt then toggleterm.setup {} end
 
 -- LeetCode (disabled — uncomment to enable)
 -- require("leetcode").setup{

@@ -13,8 +13,11 @@
 - ~~add hello/motd on shell start~~ ✓ (fastfetch + fortune via NU_BANNER)
 - improve nvim config (add claude integration)
 - ~~find clean way to update configs~~ ✓ (keeping symlinks; doller TUI installer replaces install.sh)
-- fix screen issues
+- set multiple screen setups (work 2 screens + turned off eDP, and home single screen)
 - set up claude-code properly (patch security settings — MCP, permissions, hooks)
+- in a ethernet setting, the wifi context menu still drops
+- the status bar in kitty backround still messed up, after text is black
+
 
 ## Future (when Windows removed / no longer dual boot)
 
