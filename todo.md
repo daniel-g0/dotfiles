@@ -17,6 +17,11 @@
 - set up claude-code properly (patch security settings — MCP, permissions, hooks)
 - in a ethernet setting, the wifi context menu still drops
 - the status bar in kitty backround still messed up, after text is black
+- check if new cursor pack works
+- super + c opens a custom tool fzf that browses each stack tech keybindings
+- after idle, go to qylock not other boring one
+- Why is my date 26th? being 22
+- Add desktop num in waybar, number
 
 
 ## Future (when Windows removed / no longer dual boot)
