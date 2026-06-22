@@ -2,7 +2,7 @@ from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData, as_rgb
 
 # Tokyo Night palette
-_BG     = as_rgb(0x1a1b26)
+_BG     = as_rgb(0x24283b)
 _BLUE   = as_rgb(0x7aa2f7)
 _PURPLE = as_rgb(0xbb9af7)
 _CYAN   = as_rgb(0x7dcfff)

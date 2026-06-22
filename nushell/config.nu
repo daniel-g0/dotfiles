@@ -108,7 +108,7 @@ use ~/.config/nushell/custom-completions/uv/uv-completions.nu         *
 use ~/.config/nushell/custom-completions/zoxide/zoxide-completions.nu *
 
 # -- Terminal title (kitty tab bar) --------------------------------------------------
-# Updates title on every prompt: "~/path 󰊢 branch [+3 ~1] | 12f 4d"
+# Updates title on every prompt: "~/path 󰊢 branch [+3 ~1] | 12f 4d 3h"
 $env.config.hooks.pre_prompt = ($env.config.hooks.pre_prompt? | default [] | append {||
     let dir = ($env.PWD | str replace $env.HOME "~")
 
@@ -131,9 +131,10 @@ $env.config.hooks.pre_prompt = ($env.config.hooks.pre_prompt? | default [] | app
         }
     } catch { "" })
 
-    let all   = (try { ls -a | length } catch { 0 })
-    let dirs  = (try { ls -a | where type == "dir" | length } catch { 0 })
-    let counts = $" | ($all - $dirs)f ($dirs)d"
+    let all    = (try { ls -a | length } catch { 0 })
+    let dirs   = (try { ls -a | where type == "dir" | length } catch { 0 })
+    let hidden = (try { ls -a | where name =~ '^\.' | length } catch { 0 })
+    let counts = $" | ($all - $dirs)f ($dirs)d ($hidden)h"
 
     print -n $"\e]0;($dir)($git)($counts)\a"
 })

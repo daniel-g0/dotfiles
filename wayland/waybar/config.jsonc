@@ -19,6 +19,10 @@
 		"custom/left_div#5",
 		"custom/distro",
 		"custom/right_div#2",
+		"mpris",
+		"custom/left_div#6",
+		"group/pulseaudio",
+		"group/laptop",
 		"custom/right_inv#1",
 		"idle_inhibitor",
 		"clock#time",
@@ -29,11 +33,7 @@
 		"bluetooth",
 		"custom/notifications",
 		"custom/update",
-		"custom/right_div#5",
-		"mpris",
-		"custom/left_div#6",
-		"group/pulseaudio",
-		"group/laptop"
+		"custom/right_div#5"
 	],
 	"modules-right": [
 		"custom/power"
