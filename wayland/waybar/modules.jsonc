@@ -13,11 +13,6 @@
 
 	"group/group-volume": {
 		"orientation": "horizontal",
-		"drawer": {
-			"transition-duration": 500,
-			"transition-left-to-right": true,
-			"reveal-delay": 300
-		},
 		"modules": ["pulseaudio#output", "pulseaudio#input"]
 	},
 
