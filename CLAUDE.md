@@ -14,6 +14,7 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `kitty/` | `~/.config/kitty` |
 | `wallpapers/` | `~/.config/wallpapers` |
 | `zoxide/config.nu` | `~/.config/zoxide/config.nu` |
+| `yazi/` | `~/.config/yazi` |
 | `jiffy/` | `~/.config/jiffy` |
 | `wallrizz/` | `~/.config/wallrizz` |
 | `wayland/hypr/` | `~/.config/hypr` |

@@ -241,6 +241,9 @@ in
       virtiofsd
       virtio-win
 
+      # Disk management
+      gnome-disk-utility
+
       # Apps
       brave
       teams-for-linux
