@@ -26,7 +26,11 @@
 @define-color hover-fg       alpha(@foreground, 0.75);
 @define-color outline        shade(@surface0, 0.6);
 
-/* Module backgrounds */
+/* Pill module background */
+@define-color module-bg      rgba(16, 16, 22, 0.93);
+@define-color inactive       @surface2;
+
+/* Legacy module backgrounds (kept for compatibility) */
 @define-color workspaces     @surface1;
 @define-color temperature    @surface1;
 @define-color memory         @surface1;

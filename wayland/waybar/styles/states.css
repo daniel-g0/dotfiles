@@ -1,30 +1,12 @@
-#custom-user:hover,
-#idle_inhibitor:hover,
-#clock.date:hover,
-#network:hover,
-#bluetooth:hover,
-#custom-update:hover,
-#custom-notifications:hover,
-#mpris:hover,
-#pulseaudio:hover,
-#wireplumber:hover {
-	color: @hover-fg;
-}
-
-#idle_inhibitor.deactivated,
-#mpris.paused,
-#pulseaudio.output.muted,
-#pulseaudio.input.source-muted,
-#wireplumber.muted {
-	color: @hover-fg;
-}
-
+/* Warning */
 #memory.warning,
 #cpu.warning,
-#battery.warning {
+#battery.warning,
+#temperature.warning {
 	color: @warning;
 }
 
+/* Critical */
 #temperature.critical,
 #memory.critical,
 #cpu.critical,
@@ -32,6 +14,20 @@
 	color: @critical;
 }
 
+/* Battery charging */
 #battery.charging {
 	color: @charging;
+}
+
+/* Muted / inactive */
+#mpris.paused,
+#pulseaudio.output.muted,
+#pulseaudio.input.source-muted {
+	color: @inactive;
+}
+
+/* Notifications DND */
+#custom-notifications.dnd-none,
+#custom-notifications.dnd-notification {
+	color: @inactive;
 }
