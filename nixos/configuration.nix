@@ -35,6 +35,72 @@ let
       install -m755 WallRizz $out/bin/WallRizz
     '';
   };
+
+  # Detected at eval time — builds on same machine so this is correct.
+  iommuParam =
+    if lib.hasInfix "AuthenticAMD" (builtins.readFile "/proc/cpuinfo")
+    then "amd_iommu=on"
+    else "intel_iommu=on";
+
+  # GPU passthrough hook — auto-detects discrete GPU at VM start/stop.
+  # Rename your Windows VM to "windows" in virt-manager.
+  gpuHook = pkgs.writeShellScript "qemu-vfio-hook" ''
+    VM_NAME="$1"
+    OPERATION="$2"
+    SUB_OP="$3"
+
+    [[ "$VM_NAME" != "windows" ]] && exit 0
+
+    find_gpu() {
+      lspci -D | grep -iE "VGA compatible|3D controller|Display controller" \
+               | grep -iv "intel" \
+               | head -1 \
+               | awk '{print $1}'
+    }
+
+    gpu_base_from_addr() {
+      echo "$1" | rev | cut -d. -f2- | rev
+    }
+
+    bind_vfio() {
+      local gpu_addr gpu_base dev driver_link orig_driver
+      gpu_addr=$(find_gpu)
+      [[ -z "$gpu_addr" ]] && exit 1
+      gpu_base=$(gpu_base_from_addr "$gpu_addr")
+
+      for dev_path in /sys/bus/pci/devices/$gpu_base.*; do
+        dev=$(basename "$dev_path")
+        driver_link="$dev_path/driver"
+        if [[ -L "$driver_link" ]]; then
+          orig_driver=$(basename "$(readlink "$driver_link")")
+          echo "$orig_driver" > "/tmp/vfio_orig_$dev"
+          echo "$dev" > "/sys/bus/pci/drivers/$orig_driver/unbind"
+        fi
+        echo "vfio-pci" > "$dev_path/driver_override"
+        echo "$dev" > /sys/bus/pci/drivers/vfio-pci/bind
+      done
+    }
+
+    unbind_vfio() {
+      local gpu_addr gpu_base dev orig_driver
+      gpu_addr=$(find_gpu)
+      [[ -z "$gpu_addr" ]] && exit 0
+      gpu_base=$(gpu_base_from_addr "$gpu_addr")
+
+      for dev_path in /sys/bus/pci/devices/$gpu_base.*; do
+        dev=$(basename "$dev_path")
+        echo "" > "$dev_path/driver_override"
+        echo "$dev" > /sys/bus/pci/drivers/vfio-pci/unbind 2>/dev/null || true
+        orig_driver=$(cat "/tmp/vfio_orig_$dev" 2>/dev/null)
+        [[ -n "$orig_driver" ]] && echo "$dev" > "/sys/bus/pci/drivers/$orig_driver/bind" 2>/dev/null || true
+      done
+    }
+
+    case "$OPERATION/$SUB_OP" in
+      prepare/begin) bind_vfio ;;
+      release/end)   unbind_vfio ;;
+    esac
+  '';
 in
 
 {
@@ -50,8 +116,9 @@ in
   boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables        = true;
   boot.kernelPackages                         = pkgs.linuxPackages_latest;
-  boot.kernelParams                           = [ "quiet" ];
+  boot.kernelParams                           = [ "quiet" iommuParam "iommu=pt" ];
   boot.initrd.verbose                         = false;
+  boot.kernelModules                          = [ "vfio_pci" "vfio" "vfio_iommu_type1" ];
 
   # -- Networking ----------------------------------------------------------------
   networking.hostName              = "nixos";
@@ -110,7 +177,7 @@ in
   users.users."user" = {
     isNormalUser = true;
     description  = "user";
-    extraGroups  = [ "networkmanager" "wheel" "video" ];
+    extraGroups  = [ "networkmanager" "wheel" "video" "libvirtd" "kvm" "input" ];
     packages     = with pkgs; [
       # Wayland / desktop
       swaynotificationcenter
@@ -168,6 +235,12 @@ in
       nodejs
       claude-code
 
+      # Virtualisation
+      virt-manager
+      looking-glass-client
+      virtiofsd
+      virtio-win
+
       # Apps
       brave
       teams-for-linux
@@ -184,6 +257,34 @@ in
     veracrypt
     python3
   ];
+
+  # -- Virtualisation ------------------------------------------------------------
+  programs.virt-manager.enable = true;
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu;
+      ovmf = {
+        enable   = true;
+        packages = [ pkgs.OVMFFull ];
+      };
+      swtpm.enable = true;
+    };
+  };
+
+  virtualisation.spiceUSBRedirection.enable = true;
+
+  # Looking Glass shared memory buffer (Windows VM → Linux framebuffer)
+  systemd.tmpfiles.rules = [
+    "f /dev/shm/looking-glass 0660 user kvm -"
+  ];
+
+  # GPU passthrough hook — binds/unbinds discrete GPU for VM named "windows"
+  environment.etc."libvirt/hooks/qemu" = {
+    source = gpuHook;
+    mode   = "0755";
+  };
 
   # -- Docker (rootless) ---------------------------------------------------------
   virtualisation.docker.enable                     = true;
