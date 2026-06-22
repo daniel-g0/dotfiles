@@ -2,7 +2,7 @@
 export alias nixos-edit = nvim (^readlink -f /etc/nixos/configuration.nix)
 export def nixos-re-sw [] {
     let flake = (^readlink -f /etc/nixos/configuration.nix | path dirname | path dirname)
-    sudo nixos-rebuild switch --flake $"($flake)#nixos"
+    sudo nixos-rebuild switch --flake $"($flake)#nixos" --impure
 }
 
 # Cleanup old generations to save space

@@ -14,6 +14,7 @@
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       modules = [
         { nixpkgs.hostPlatform = "x86_64-linux"; }
+        /etc/nixos/hardware-configuration.nix
         ./nixos/configuration.nix
         qylock.nixosModules.default
         {
