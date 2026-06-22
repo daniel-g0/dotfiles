@@ -108,6 +108,22 @@ in
     ./hardware-configuration.nix
   ];
 
+  # -- Mounts --------------------------------------------------------------------
+  # SHARED-PART NTFS partition (laptop only). nofail = boot succeeds if absent.
+  # x-systemd.automount defers mount until first access; timeouts prevent hang.
+  fileSystems."/home/user/Volumes/shared-part" = {
+    device  = "/dev/disk/by-uuid/70725C43725C1068";
+    fsType  = "ntfs-3g";
+    options = [
+      "uid=1000" "gid=1000"
+      "dmask=007" "fmask=117"
+      "nofail"
+      "x-systemd.automount"
+      "x-systemd.device-timeout=5"
+      "x-systemd.mount-timeout=5"
+    ];
+  };
+
   # -- Nix settings --------------------------------------------------------------
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 

@@ -79,7 +79,6 @@ ALL_LINK_DEFS=(
     "wayland/waybar|$HOME/.config/waybar|linux"
     "wayland/swaync|$HOME/.config/swaync|linux"
     "nixos/configuration.nix|/etc/nixos/configuration.nix|nixos"
-    "nixos/hardware-configuration.nix|/etc/nixos/hardware-configuration.nix|nixos"
 )
 
 link_applies() {
