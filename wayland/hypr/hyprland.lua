@@ -52,10 +52,9 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_THEME",   "nix-logo")
-hl.env("XCURSOR_SIZE",    "20")
-hl.env("HYPRCURSOR_SIZE", "20")
-hl.env("XCURSOR_PATH",    "$HOME/.config/cursors")
+hl.env("XCURSOR_THEME",   "Layan-cursors")
+hl.env("XCURSOR_SIZE",    "24")
+hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("GTK_THEME",       "Adwaita:dark")
 
 hl.config({

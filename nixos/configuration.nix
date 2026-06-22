@@ -215,6 +215,7 @@ in
       jiffy
       wallrizz
       brightnessctl
+      layan-cursors
 
       # Terminal & shell tools
       kitty

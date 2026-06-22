@@ -51,7 +51,7 @@
 
 #custom-distro {
 	font-size: 22px;
-	color: #5277C3;
+	color: #bb9af7;
 	padding: 0 6px;
 }
 
@@ -96,7 +96,8 @@
 #mpris,
 #temperature,
 #memory,
-#cpu {
+#cpu,
+#disk {
 	padding: 0 9px;
 }
 
