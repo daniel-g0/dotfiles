@@ -4,6 +4,24 @@
 { config, pkgs, lib, ... }:
 
 let
+  tokyonightBraveTheme = pkgs.fetchFromGitHub {
+    owner = "gaurishhs";
+    repo  = "tokyonight-brave";
+    rev   = "main";
+    # Run to get hash: nix-prefetch-github gaurishhs tokyonight-brave
+    hash  = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  };
+
+  brave-themed = pkgs.symlinkJoin {
+    name  = "brave";
+    paths = [ pkgs.brave ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/brave \
+        --add-flags "--load-extension=${tokyonightBraveTheme}"
+    '';
+  };
+
   jiffy = pkgs.stdenv.mkDerivation {
     pname = "jiffy";
     version = "1.6.3";
@@ -245,7 +263,7 @@ in
       gnome-disk-utility
 
       # Apps
-      brave
+      brave-themed
       teams-for-linux
       keepass
       veracrypt

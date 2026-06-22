@@ -29,13 +29,13 @@
 		"bluetooth",
 		"custom/notifications",
 		"custom/update",
-		"custom/right_div#5"
-	],
-	"modules-right": [
+		"custom/right_div#5",
 		"mpris",
 		"custom/left_div#6",
 		"group/pulseaudio",
-		"group/laptop",
+		"group/laptop"
+	],
+	"modules-right": [
 		"custom/power"
 	],
 
