@@ -9,7 +9,7 @@
 
 	"modules-left":   ["custom/user", "group/left"],
 	"modules-center": ["custom/distro"],
-	"modules-right":  ["clock", "group/right", "idle_inhibitor", "custom/power"],
+	"modules-right":  ["clock", "group/right", "custom/power"],
 
 	"include": ["~/.config/waybar/modules.jsonc"]
 }

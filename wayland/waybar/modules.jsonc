@@ -8,7 +8,7 @@
 
 	"group/right": {
 		"orientation": "horizontal",
-		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/notifications", "custom/update"]
+		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/notifications"]
 	},
 
 	"group/group-volume": {
@@ -140,8 +140,8 @@
 
 	"clock": {
 		"interval": 1,
-		"format": "{:%d %b  %H:%M:%S}",
-		"format-alt": "{:%A %d %B %Y}",
+		"format": "{:%d %b %Y  %H:%M:%S}",
+		"format-alt": "{:%A, %d %B %Y}",
 		"tooltip-format": "<tt><small>{calendar}</small></tt>",
 		"calendar": {
 			"mode": "month",
