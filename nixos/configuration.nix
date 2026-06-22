@@ -127,6 +127,8 @@ in
       lolcat
       fzf
       timg
+      imagemagick
+      chafa
       rofi
       jiffy
       wallrizz

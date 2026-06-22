@@ -121,7 +121,7 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 | `Super+N` | Toggle swaync notification center |
 | `Super+T` | Toggle dwindle split |
 | `Super+Shift+L` | Lock (hyprlock) |
-| `Super+Shift+R` | Reload config |
+| `Super+R` | Reload config |
 | `Super+Shift+S` | Region screenshot → clipboard |
 | `Print` | Full screenshot → `~/Pictures/` |
 | `Super+H/L/K/J` | Focus left/right/up/down |
