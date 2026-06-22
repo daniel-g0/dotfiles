@@ -15,7 +15,6 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `wallpapers/` | `~/.config/wallpapers` |
 | `zoxide/config.nu` | `~/.config/zoxide/config.nu` |
 | `yazi/` | `~/.config/yazi` |
-| `jiffy/` | `~/.config/jiffy` |
 | `wallrizz/` | `~/.config/wallrizz` |
 | `wayland/hypr/` | `~/.config/hypr` |
 | `wayland/swaync/` | `~/.config/swaync` |
@@ -116,7 +115,7 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 | `Super+Return` | Open kitty |
 | `Super+Q` | Close window |
 | `Super+F` | File manager (kitty -e yazi) |
-| `Super+E` | Jiffy launcher |
+| `Super+E` | Rofi app launcher |
 | `Super+W` | WallRizz wallpaper picker |
 | `Super+N` | Toggle swaync notification center |
 | `Super+T` | Toggle dwindle split |
@@ -135,7 +134,6 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 | `XF86Audio Next/Play/Pause/Prev` | Playerctl |
 
 ### Window rules
-- Jiffy: float, 700×500, centered
 - WallRizz: float, 900×600, centered
 - Suppress app maximize requests globally
 
@@ -216,14 +214,6 @@ Tokyo Night palette; buttons with 20px border-radius; layer top, dock mode.
 
 ---
 
-## Jiffy
-
-**Config:** `jiffy/launch.sh`
-
-Application launcher — kitty-based, class `jiffy`, single instance, 90% opacity, Tokyo Night FZF colors.
-
----
-
 ## WallRizz
 
 **Config:** `wallrizz/`
@@ -256,7 +246,6 @@ Dev: `neovim`, `git`, `git-lfs`, `gcc`, `uv`, `nodejs`, `claude-code`
 Apps: `brave`, `teams-for-linux`, `keepass`, `veracrypt`
 
 ### Custom packages
-- `jiffy` v1.6.3 (auto-patch-elf)
 - `wallrizz` v1.4.0 (auto-patch-elf)
 
 ---

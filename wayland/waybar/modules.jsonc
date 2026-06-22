@@ -166,11 +166,16 @@
 		"format-disconnected": "󰤯",
 		"format-disabled": "󰤮",
 		"format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
-		"on-click": "kitty -e ~/.config/waybar/scripts/network",
-		"on-click-right": "~/.config/waybar/scripts/network off",
 		"tooltip-format-wifi": "{essid}\n{ipaddr}/{cidr}\n{signalStrength}%  {frequency} GHz",
 		"tooltip-format-ethernet": "{ifname}",
-		"tooltip-format-disconnected": "Disconnected"
+		"tooltip-format-disconnected": "Disconnected",
+		"menu": "on-click",
+		"menu-file": "~/.config/waybar/menus/network.xml",
+		"menu-actions": {
+			"connect":  "nm-connection-editor",
+			"wifi-on":  "nmcli radio wifi on",
+			"wifi-off": "nmcli radio wifi off"
+		}
 	},
 
 	"bluetooth": {
@@ -179,12 +184,17 @@
 		"format-off": "󰂲",
 		"format-on": "󰂰",
 		"format-connected": "󰂱",
-		"on-click": "kitty -e ~/.config/waybar/scripts/bluetooth",
-		"on-click-right": "~/.config/waybar/scripts/bluetooth off",
 		"tooltip-format-on": "Bluetooth on",
 		"tooltip-format-off": "Bluetooth off",
 		"tooltip-format-connected": "{device_alias}",
-		"tooltip-format-connected-battery": "{device_alias}  {device_battery_percentage}%"
+		"tooltip-format-connected-battery": "{device_alias}  {device_battery_percentage}%",
+		"menu": "on-click",
+		"menu-file": "~/.config/waybar/menus/bluetooth.xml",
+		"menu-actions": {
+			"manager": "blueman-manager",
+			"bt-on":   "bluetoothctl power on",
+			"bt-off":  "bluetoothctl power off"
+		}
 	},
 
 	"idle_inhibitor": {

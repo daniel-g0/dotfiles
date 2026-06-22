@@ -372,15 +372,6 @@ hl.window_rule({
     float = true,
 })
 
--- Jiffy launcher windowrule
-hl.window_rule({
-    name   = "float-jiffy",
-    match  = { class = "jiffy" },
-    float  = true,
-    size   = "700 500",
-    center = true,
-})
-
 -- WallRizz wallpaper picker windowrule
 hl.window_rule({
     name   = "float-wallrizz",

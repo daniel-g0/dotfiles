@@ -21,22 +21,6 @@ let
     '';
   };
 
-  jiffy = pkgs.stdenv.mkDerivation {
-    pname = "jiffy";
-    version = "1.6.3";
-    src = pkgs.fetchurl {
-      url = "https://github.com/5hubham5ingh/jiffy/releases/download/v1.6.3/jiffy-linux-86_64.tar.gz";
-      hash = "sha256-6JJyVe+wjLNzPf5WINv5Zt4GuOrUsVUPhWYtBfdVYOA=";
-    };
-    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
-    buildInputs = [ pkgs.stdenv.cc.cc.lib ];
-    unpackPhase = "tar -xzf $src";
-    installPhase = ''
-      mkdir -p $out/bin
-      install -m755 jiffy $out/bin/jiffy
-    '';
-  };
-
   wallrizz = pkgs.stdenv.mkDerivation {
     pname = "wallrizz";
     version = "1.4.0";
@@ -138,7 +122,10 @@ in
   # -- Networking ----------------------------------------------------------------
   networking.hostName              = "nixos";
   networking.networkmanager.enable = true;
-  networking.wireless.enable       = true;
+
+  # -- Bluetooth -----------------------------------------------------------------
+  hardware.bluetooth.enable      = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   # -- Locale & timezone ---------------------------------------------------------
   time.timeZone      = "Europe/Madrid";
@@ -203,6 +190,7 @@ in
       hyprpicker
       blueman
       bluez
+      networkmanagerapplet
       libnotify
       fastfetch
       fortune
@@ -212,10 +200,11 @@ in
       imagemagick
       chafa
       rofi
-      jiffy
       wallrizz
       brightnessctl
       layan-cursors
+      papirus-icon-theme
+      xdg-utils
 
       # Terminal & shell tools
       kitty
@@ -265,6 +254,7 @@ in
       teams-for-linux
       keepass
       veracrypt
+      drawio
       chezmoi
     ];
   };
@@ -275,6 +265,7 @@ in
     nushell
     veracrypt
     python3
+    tokyonight-gtk-theme
   ];
 
   # -- Virtualisation ------------------------------------------------------------
@@ -331,11 +322,24 @@ in
   '';
 
   # -- Fonts ---------------------------------------------------------------------
-  # GTK3 font — affects Brave UI, file pickers, GTK apps
+  # GTK3/4 theme + font — affects Brave file picker, Veracrypt, GTK apps
   environment.etc."gtk-3.0/settings.ini".text = ''
     [Settings]
+    gtk-theme-name=Tokyonight-Dark-BL
+    gtk-icon-theme-name=Papirus-Dark
     gtk-font-name=JetBrainsMono Nerd Font 13
+    gtk-application-prefer-dark-theme=1
   '';
+
+  environment.etc."gtk-4.0/settings.ini".text = ''
+    [Settings]
+    gtk-theme-name=Tokyonight-Dark-BL
+    gtk-icon-theme-name=Papirus-Dark
+    gtk-font-name=JetBrainsMono Nerd Font 13
+    gtk-application-prefer-dark-theme=1
+  '';
+
+  environment.variables.GTK_THEME = "Tokyonight-Dark-BL";
 
   fonts = {
     enableDefaultPackages = true;
@@ -354,7 +358,7 @@ in
     deps = [];
   };
 
-  # Symlink /usr/share/applications for tools that hardcode it (e.g. Jiffy)
+  # Symlink /usr/share/applications for rofi drun and other launchers
   system.activationScripts.usrshareapps = {
     text = ''
       mkdir -p /usr/share
@@ -362,6 +366,25 @@ in
     '';
     deps = [];
   };
+
+  # Yazi file manager — desktop entry that opens inside kitty (no Terminal=true quirks)
+  environment.etc."xdg/applications/yazi-kitty.desktop".text = ''
+    [Desktop Entry]
+    Name=Yazi File Manager
+    Icon=yazi
+    Comment=Yazi running inside kitty
+    Terminal=false
+    Exec=kitty -e yazi %f
+    Type=Application
+    MimeType=inode/directory;
+    Categories=System;FileManager;
+  '';
+
+  # Set yazi-kitty as default file manager for directories
+  environment.etc."xdg/mimeapps.list".text = ''
+    [Default Applications]
+    inode/directory=yazi-kitty.desktop
+  '';
 
   # This value pins the NixOS release for stateful data defaults.
   # Change only when intentionally migrating state. See: man configuration.nix

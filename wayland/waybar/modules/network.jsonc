@@ -19,9 +19,9 @@
 		"max-length": 2,
 		// "align":
 		// "justify":
-		"on-click": "kitty -e ~/.config/waybar/scripts/network",
+		// "on-click":
 		// "on-click-middle":
-		"on-click-right": "~/.config/waybar/scripts/network off",
+		// "on-click-right":
 		// "on-update":
 		// "on-scroll-up":
 		// "on-scroll-down":
@@ -31,10 +31,15 @@
 		"tooltip-format-ethernet": "<b>Interface</b>: {ifname}",
 		"tooltip-format-wifi": "<b>Network</b>: {essid}\n<b>IP Addr</b>: {ipaddr}/{cidr}\n<b>Strength</b>: {signalStrength}%\n<b>Frequency</b>: {frequency} GHz",
 		"tooltip-format-disconnected": "Wi-Fi Disconnected",
-		"tooltip-format-disabled": "Wi-Fi Disabled"
-		// "menu":
-		// "menu-file":
-		// "menu-actions":
+		"tooltip-format-disabled": "Wi-Fi Disabled",
+		"menu": "on-click",
+		"menu-file": "~/.config/waybar/menus/network.xml",
+		"menu-actions": {
+			"connect":  "kitty -e nmtui connect",
+			"edit":     "kitty -e nmtui",
+			"wifi-on":  "nmcli radio wifi on",
+			"wifi-off": "nmcli radio wifi off"
+		}
 		// "expand":
 	}
 }

@@ -1,23 +1,48 @@
 configuration {
     modi:            "drun,run";
     show-icons:      true;
+    icon-theme:      "Papirus-Dark";
     drun-display-format: "{name}";
     font:            "JetBrainsMono Nerd Font 12";
 }
 
 * {
-    bg:       #1a1b26ff;
-    bg-alt:   #24283bff;
-    fg:       #c0caf5ff;
-    fg-dim:   #565f89ff;
-    blue:     #7aa2f7ff;
-    purple:   #bb9af7ff;
-    cyan:     #7dcfffff;
-    green:    #9ece6aff;
-    red:      #f7768eff;
-    border:   #7aa2f733;
+    /* palette */
+    bg:       #000000;
+    bg-alt:   #0d0d0d;
+    fg:       #a9b1d6;
+    fg-dim:   #565f89;
+    blue:     #7aa2f7;
+    purple:   #bb9af7;
+    cyan:     #7dcfff;
+    green:    #9ece6a;
+    red:      #f7768e;
 
-    background-color: transparent;
+    /* override built-in solarized state variables */
+    background:                  @bg;
+    foreground:                  @fg;
+    lightbg:                     @bg-alt;
+    lightfg:                     @fg-dim;
+    normal-background:           @bg;
+    normal-foreground:           @fg;
+    alternate-normal-background: @bg;
+    alternate-normal-foreground: @fg;
+    urgent-background:           @bg;
+    urgent-foreground:           @red;
+    alternate-urgent-background: @bg;
+    alternate-urgent-foreground: @red;
+    active-background:           @bg;
+    active-foreground:           @blue;
+    alternate-active-background: @bg;
+    alternate-active-foreground: @blue;
+    selected-normal-background:  @bg-alt;
+    selected-normal-foreground:  @blue;
+    selected-urgent-background:  @bg-alt;
+    selected-urgent-foreground:  @red;
+    selected-active-background:  @bg-alt;
+    selected-active-foreground:  @blue;
+
+    background-color: @bg;
     text-color:       @fg;
 }
 
@@ -31,7 +56,7 @@ window {
 }
 
 mainbox {
-    background-color: transparent;
+    background-color: @bg;
     children:         [ inputbar, listview ];
     spacing:          0px;
     padding:          12px;
@@ -47,19 +72,19 @@ inputbar {
 }
 
 prompt {
-    background-color: transparent;
+    background-color: @bg-alt;
     text-color:       @purple;
 }
 
 entry {
-    background-color: transparent;
+    background-color: @bg-alt;
     text-color:       @fg;
     placeholder:      "Search apps…";
     placeholder-color: @fg-dim;
 }
 
 listview {
-    background-color: transparent;
+    background-color: @bg;
     lines:            8;
     columns:          1;
     scrollbar:        false;
@@ -67,25 +92,30 @@ listview {
 }
 
 element {
-    background-color: transparent;
+    background-color: @bg;
     border-radius:    6px;
     padding:          8px 10px;
     spacing:          10px;
     orientation:      horizontal;
 }
 
-element selected {
-    background-color: @bg-alt;
-    text-color:       @blue;
-}
+element normal.normal    { background-color: @bg;     text-color: @fg;   }
+element normal.urgent    { background-color: @bg;     text-color: @red;  }
+element normal.active    { background-color: @bg;     text-color: @blue; }
+element selected.normal  { background-color: @bg-alt; text-color: @blue; }
+element selected.urgent  { background-color: @bg-alt; text-color: @red;  }
+element selected.active  { background-color: @bg-alt; text-color: @blue; }
+element alternate.normal { background-color: @bg;     text-color: @fg;   }
+element alternate.urgent { background-color: @bg;     text-color: @red;  }
+element alternate.active { background-color: @bg;     text-color: @blue; }
 
 element-icon {
     size:             24px;
-    background-color: transparent;
+    background-color: @bg;
 }
 
 element-text {
-    background-color: transparent;
+    background-color: @bg;
     text-color:       inherit;
     vertical-align:   0.5;
 }

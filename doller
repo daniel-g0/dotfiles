@@ -72,7 +72,6 @@ ALL_LINK_DEFS=(
     "zoxide/config.nu|$HOME/.config/zoxide/config.nu|all"
     "yazi|$HOME/.config/yazi|all"
     "cursor|$HOME/.config/cursors|linux"
-    "jiffy|$HOME/.config/jiffy|linux"
     "rofi|$HOME/.config/rofi|linux"
     "wallrizz|$HOME/.config/WallRizz|linux"
     "wayland/hypr|$HOME/.config/hypr|linux"
