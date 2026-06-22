@@ -81,22 +81,17 @@
 	margin: 0 2px;
 }
 
-/* ── Tokyo Night module colors ───────────────────────────────────────────── */
+/* ── Tokyo Night icon-only module colors ─────────────────────────────────── */
+/* mixed icon+text modules use <span> markup in format strings instead */
 
-#mpris           { color: @cyan; }
-#temperature     { color: @orange; }
-#memory          { color: @purple; }
-#cpu             { color: @blue; }
-#clock           { color: @green; }
-#bluetooth       { color: @blue; }
-#network         { color: @cyan; }
-#pulseaudio.output { color: @green; }
-#pulseaudio.input  { color: @purple; }
+#bluetooth            { color: @blue; }
+#network              { color: @cyan; }
+#pulseaudio.output    { color: @green; }
+#pulseaudio.input     { color: @purple; }
 #custom-notifications { color: @yellow; }
-#custom-update   { color: @orange; }
-#backlight       { color: @yellow; }
-#battery         { color: @green; }
-#idle_inhibitor  { color: @surface3; }
+#custom-update        { color: @orange; }
+#backlight            { color: @yellow; }
+#battery              { color: @green; }
 
 /* ── Module paddings ─────────────────────────────────────────────────────── */
 
