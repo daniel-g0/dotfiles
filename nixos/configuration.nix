@@ -282,11 +282,7 @@ in
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
-      package = pkgs.qemu;
-      ovmf = {
-        enable   = true;
-        packages = [ pkgs.OVMFFull ];
-      };
+      package      = pkgs.qemu;
       swtpm.enable = true;
     };
   };
