@@ -44,16 +44,16 @@ mode_select = { fg = "#1a1b26", bg = "#9ece6a", bold = true }
 mode_unset  = { fg = "#1a1b26", bg = "#bb9af7", bold = true }
 
 # Progress
-progress_label  = { fg = "#c0caf5", bold = true }
+progress_label  = { fg = "#c0caf5", bg = "#1a1b26", bold = true }
 progress_normal = { fg = "#7aa2f7", bg = "#24283b" }
 progress_error  = { fg = "#f7768e", bg = "#24283b" }
 
 # Permissions
-perm_type  = { fg = "#7aa2f7" }
-perm_read  = { fg = "#e0af68" }
-perm_write = { fg = "#f7768e" }
-perm_exec  = { fg = "#9ece6a" }
-perm_sep   = { fg = "#414868" }
+perm_type  = { fg = "#7aa2f7", bg = "#1a1b26" }
+perm_read  = { fg = "#e0af68", bg = "#1a1b26" }
+perm_write = { fg = "#f7768e", bg = "#1a1b26" }
+perm_exec  = { fg = "#9ece6a", bg = "#1a1b26" }
+perm_sep   = { fg = "#414868", bg = "#1a1b26" }
 
 [input]
 border   = { fg = "#7aa2f7" }
