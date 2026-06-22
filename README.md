@@ -13,16 +13,6 @@
 
 ---
 
-<div align="center">
-
-![Desktop](screenshots/desktop.png)
-
-*Tokyo Night · Nix wallpaper · Hyprland liquid border · Waybar*
-
-</div>
-
----
-
 ## Stack
 
 | Layer | Tool | Notes |
@@ -42,31 +32,6 @@
 | Navigation | **Zoxide** + **FZF** | Smart jump, fuzzy everything |
 
 ---
-
-## Preview
-
-<div align="center">
-
-### Waybar
-![Waybar](screenshots/waybar.png)
-
-*Temperature · RAM · CPU · Distro logo · Clock · Date · Network · Bluetooth · Notifications · Updates · Idle · MPRIS · Volume · Mic · Backlight · Battery · Power*
-
----
-
-### Jiffy Launcher
-![Jiffy](screenshots/jiffy.png)
-
-*fzf-powered app launcher · kitty window · Tokyo Night colors · class `jiffy` → float 700×500 centered*
-
----
-
-### WallRizz Picker
-![WallRizz](screenshots/wallrizz.png)
-
-*Fuzzy wallpaper picker · live preview via timg · awww transitions · 16-color palette extraction per image*
-
-</div>
 
 ---
 
