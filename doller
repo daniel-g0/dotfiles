@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # doller — dotfile installer
-set -euo pipefail
+
+set -uo pipefail
 
 # ── Tokyo Night palette ────────────────────────────────────────────────────────
 RS='\033[0m'; BD='\033[1m'
@@ -61,7 +62,6 @@ detect_os() {
 }
 
 # ── Symlink map: "repo_path|destination|os_filter" ────────────────────────────
-# os_filter: all | linux | nixos | macos  (linux applies to nixos+wsl too)
 ALL_LINK_DEFS=(
     "nushell|$HOME/.config/nushell|all"
     "nvim|$HOME/.config/nvim|all"
@@ -71,11 +71,13 @@ ALL_LINK_DEFS=(
     "fastfetch|$HOME/.config/fastfetch|all"
     "cursor|$HOME/.config/cursors|linux"
     "jiffy|$HOME/.config/jiffy|linux"
+    "rofi|$HOME/.config/rofi|linux"
     "wallrizz|$HOME/.config/WallRizz|linux"
     "wayland/hypr|$HOME/.config/hypr|linux"
     "wayland/waybar|$HOME/.config/waybar|linux"
     "wayland/swaync|$HOME/.config/swaync|linux"
     "nixos/configuration.nix|/etc/nixos/configuration.nix|nixos"
+    "nixos/hardware-configuration.nix|/etc/nixos/hardware-configuration.nix|nixos"
 )
 
 link_applies() {
@@ -92,21 +94,26 @@ link_applies() {
 needs_sudo() { [[ "$1" == "nixos" ]]; }
 
 # ── Check a single symlink ─────────────────────────────────────────────────────
-check() {
+check_link() {
     local src="$DOTS/$1" dst="$2"
-    [[ ! -e "$src" ]]  && echo "no_source" && return
+    if [[ ! -e "$src" ]]; then
+        echo "no_source"; return
+    fi
     if [[ -L "$dst" ]]; then
-        [[ "$(readlink "$dst")" == "$src" ]] && echo "ok" || echo "conflict"
-    elif [[ -e "$dst" ]]; then echo "conflict"
-    else echo "will_link"
+        local target; target="$(readlink "$dst")"
+        [[ "$target" == "$src" ]] && echo "ok" || echo "conflict"
+    elif [[ -e "$dst" ]]; then
+        echo "conflict"
+    else
+        echo "will_link"
     fi
 }
 
 # ── Status table ───────────────────────────────────────────────────────────────
 print_table() {
     local os="$1" current_section=""
-    printf "    ${DIM}%-32s %-34s %s${RS}\n" "Source" "Destination" "Status"
-    echo -e "    ${DIM}$(printf '─%.0s' {1..72})${RS}"
+    printf "    ${DIM}%-32s %-38s %s${RS}\n" "Source" "Destination" "Status"
+    echo -e "    ${DIM}$(printf '─%.0s' {1..76})${RS}"
 
     for entry in "${ALL_LINK_DEFS[@]}"; do
         IFS='|' read -r src dst filter <<< "$entry"
@@ -122,57 +129,108 @@ print_table() {
             echo -e "\n    ${BLU}macOS${RS}"; current_section="macos"
         fi
 
-        local st; st="$(check "$src" "$dst")"
+        local st; st="$(check_link "$src" "$dst")"
         local sdst="${dst/$HOME/\~}"
         needs_sudo "$filter" && sdst="[sudo] $sdst"
 
         case "$st" in
-            ok)        printf "    ${DIM}%-32s %-34s ${GRN}✓ linked${RS}\n"       "$src" "$sdst" ;;
-            will_link) printf "    %-32s %-34s ${CYN}+ will link${RS}\n"          "$src" "$sdst" ;;
-            conflict)  printf "    %-32s %-34s ${YLW}! conflict → .bak${RS}\n"   "$src" "$sdst" ;;
-            no_source) printf "    ${DIM}%-32s %-34s ? no source${RS}\n"          "$src" "$sdst" ;;
+            ok)        printf "    ${DIM}%-32s %-38s ${GRN}✓ linked${RS}\n"       "$src" "$sdst" ;;
+            will_link) printf "    %-32s %-38s ${CYN}+ will link${RS}\n"          "$src" "$sdst" ;;
+            conflict)  printf "    %-32s %-38s ${YLW}! conflict → .bak${RS}\n"   "$src" "$sdst" ;;
+            no_source) printf "    ${DIM}%-32s %-38s   ? no source${RS}\n"        "$src" "$sdst" ;;
         esac
     done
 }
 
 # ── Apply ──────────────────────────────────────────────────────────────────────
 apply_all() {
-    local os="$1" ok=0 new=0 failed=0
+    local os="$1"
+    local ok=0 created=0 skipped=0 failed=0
 
     for entry in "${ALL_LINK_DEFS[@]}"; do
         IFS='|' read -r src dst filter <<< "$entry"
         link_applies "$filter" "$os" || continue
 
-        local st; st="$(check "$src" "$dst")"
-        [[ "$st" == "no_source" ]] && continue
-        if [[ "$st" == "ok" ]]; then (( ok++ )); continue; fi
+        local st; st="$(check_link "$src" "$dst")"
 
-        local use_sudo=0; needs_sudo "$filter" && use_sudo=1
+        if [[ "$st" == "no_source" ]]; then
+            skipped=$(( skipped + 1 ))
+            continue
+        fi
+
+        if [[ "$st" == "ok" ]]; then
+            ok=$(( ok + 1 ))
+            continue
+        fi
+
+        local use_sudo=0
+        needs_sudo "$filter" && use_sudo=1
+
+        if (( use_sudo )); then
+            if ! sudo -v 2>/dev/null; then
+                echo -e "    ${RED}✗${RS} sudo auth failed — skipped: $dst"
+                failed=$(( failed + 1 ))
+                continue
+            fi
+        fi
+
         local full_src="$DOTS/$src"
         local parent; parent="$(dirname "$dst")"
-        if (( use_sudo )); then sudo mkdir -p "$parent"; else mkdir -p "$parent"; fi
+
+        if (( use_sudo )); then
+            if ! sudo mkdir -p "$parent"; then
+                echo -e "    ${RED}✗${RS} mkdir failed: $parent"
+                failed=$(( failed + 1 ))
+                continue
+            fi
+        else
+            if ! mkdir -p "$parent"; then
+                echo -e "    ${RED}✗${RS} mkdir failed: $parent"
+                failed=$(( failed + 1 ))
+                continue
+            fi
+        fi
 
         if [[ "$st" == "conflict" ]]; then
             local bak="${dst}.bak.$(date +%s)"
-            if (( use_sudo )); then sudo mv "$dst" "$bak"; else mv "$dst" "$bak"; fi
+            if (( use_sudo )); then
+                if ! sudo mv "$dst" "$bak"; then
+                    echo -e "    ${RED}✗${RS} backup failed: $dst"
+                    failed=$(( failed + 1 ))
+                    continue
+                fi
+            else
+                if ! mv "$dst" "$bak"; then
+                    echo -e "    ${RED}✗${RS} backup failed: $dst"
+                    failed=$(( failed + 1 ))
+                    continue
+                fi
+            fi
             echo -e "    ${YLW}↶${RS} ${DIM}backed up $(basename "$dst") → .bak${RS}"
         fi
 
-        if (( use_sudo )); then sudo ln -sfn "$full_src" "$dst" && r=0 || r=1
-        else ln -sfn "$full_src" "$dst" && r=0 || r=1; fi
-
         local sdst="${dst/$HOME/\~}"
-        if (( r == 0 )); then
-            echo -e "    ${GRN}✓${RS} ${FG}$src${RS} ${DIM}→${RS} ${CYN}$sdst${RS}"
-            (( new++ ))
+        if (( use_sudo )); then
+            if sudo ln -sfn "$full_src" "$dst"; then
+                echo -e "    ${GRN}✓${RS} ${FG}$src${RS} ${DIM}→${RS} ${CYN}[sudo] $sdst${RS}"
+                created=$(( created + 1 ))
+            else
+                echo -e "    ${RED}✗${RS} failed: $dst"
+                failed=$(( failed + 1 ))
+            fi
         else
-            echo -e "    ${RED}✗${RS} failed: $dst"
-            (( failed++ ))
+            if ln -sfn "$full_src" "$dst"; then
+                echo -e "    ${GRN}✓${RS} ${FG}$src${RS} ${DIM}→${RS} ${CYN}$sdst${RS}"
+                created=$(( created + 1 ))
+            else
+                echo -e "    ${RED}✗${RS} failed: $dst"
+                failed=$(( failed + 1 ))
+            fi
         fi
     done
 
     echo
-    echo -e "    ${GRN}${ok} already linked${RS}  ${CYN}${new} created${RS}  ${RED}${failed} failed${RS}"
+    echo -e "    ${GRN}${ok} already linked${RS}  ${CYN}${created} created${RS}  ${DIM}${skipped} skipped${RS}  ${RED}${failed} failed${RS}"
 }
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -187,11 +245,15 @@ echo
 print_table "$OS"
 echo
 
-[[ "$DRY" == "1" ]] && echo -e "    ${DIM}Dry run — nothing changed.${RS}\n" && exit 0
+if [[ "$DRY" == "1" ]]; then
+    echo -e "    ${DIM}Dry run — nothing changed.${RS}\n"
+    exit 0
+fi
 
 if [[ "$FORCE" != "1" ]]; then
     echo -ne "    ${BD}Apply?${RS} ${DIM}[Y/n]${RS} "
-    read -r confirm; confirm="${confirm:-y}"
+    read -r confirm
+    confirm="${confirm:-y}"
     [[ "${confirm,,}" != "y" ]] && echo -e "\n    ${DIM}Aborted.${RS}\n" && exit 0
 fi
 

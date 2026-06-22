@@ -4,4 +4,4 @@ exec kitty \
     -1 \
     -o allow_remote_control=yes \
     -o background_opacity=0.9 \
-    WallRizz -d "$HOME/.config/wallpapers" -z list
+    WallRizz -d "$HOME/.config/wallpapers" -z list -c "$HOME/.config/WallRizz/color-backend.sh {}"

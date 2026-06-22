@@ -127,6 +127,7 @@ in
       lolcat
       fzf
       timg
+      rofi
       jiffy
       wallrizz
       brightnessctl
@@ -225,6 +226,15 @@ in
     text = ''
       mkdir -p /usr/bin
       ln -sfn /run/current-system/sw/bin/bash /usr/bin/bash
+    '';
+    deps = [];
+  };
+
+  # Symlink /usr/share/applications for tools that hardcode it (e.g. Jiffy)
+  system.activationScripts.usrshareapps = {
+    text = ''
+      mkdir -p /usr/share
+      ln -sfn /run/current-system/sw/share/applications /usr/share/applications
     '';
     deps = [];
   };
