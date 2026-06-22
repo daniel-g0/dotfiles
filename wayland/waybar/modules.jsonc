@@ -3,7 +3,7 @@
 
 	"group/left": {
 		"orientation": "horizontal",
-		"modules": ["mpris", "temperature", "memory", "cpu"]
+		"modules": ["mpris", "temperature", "memory", "cpu", "disk"]
 	},
 
 	"group/right": {
@@ -131,6 +131,14 @@
 		"format-critical": "<span color='#f7768e'>󰀨</span> {usage}%",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip": false
+	},
+
+	"disk": {
+		"interval": 30,
+		"path": "/",
+		"format": "<span color='#e0af68'>󰋊</span> {percentage_used}%",
+		"states": { "warning": 75, "critical": 90 },
+		"tooltip-format": "{used} / {total} ({free} free)"
 	},
 
 	"clock": {
