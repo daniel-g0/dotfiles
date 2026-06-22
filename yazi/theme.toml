@@ -5,11 +5,11 @@ cwd = { fg = "#7aa2f7" }
 
 # Hovered
 hovered         = { fg = "#1a1b26", bg = "#7aa2f7" }
-preview_hovered = { underline = true }
+preview_hovered = { bg = "#1a1b26", underline = true }
 
 # Find
-find_keyword  = { fg = "#ff9e64", bold = true, italic = true, underline = true }
-find_position = { fg = "#ff9e64", bg = "reset", bold = true, italic = true }
+find_keyword  = { fg = "#ff9e64", bg = "#1a1b26", bold = true, italic = true, underline = true }
+find_position = { fg = "#ff9e64", bg = "#1a1b26", bold = true, italic = true }
 
 # Marker
 marker_copied   = { fg = "#9ece6a", bg = "#9ece6a" }
@@ -56,32 +56,32 @@ perm_exec  = { fg = "#9ece6a", bg = "#1a1b26" }
 perm_sep   = { fg = "#414868", bg = "#1a1b26" }
 
 [input]
-border   = { fg = "#7aa2f7" }
-title    = { fg = "#7aa2f7" }
-value    = { fg = "#c0caf5" }
-selected = { reversed = true }
+border   = { fg = "#7aa2f7",  bg = "#1a1b26" }
+title    = { fg = "#7aa2f7",  bg = "#1a1b26" }
+value    = { fg = "#c0caf5",  bg = "#1a1b26" }
+selected = { fg = "#1a1b26",  bg = "#7aa2f7" }
 
 [completion]
-border   = { fg = "#7aa2f7" }
-active   = { fg = "#1a1b26", bg = "#7aa2f7" }
-inactive = { fg = "#a9b1d6" }
+border   = { fg = "#7aa2f7",  bg = "#1a1b26" }
+active   = { fg = "#1a1b26",  bg = "#7aa2f7" }
+inactive = { fg = "#a9b1d6",  bg = "#1a1b26" }
 
 [tasks]
-border  = { fg = "#7aa2f7" }
-title   = { fg = "#7aa2f7" }
-hovered = { underline = true }
+border  = { fg = "#7aa2f7",  bg = "#1a1b26" }
+title   = { fg = "#7aa2f7",  bg = "#1a1b26" }
+hovered = { bg = "#24283b",  underline = true }
 
 [which]
 mask            = { bg = "#1a1b26" }
-cand            = { fg = "#7dcfff" }
-rest            = { fg = "#565f89" }
-desc            = { fg = "#bb9af7" }
+cand            = { fg = "#7dcfff", bg = "#1a1b26" }
+rest            = { fg = "#565f89", bg = "#1a1b26" }
+desc            = { fg = "#bb9af7", bg = "#1a1b26" }
 separator       = "  "
-separator_style = { fg = "#414868" }
+separator_style = { fg = "#414868", bg = "#1a1b26" }
 
 [help]
-on      = { fg = "#7dcfff" }
-run     = { fg = "#bb9af7" }
+on      = { fg = "#7dcfff", bg = "#1a1b26" }
+run     = { fg = "#bb9af7", bg = "#1a1b26" }
 hovered = { bg = "#24283b", bold = true }
 footer  = { fg = "#1a1b26", bg = "#7aa2f7" }
 
