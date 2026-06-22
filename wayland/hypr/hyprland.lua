@@ -56,6 +56,7 @@ hl.env("XCURSOR_THEME",   "nix-logo")
 hl.env("XCURSOR_SIZE",    "20")
 hl.env("HYPRCURSOR_SIZE", "20")
 hl.env("XCURSOR_PATH",    "$HOME/.config/cursors")
+hl.env("GTK_THEME",       "Adwaita:dark")
 
 hl.config({
     cursor = {
@@ -274,7 +275,8 @@ hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(wallpaper))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t"))
-hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))    -- dwindle only
+hl.bind(mainMod .. " + T",         hl.dsp.layout("togglesplit"))    -- dwindle only
+hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen())
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + H",  hl.dsp.focus({ direction = "left" }))
