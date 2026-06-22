@@ -8,8 +8,7 @@ let
     owner = "gaurishhs";
     repo  = "tokyonight-brave";
     rev   = "main";
-    # Run to get hash: nix-prefetch-github gaurishhs tokyonight-brave
-    hash  = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash  = "sha256-vylzRzyB18QcYwY0Ydlcgk70i8MercbU+8ymgt4ce2A=";
   };
 
   brave-themed = pkgs.symlinkJoin {
