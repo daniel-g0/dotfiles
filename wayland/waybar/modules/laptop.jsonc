@@ -1,0 +1,13 @@
+{
+	"group/laptop": {
+		"orientation": "inherit",
+		"hide-empty-group": true,
+		"modules": [
+			"custom/left_div#7",
+			"backlight",
+			"custom/left_div#8",
+			"battery",
+			"custom/left_inv#2"
+		]
+	}
+}
