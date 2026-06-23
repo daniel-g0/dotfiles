@@ -3,7 +3,7 @@
 
 	"group/left": {
 		"orientation": "horizontal",
-		"modules": ["custom/ws-icon", "hyprland/workspaces", "mpris", "temperature", "memory", "cpu", "disk"]
+		"modules": ["hyprland/workspaces", "mpris", "temperature", "memory", "cpu", "disk"]
 	},
 
 	"group/right": {
@@ -97,13 +97,8 @@
 
 	// ─── System modules ───────────────────────────────────────────────────────────
 
-	"custom/ws-icon": {
-		"format": "<span color='#7dcfff'>󰕰</span>",
-		"tooltip": false
-	},
-
 	"hyprland/workspaces": {
-		"format": "{id}",
+		"format": "<span color='#7dcfff'>󱂬</span> {id}",
 		"on-click": "activate",
 		"sort-by-number": true,
 		"all-outputs": false
