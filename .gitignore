@@ -227,5 +227,6 @@ nushell/history.sqlite3-shm
 claude/**/*.local.*
 claude/settings.local.json
 
-# Private certificates
+# Private certificates (keep .gitkeep to track the dir)
 .certs/
+!.certs/.gitkeep
