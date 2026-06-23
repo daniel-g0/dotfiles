@@ -79,6 +79,7 @@ ALL_LINK_DEFS=(
     "cava|$HOME/.config/cava|linux"
     "scripts/cava-vibe|$HOME/.local/bin/cava-vibe|linux"
     "wayland/hypr|$HOME/.config/hypr|linux"
+    "wayland/hypr/monitors.conf|$HOME/.config/hypr/monitors.conf|linux"
     "wayland/waybar|$HOME/.config/waybar|linux"
     "wayland/swaync|$HOME/.config/swaync|linux"
     "nixos/configuration.nix|/etc/nixos/configuration.nix|nixos"
