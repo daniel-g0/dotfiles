@@ -101,10 +101,12 @@
 	padding: 0 5px;
 	color: @surface3;
 	border-radius: 8px;
+	font-size: 11px !important;
 }
 
 #workspaces button.active {
 	color: @purple;
+	font-size: 11px !important;
 }
 
 #workspaces button:hover {
