@@ -244,7 +244,7 @@ Certificates become available system-wide to all tools (curl, Docker, browsers, 
 ### Notable packages
 ```
 Wayland:  hyprlock hypridle awww waybar swaync hyprpicker blueman
-          fastfetch fortune fzf
+          fastfetch fortune fzf vpnc
 Terminal: kitty starship zoxide yazi bat ripgrep fd delta btop dust rm-improved
 Dev:      neovim git git-lfs gcc uv nodejs claude-code
 Apps:     brave teams-for-linux keepass veracrypt
@@ -320,6 +320,7 @@ awww-daemon → nix-tokyo-night.png (2s fade transition)
 | Fix XWayland drags | class `^$`, xwayland float | `no_focus` |
 | Jiffy | class `jiffy` | Float · 700×500 · centered |
 | WallRizz | class `wallpaper-picker` | Float · 900×600 · centered |
+| VPN menu | class `vpn-menu` | Float · 600×400 · centered |
 | Cheatsheet | class `cheatsheet` | Float · 1000×700 · centered |
 
 ### Input
@@ -373,7 +374,7 @@ Layer: **top** · Mode: **dock** · Auto-reload on CSS change.
 `Clock HH:MM` · `Date DD-MM` (with calendar popup)
 
 **Right:**
-`Idle inhibitor` · `Network` · `Bluetooth` · `Notifications` · `Updates` · `MPRIS` · `Volume` · `Mic` · `Backlight` · `Battery` · `󰍜 Power menu`
+`Idle inhibitor` · `Network` · `VPN 󰦝` · `Bluetooth` · `Notifications` · `Updates` · `MPRIS` · `Volume` · `Mic` · `Backlight` · `Battery` · `󰍜 Power menu`
 
 ### Module details
 
@@ -407,6 +408,17 @@ Usage % · updates every 10s · warn: 75% · critical: 90%
 
 #### Network
 WiFi signal strength bars · tooltip: SSID, IP, frequency · click: network manager menu · right-click: toggle WiFi
+
+#### VPN (`custom/vpn`)
+vpnc-based VPN manager. Icon: `󰦝` green when connected (shows IP in tooltip), `󰦞` red when disconnected. Click opens VPNC TUI — a floating fzf menu (600×400, centered).
+
+**TUI menu:**
+- **Connections** → list all `~/.config/vpns/*.conf` → Connect / Edit / Remove
+- **Disconnect** — visible only when connected
+- **Import** — finds `.pcf` / `.ovpn` / `.conf` files in `~/Downloads`, `~/Documents`, `~/Desktop`; auto-detects type; converts Cisco PCF via `pcf2vpnc`
+
+Configs live at `~/.config/vpns/` — outside the repo, untracked (contain credentials).
+To skip password prompt: add `Xauth password yourpass` to the `.conf` file.
 
 #### Bluetooth
 Connected device + battery % in tooltip · click: bluetooth manager menu

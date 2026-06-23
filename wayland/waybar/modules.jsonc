@@ -8,7 +8,7 @@
 
 	"group/right": {
 		"orientation": "horizontal",
-		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/notifications"]
+		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications"]
 	},
 
 	"group/group-volume": {
@@ -172,6 +172,15 @@
 		"actions": { "on-click-right": "mode" }
 	},
 
+	"custom/vpn": {
+		"exec": "~/.config/waybar/scripts/vpn",
+		"return-type": "json",
+		"interval": 5,
+		"min-length": 2,
+		"max-length": 2,
+		"on-click": "kitty --class vpn-menu -T 'VPN Manager' -e ~/.config/waybar/scripts/vpn-menu"
+	},
+
 	"network": {
 		"interval": 10,
 		"format": "󰤨",
@@ -183,7 +192,7 @@
 		"tooltip-format-wifi": "{essid}\n{ipaddr}/{cidr}\n{signalStrength}%  {frequency} GHz",
 		"tooltip-format-ethernet": "{ifname}",
 		"tooltip-format-disconnected": "Disconnected",
-		"on-click": "kitty -e nmtui",
+		"on-click": "nm-connection-editor",
 		"on-click-right": "nmcli radio wifi toggle"
 	},
 

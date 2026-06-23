@@ -105,6 +105,7 @@ in
   # -- Networking ----------------------------------------------------------------
   networking.hostName              = "nixos";
   networking.networkmanager.enable = true;
+  networking.networkmanager.plugins = [ pkgs.networkmanager-vpnc ];
 
   # -- Bluetooth -----------------------------------------------------------------
   hardware.bluetooth.enable      = true;
@@ -246,6 +247,9 @@ in
 
       # Disk management
       gnome-disk-utility
+
+      # VPN
+      vpnc
 
       # Apps
       brave

@@ -32,7 +32,7 @@
 		"tooltip-format-wifi": "<b>Network</b>: {essid}\n<b>IP Addr</b>: {ipaddr}/{cidr}\n<b>Strength</b>: {signalStrength}%\n<b>Frequency</b>: {frequency} GHz",
 		"tooltip-format-disconnected": "Wi-Fi Disconnected",
 		"tooltip-format-disabled": "Wi-Fi Disabled",
-		"on-click": "kitty -e nmtui",
+		"on-click": "nm-connection-editor",
 		"on-click-right": "nmcli radio wifi toggle"
 		// "expand":
 	}

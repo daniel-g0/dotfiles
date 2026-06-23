@@ -194,6 +194,7 @@ Before sleep → lock. After wake → display on.
 | Clock time | HH:MM, tooltip 12h AM/PM |
 | Clock date | DD-MM + calendar popup on click |
 | Network | WiFi signal bars, SSID/IP/freq tooltip; click → network menu; right-click → toggle WiFi |
+| `custom/vpn` (󰦝) | vpnc VPN manager. Green=connected (IP tooltip), red=disconnected. Click → VPNC TUI fzf menu: connect/disconnect/import/edit configs. Configs at `~/.config/vpns/` (untracked) |
 | Bluetooth | Connected/battery % tooltip; click → bluetooth menu |
 | Notifications | swaync integration, icon changes per state (normal/DND/inhibited) |
 | Updates | Hourly package check; click → update TUI; right-click → refresh |

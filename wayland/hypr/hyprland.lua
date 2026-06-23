@@ -408,3 +408,12 @@ hl.window_rule({
     size   = "900 600",
     center = true,
 })
+
+-- VPNC TUI windowrule
+hl.window_rule({
+    name   = "float-vpn-menu",
+    match  = { class = "vpn-menu" },
+    float  = true,
+    size   = "600 400",
+    center = true,
+})

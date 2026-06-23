@@ -26,6 +26,14 @@
 	color: @inactive;
 }
 
+/* VPN */
+#custom-vpn.connected {
+	color: @green;
+}
+#custom-vpn.disconnected {
+	color: @red;
+}
+
 /* Notifications DND */
 #custom-notifications.dnd-none,
 #custom-notifications.dnd-notification {
