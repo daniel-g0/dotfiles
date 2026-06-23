@@ -211,11 +211,13 @@ in
       cava
       cmatrix
       sox
+      whosthere
 
       # Wayland utilities
       wl-clipboard
       grim
       slurp
+      hyprmon
 
       # Development
       neovim

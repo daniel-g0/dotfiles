@@ -30,15 +30,23 @@
 ### Features
 - [ ] set up claude-code properly (MCP, permissions, hooks)
 - [ ] improve nvim (add claude integration)
-- [ ] super+c: fzf browser for per-stack keybindings cheatsheet
+- [x] super+c: fzf browser for per-stack keybindings cheatsheet
 - [ ] add eye care tool (20-20-20 rule notifications)
 - [x] add cava and other rice tools ✓ (cava TN gradient + cava-vibe noise mode, cmatrix cyan)
+- [x] add whosthere and bind it to a key (super, shift, w) ✓ (Super+Shift+W → kitty -e whosthere)
+- [ ] modulate config nix?
+- [ ] check cool features on hardware
+- [ ] set up idler
+- [ ] add mapscii
+- [ ] subsitute drawio with clin
+- [ ] get gloomberb, cliam, gittop
 
 ### Big tasks
 - [ ] (important) set up VPN
-- [ ] set multiple monitor profiles (work: 2 screens + eDP off; home: single screen)
-- [ ] add proper screenshots to README
+- [x] set multiple monitor profiles (work: DP-3 left, DP-4 middle, eDP-1 right; home: eDP-1 only) ✓ (hyprmon TUI)
+- [ ] add proper screenshots to README and repo graphs
 - [ ] create VM for safe dotfile testing
+- [ ] set up windows VM ready for working and gaming (home setup)
 
 
 ## Future (when Windows removed / no longer dual boot)

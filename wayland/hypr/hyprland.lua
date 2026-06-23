@@ -8,6 +8,12 @@
 ------------------
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
+-- Monitor profiles managed by hyprmon (~/.config/hypr/hyprmon/)
+-- Run `hyprmon` TUI to create/switch profiles:
+--   Work: DP-3 (left), DP-4 (middle), eDP-1 (right)
+--   Home: eDP-1 only
+
+-- Fallback single-monitor config (auto-detect)
 hl.monitor({
     output   = "",
     mode     = "preferred",
@@ -277,6 +283,7 @@ hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty --class cheatsheet -e ~/.config/hypr/cheatsheet.sh"))
 hl.bind(mainMod .. " + T",         hl.dsp.layout("togglesplit"))    -- dwindle only
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen())
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("kitty -e whosthere"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + H",  hl.dsp.focus({ direction = "left" }))
