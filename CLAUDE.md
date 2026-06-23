@@ -256,6 +256,9 @@ Apps: `brave`, `teams-for-linux`, `keepass`, `veracrypt`
 ### Custom packages
 - `wallrizz` v1.4.0 (auto-patch-elf)
 
+### Private certificates
+Certs live at `~/.config/certs/*.crt` — outside the repo, untracked. `configuration.nix` loads them automatically via `SUDO_USER` at rebuild time. If the directory is absent, no certs are added (graceful). To add a cert: drop a `.crt` file in `~/.config/certs/` and run `nixos-re-sw`.
+
 ---
 
 ## Useful aliases (nushell)
@@ -283,5 +286,6 @@ Apps: `brave`, `teams-for-linux`, `keepass`, `veracrypt`
 - Don't edit files in `~/.config/` directly — they're symlinks, edits land in the repo automatically.
 - Don't add helix back.
 - Don't symlink `hardware-configuration.nix` on different hardware — regenerate with `nixos-generate-config` first.
+- Don't put certs in the repo — they live at `~/.config/certs/`, outside version control.
 - Don't remove `nofail` from the SHARED-PART mount — it must not block boot if missing.
 - Don't set `NU_BANNER=1` in a normal kitty launch — it triggers fastfetch/fortune on every new shell in that window.

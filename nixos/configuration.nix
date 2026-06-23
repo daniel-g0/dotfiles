@@ -134,19 +134,17 @@ in
   };
 
   security.polkit.enable = true;
+  # Private certs live at ~/.config/certs/ (outside repo, untracked).
+  # builtins.path copies each cert into the store at eval time so the sandbox can access it.
+  # Requires --impure (already set in nixos-re-sw alias). Graceful if dir absent.
   security.pki.certificateFiles =
-    let dotfilesEnv = builtins.getEnv "DOTFILES_ROOT";
-        etcNixos = "/etc/nixos";
-        certDirCandidates = lib.lists.filter (d: builtins.pathExists d) [
-          (if dotfilesEnv != "" then "${dotfilesEnv}/certs" else null)
-          "${etcNixos}/../certs"
-          "${etcNixos}/../../certs"
-          "/home/user/Projects/personal/dotfiles/certs"
-        ];
-        certDir = if lib.lists.length certDirCandidates > 0 then lib.lists.head certDirCandidates else null;
-        certs = if certDir != null then builtins.attrNames (builtins.readDir certDir) else [];
-        certFiles = lib.lists.filter (s: lib.strings.hasSuffix ".crt" s) certs;
-    in builtins.map (f: "${certDir}/${f}") certFiles;
+    let user    = builtins.getEnv "SUDO_USER";
+        certDir = "/home/${user}/.config/certs";
+    in if user != "" && builtins.pathExists certDir
+       then map (f: builtins.path { path = "${certDir}/${f}"; name = f; })
+              (lib.filter (lib.hasSuffix ".crt")
+                (builtins.attrNames (builtins.readDir certDir)))
+       else [];
   programs.dconf.enable  = true;
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";  # hint electron apps to use wayland
@@ -191,7 +189,6 @@ in
       fastfetch
       fortune
       lolcat
-      fzf
       timg
       imagemagick
       chafa
@@ -264,7 +261,6 @@ in
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     nushell
-    veracrypt
     python3
     tokyonight-gtk-theme
   ];
