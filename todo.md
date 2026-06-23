@@ -21,10 +21,10 @@
 - [x] wifi context menu drops when on ethernet — replaced GTK menu with on-click nmtui / right-click wifi toggle ✓
 - [x] verify date display is correct in waybar/kitty — system time correct (CEST), format fine ✓
 - [x] check if new cursor pack renders correctly ✓
-- [ ] brave tokyonight aint working
+- [x] brave tokyonight aint working
 
 ### Quick config
-- [ ] idle → qylock (currently going to hyprlock I think)
+- [x] idle → qylock ✓
 - [ ] waybar: add workspace number indicator
 
 ### Features
