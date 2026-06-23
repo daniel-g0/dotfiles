@@ -274,6 +274,7 @@ hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(wallpaper))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t"))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty --class cheatsheet -e ~/.config/hypr/cheatsheet.sh"))
 hl.bind(mainMod .. " + T",         hl.dsp.layout("togglesplit"))    -- dwindle only
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen())
 
@@ -378,5 +379,14 @@ hl.window_rule({
     match  = { class = "wallpaper-picker" },
     float  = true,
     size   = "900 600",
+    center = true,
+})
+
+-- Cheatsheet windowrule
+hl.window_rule({
+    name   = "float-cheatsheet",
+    match  = { class = "cheatsheet" },
+    float  = true,
+    size   = "1000 700",
     center = true,
 })
