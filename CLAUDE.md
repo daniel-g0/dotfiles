@@ -16,6 +16,7 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `zoxide/config.nu` | `~/.config/zoxide/config.nu` |
 | `yazi/` | `~/.config/yazi` |
 | `wallrizz/` | `~/.config/wallrizz` |
+| `whosthere/` | `~/.config/whosthere` |
 | `wayland/hypr/` | `~/.config/hypr` |
 | `wayland/swaync/` | `~/.config/swaync` |
 | `nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
@@ -118,6 +119,7 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 | `Super+E` | Rofi app launcher |
 | `Super+W` | WallRizz wallpaper picker |
 | `Super+N` | Toggle swaync notification center |
+| `Super+C` | Keybindings cheatsheet (fzf browser) |
 | `Super+T` | Toggle dwindle split |
 | `Super+Shift+L` | Lock (hyprlock) |
 | `Super+R` | Reload config |
