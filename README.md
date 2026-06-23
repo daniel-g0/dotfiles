@@ -15,6 +15,12 @@
 
 </div>
 
+<div align="center">
+
+![Desktop](screenshots/desktop.png)
+
+</div>
+
 ---
 
 ## Stack
@@ -258,6 +264,8 @@ Fonts:    JetBrainsMono Nerd Font, Material Icons
 ## Hyprland
 
 [![Hyprland](https://img.shields.io/badge/Hyprland-Lua%20API-58E1FF?style=flat-square)](https://hyprland.org)
+
+![Rice](screenshots/rice.png)
 
 Config at `wayland/hypr/hyprland.lua` — uses the Hyprland Lua API.
 
