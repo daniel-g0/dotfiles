@@ -226,3 +226,6 @@ nushell/history.sqlite3-shm
 # Claude Code local settings and user-specific configs
 claude/**/*.local.*
 claude/settings.local.json
+
+# Private certificates
+.certs/
