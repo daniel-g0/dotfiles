@@ -98,7 +98,9 @@
 	// ─── System modules ───────────────────────────────────────────────────────────
 
 	"custom/ws-icon": {
-		"format": "<span color='#7dcfff'>󱂬</span>",
+		"format": "󱂬",
+		"min-length": 2,
+		"max-length": 2,
 		"tooltip": false
 	},
 
