@@ -18,7 +18,9 @@
 
 ---
 
-*Bleeding-edge tools built for maximum efficiency and aesthetics — configs that actually make sense. Tokyo Night across every surface. Vim keys everywhere: Nushell, Hyprland, Neovim, Brave, even Claude.*
+**Bleeding-edge tools built for maximum efficiency and aesthetics — configs that actually make sense. Tokyo Night across every surface. Vim keys everywhere: Nushell, Hyprland, Neovim, Brave, even Claude.**
+
+Stack: Hyprland · Hyprlock · Hypridle · Waybar · swaync · WallRizz · Rofi · Kitty · Nushell · Starship · Neovim · Yazi · Zoxide · Fastfetch · Cava · NixOS
 
 ## Install
 
