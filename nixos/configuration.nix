@@ -135,9 +135,16 @@ in
 
   security.polkit.enable = true;
   security.pki.certificateFiles =
-    let certDir = /home/user/Projects/personal/dotfiles/certs;
-        certsExist = builtins.pathExists certDir;
-        certs = if certsExist then builtins.attrNames (builtins.readDir certDir) else [];
+    let dotfilesEnv = builtins.getEnv "DOTFILES_ROOT";
+        etcNixos = "/etc/nixos";
+        certDirCandidates = lib.lists.filter (d: builtins.pathExists d) [
+          (if dotfilesEnv != "" then "${dotfilesEnv}/certs" else null)
+          "${etcNixos}/../certs"
+          "${etcNixos}/../../certs"
+          "/home/user/Projects/personal/dotfiles/certs"
+        ];
+        certDir = if lib.lists.length certDirCandidates > 0 then lib.lists.head certDirCandidates else null;
+        certs = if certDir != null then builtins.attrNames (builtins.readDir certDir) else [];
         certFiles = lib.lists.filter (s: lib.strings.hasSuffix ".crt" s) certs;
     in builtins.map (f: "${certDir}/${f}") certFiles;
   programs.dconf.enable  = true;
