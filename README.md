@@ -222,6 +222,25 @@ Config at `nixos/configuration.nix` — single file, flakes enabled.
 
 Both use `autoPatchelfHook` — NixOS patches the ELF interpreter and rpath automatically so the binaries work without FHS.
 
+### Private certificates
+
+**Location:** `certs/` (gitignored)
+
+Store private CA certificates in `certs/*.crt` — they're automatically loaded on rebuild. The directory contains `.gitkeep` so it's tracked in the repo; actual certificates are gitignored for security.
+
+**Setup:**
+1. Place your `.crt` files in `certs/`
+2. Run `sudo nixos-rebuild switch` (alias: `nixos-re-sw`)
+3. Certificates are system-wide accessible to all tools (curl, Docker, browsers, etc.)
+
+**Example:**
+```bash
+cp my-private-ca.crt ~/dotfiles/certs/
+nixos-re-sw
+```
+
+The glob pattern in `nixos/configuration.nix` (`security.pki.certificateFiles`) finds all `.crt` files and loads them. If `certs/` is empty, no error occurs — graceful degradation.
+
 ### Notable packages
 ```
 Wayland:  hyprlock hypridle awww waybar swaync hyprpicker blueman
