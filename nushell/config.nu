@@ -12,8 +12,8 @@ source ~/.config/zoxide/config.nu
 # Block cursor in normal mode, line cursor in insert. Logo+mode inline.
 $env.config.edit_mode           = 'vi'
 $env.config.cursor_shape        = { vi_insert: line, vi_normal: block }
-$env.PROMPT_INDICATOR_VI_INSERT = "󱄅 I "
-$env.PROMPT_INDICATOR_VI_NORMAL = "󱄅 N "
+$env.PROMPT_INDICATOR_VI_INSERT = "󱄅|𝒾 "
+$env.PROMPT_INDICATOR_VI_NORMAL = "󱄅|𝓃 "
 
 # -- Editor & preferences ------------------------------------------------------------
 $env.config.buffer_editor        = "nvim"

@@ -1,6 +1,6 @@
 # TODO
 
-## Active
+## Completed
 
 - ~~customize waybar~~ ✓
 - ~~customize starship~~ ✓
@@ -11,17 +11,33 @@
 - ~~replace hyprlauncher with rofi or keep~~ ✓ (jiffy)
 - ~~create cheatsheet of all keybinds/aliases/features~~ ✓ (README + CLAUDE.md)
 - ~~add hello/motd on shell start~~ ✓ (fastfetch + fortune via NU_BANNER)
-- improve nvim config (add claude integration)
 - ~~find clean way to update configs~~ ✓ (keeping symlinks; doller TUI installer replaces install.sh)
-- set multiple screen setups (work 2 screens + turned off eDP, and home single screen)
-- set up claude-code properly (patch security settings — MCP, permissions, hooks)
-- in a ethernet setting, the wifi context menu still drops
-- the status bar in kitty backround still messed up, after text is black
-- check if new cursor pack works
-- super + c opens a custom tool fzf that browses each stack tech keybindings
-- after idle, go to qylock not other boring one
-- Why is my date 26th? being 22
-- Add desktop num in waybar, number
+
+## Active
+
+### Bugs
+- [ ] kitty tab bar background black text after content scrolls
+- [ ] wallrizz (super+w) freezes/crashes on image caching (just remove it by another tool)
+- [ ] wifi context menu drops when on ethernet
+- [ ] verify date display is correct in waybar/kitty (was showing wrong date)
+- [ ] check if new cursor pack renders correctly
+- [ ] brave tokyonight aint working
+
+### Quick config
+- [ ] idle → hyprlock (currently going to wrong locker)
+- [ ] waybar: add workspace number indicator
+
+### Features
+- [ ] set up claude-code properly (MCP, permissions, hooks)
+- [ ] improve nvim config (add claude integration)
+- [ ] super+c: fzf browser for per-stack keybindings cheatsheet
+- [ ] add eye care tool (20-20-20 rule notifications)
+
+### Big tasks
+- [ ] (important) set up VPN
+- [ ] set multiple monitor profiles (work: 2 screens + eDP off; home: single screen)
+- [ ] add proper screenshots to README
+- [ ] create VM for safe dotfile testing
 
 
 ## Future (when Windows removed / no longer dual boot)

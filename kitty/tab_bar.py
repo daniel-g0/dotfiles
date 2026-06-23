@@ -2,7 +2,7 @@ from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData, as_rgb
 
 # Tokyo Night palette
-_BG     = as_rgb(0x1a1b26)
+_BG     = as_rgb(0x16161e)
 _BLUE   = as_rgb(0x7aa2f7)
 _PURPLE = as_rgb(0xbb9af7)
 _CYAN   = as_rgb(0x7dcfff)
@@ -66,5 +66,13 @@ def draw_tab(
             screen.draw(SEP)
         screen.cursor.fg = color
         screen.draw(text)
+
+    if not single:
+        end = before + max_title_length
+        remaining = end - screen.cursor.x
+        if remaining > 0:
+            screen.cursor.fg = _FG
+            screen.cursor.bg = _BG
+            screen.draw(' ' * remaining)
 
     return screen.columns if single else before + max_title_length
