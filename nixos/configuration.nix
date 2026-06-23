@@ -135,7 +135,7 @@ in
 
   security.polkit.enable = true;
   security.pki.certificateFiles = lib.lists.flatten [
-    (builtins.map (f: "${./.certs}/${f}") (lib.lists.filter (s: lib.strings.hasSuffix ".crt" s) (builtins.attrNames (builtins.readDir ./.certs))))
+    (builtins.map (f: "${./certs}/${f}") (lib.lists.filter (s: lib.strings.hasSuffix ".crt" s) (builtins.attrNames (builtins.readDir ./certs))))
   ];
   programs.dconf.enable  = true;
 

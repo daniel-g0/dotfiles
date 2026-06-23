@@ -228,5 +228,5 @@ claude/**/*.local.*
 claude/settings.local.json
 
 # Private certificates (keep .gitkeep to track the dir)
-.certs/
-!.certs/.gitkeep
+certs/*
+!certs/.gitkeep
