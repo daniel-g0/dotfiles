@@ -9,6 +9,10 @@
 [![Tokyo Night](https://img.shields.io/badge/theme-Tokyo%20Night-7aa2f7?style=flat-square)](https://github.com/enkia/tokyo-night-vscode-theme)
 [![License](https://img.shields.io/badge/license-MIT-bb9af7?style=flat-square)](LICENSE)
 
+[![Stars](https://img.shields.io/github/stars/daniel-g0/dotfiles?style=flat-square&color=9ece6a&logo=github&label=stars)](https://github.com/daniel-g0/dotfiles/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/daniel-g0/dotfiles?style=flat-square&color=f7768e)](https://github.com/daniel-g0/dotfiles/commits/main)
+[![Repo size](https://img.shields.io/github/repo-size/daniel-g0/dotfiles?style=flat-square&color=7dcfff)](https://github.com/daniel-g0/dotfiles)
+
 </div>
 
 ---
@@ -224,22 +228,18 @@ Both use `autoPatchelfHook` — NixOS patches the ELF interpreter and rpath auto
 
 ### Private certificates
 
-**Location:** `certs/` (gitignored)
+**Location:** `~/.config/certs/` — outside the repo, never tracked.
 
-Store private CA certificates in `certs/*.crt` — they're automatically loaded on rebuild. The directory contains `.gitkeep` so it's tracked in the repo; actual certificates are gitignored for security.
+Store private CA certificates in `~/.config/certs/*.crt`. On rebuild, `configuration.nix` reads `$SUDO_USER`, locates the directory, copies each cert into the Nix store via `builtins.path`, and installs them system-wide. If the directory is absent, no error occurs — graceful degradation.
 
 **Setup:**
-1. Place your `.crt` files in `certs/`
-2. Run `sudo nixos-rebuild switch` (alias: `nixos-re-sw`)
-3. Certificates are system-wide accessible to all tools (curl, Docker, browsers, etc.)
-
-**Example:**
 ```bash
-cp my-private-ca.crt ~/dotfiles/certs/
+mkdir -p ~/.config/certs
+cp my-private-ca.crt ~/.config/certs/
 nixos-re-sw
 ```
 
-The glob pattern in `nixos/configuration.nix` (`security.pki.certificateFiles`) finds all `.crt` files and loads them. If `certs/` is empty, no error occurs — graceful degradation.
+Certificates become available system-wide to all tools (curl, Docker, browsers, etc.).
 
 ### Notable packages
 ```
