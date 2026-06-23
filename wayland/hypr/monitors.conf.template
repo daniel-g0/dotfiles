@@ -1,0 +1,3 @@
+# Monitor profiles managed by hyprmon
+# This file is auto-generated — edit via `hyprmon` TUI
+# Source this from hyprland.lua with: source = ~/.config/hypr/monitors.conf

@@ -110,6 +110,14 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 - Shadow: `#7aa2f7` 22% / inactive `#1a1b26` 12%
 - Blur: 16px, 6 passes, vibrancy 0.3
 
+### Monitor profiles
+**Tool:** `hyprmon` TUI for profile management  
+**File:** `~/.config/hypr/monitors.conf` (managed by hyprmon, not symlinked)  
+**Profiles:**
+- **Work:** DP-3 (left) + DP-4 (middle) + eDP-1 (right)
+- **Home:** eDP-1 only
+Run `hyprmon` to create/switch profiles. Changes saved to monitors.conf (sourced by hyprland.lua).
+
 ### Keybindings (Super key)
 | Binding | Action |
 |---------|--------|
@@ -122,6 +130,7 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 | `Super+C` | Keybindings cheatsheet (fzf browser) |
 | `Super+T` | Toggle dwindle split |
 | `Super+Shift+L` | Lock (hyprlock) |
+| `Super+Shift+W` | LAN discovery (whosthere) |
 | `Super+R` | Reload config |
 | `Super+Shift+S` | Region screenshot → clipboard |
 | `Print` | Full screenshot → `~/Pictures/` |
