@@ -16,11 +16,11 @@
 ## Active
 
 ### Bugs
-- [ ] kitty tab bar background black text after content scrolls
-- [ ] wallrizz (super+w) freezes/crashes on image caching (just remove it by another tool)
-- [ ] wifi context menu drops when on ethernet
-- [ ] verify date display is correct in waybar/kitty (was showing wrong date)
-- [ ] check if new cursor pack renders correctly
+- [x] kitty tab bar background black text after content scrolls ✓
+- [x] wallrizz (super+w) freezes/crashes on image caching — replaced with yazi picker ✓
+- [x] wifi context menu drops when on ethernet — replaced GTK menu with on-click nmtui / right-click wifi toggle ✓
+- [x] verify date display is correct in waybar/kitty — system time correct (CEST), format fine ✓
+- [x] check if new cursor pack renders correctly ✓
 - [ ] brave tokyonight aint working
 
 ### Quick config

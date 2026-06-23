@@ -15,3 +15,5 @@ export alias top = btop
 # wl-clipboard — wayland clipboard
 export alias cb  = wl-copy    # pipe into cb to copy
 export alias cbp = wl-paste   # cbp to paste
+
+export alias ç = ls

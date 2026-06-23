@@ -28,12 +28,12 @@
 
 	"clock#date": {
 		// "interval":
-		"format": "󰸗 {:%d-%m}",
+		"format": "󰸗 {:%Y-%m-%d}",
 		// "timezone":
 		// "timezones":
 		// "locale":
-		"min-length": 8,
-		"max-length": 8,
+		"min-length": 12,
+		"max-length": 12,
 		// "rotate":
 		// "on-click":
 		// "on-click-middle":

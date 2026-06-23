@@ -32,14 +32,8 @@
 		"tooltip-format-wifi": "<b>Network</b>: {essid}\n<b>IP Addr</b>: {ipaddr}/{cidr}\n<b>Strength</b>: {signalStrength}%\n<b>Frequency</b>: {frequency} GHz",
 		"tooltip-format-disconnected": "Wi-Fi Disconnected",
 		"tooltip-format-disabled": "Wi-Fi Disabled",
-		"menu": "on-click",
-		"menu-file": "~/.config/waybar/menus/network.xml",
-		"menu-actions": {
-			"connect":  "kitty -e nmtui connect",
-			"edit":     "kitty -e nmtui",
-			"wifi-on":  "nmcli radio wifi on",
-			"wifi-off": "nmcli radio wifi off"
-		}
+		"on-click": "kitty -e nmtui",
+		"on-click-right": "nmcli radio wifi toggle"
 		// "expand":
 	}
 }

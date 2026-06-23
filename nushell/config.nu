@@ -91,6 +91,7 @@ use ~/.config/nushell/aliases/nixos/nixos-aliases.nu     *
 use ~/.config/nushell/aliases/nvim/nvim-aliases.nu       *
 use ~/.config/nushell/aliases/rip/rip-aliases.nu         *
 use ~/.config/nushell/aliases/utils/utils-aliases.nu     *
+use ~/.config/nushell/aliases/yazi/yazi-aliases.nu       *
 
 # -- Completions ---------------------------------------------------------------------
 use ~/.config/nushell/custom-completions/bat/bat-completions.nu       *

@@ -142,7 +142,7 @@
 	},
 
 	"clock": {
-		"format": "{:%d/%m/%y %H:%M}",
+		"format": "{:%Y-%m-%d %H:%M}",
 		"format-alt": "{:%A, %d %B %Y}",
 		"tooltip-format": "<tt><small>{calendar}</small></tt>",
 		"calendar": {
@@ -169,13 +169,8 @@
 		"tooltip-format-wifi": "{essid}\n{ipaddr}/{cidr}\n{signalStrength}%  {frequency} GHz",
 		"tooltip-format-ethernet": "{ifname}",
 		"tooltip-format-disconnected": "Disconnected",
-		"menu": "on-click",
-		"menu-file": "~/.config/waybar/menus/network.xml",
-		"menu-actions": {
-			"connect":  "nm-connection-editor",
-			"wifi-on":  "nmcli radio wifi on",
-			"wifi-off": "nmcli radio wifi off"
-		}
+		"on-click": "kitty -e nmtui",
+		"on-click-right": "nmcli radio wifi toggle"
 	},
 
 	"bluetooth": {

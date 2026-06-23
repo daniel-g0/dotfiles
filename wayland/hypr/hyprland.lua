@@ -24,7 +24,7 @@ hl.monitor({
 local terminal    = "kitty"
 local fileManager = "kitty -e yazi"
 local menu        = "rofi -show drun"
-local wallpaper   = "$HOME/.config/WallRizz/launch.sh"
+local wallpaper   = "kitty --class wallpaper-picker -1 -e $HOME/.config/hypr/wallpaper-picker.sh"
 
 
 -------------------
@@ -372,10 +372,10 @@ hl.window_rule({
     float = true,
 })
 
--- WallRizz wallpaper picker windowrule
+-- Wallpaper picker windowrule
 hl.window_rule({
-    name   = "float-wallrizz",
-    match  = { class = "wallrizz" },
+    name   = "float-wallpaper-picker",
+    match  = { class = "wallpaper-picker" },
     float  = true,
     size   = "900 600",
     center = true,
