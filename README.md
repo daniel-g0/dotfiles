@@ -78,6 +78,10 @@ sudo nixos-rebuild switch
 
 **VPN** — `custom/vpn` waybar module. Click → fzf TUI: connect/disconnect/import `.pcf`. Configs at `~/.config/vpns/` (untracked).
 
+**Cheatsheet** — `Super+C`. fzf browser: Hyprland, Nushell, Git, Docker, NixOS, Yazi, VPN, Bat. ESC to close.
+
+![Cheatsheet](screenshots/cheatsheet.png)
+
 **Nushell** — Vi mode, 100k SQLite history, zoxide, FZF (`Ctrl+R/T`, `Alt+C`), 150+ git aliases, 35+ docker aliases.
 
 **NixOS certs** — Drop `.crt` in `~/.config/certs/`, run `nixos-re-sw`. Auto-installed system-wide, never tracked.
