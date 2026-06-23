@@ -71,6 +71,7 @@ ALL_LINK_DEFS=(
     "fastfetch|$HOME/.config/fastfetch|all"
     "zoxide/config.nu|$HOME/.config/zoxide/config.nu|all"
     "yazi|$HOME/.config/yazi|all"
+    "claude/settings.json|$HOME/.claude/settings.json|all"
     "cursor|$HOME/.config/cursors|linux"
     "rofi|$HOME/.config/rofi|linux"
     "wallrizz|$HOME/.config/WallRizz|linux"

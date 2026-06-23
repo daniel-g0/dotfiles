@@ -1,5 +1,22 @@
 {
-  "theme": "dark",
+  "env": {
+    "EDITOR": "nvim",
+    "VISUAL": "nvim"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/home/user/.claude/statusline-command.sh\""
+  },
+  "enabledPlugins": {
+    "caveman@caveman": true,
+    "context7@claude-plugins-official": true,
+    "serena@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "session-report@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true
+  },
   "extraKnownMarketplaces": {
     "caveman": {
       "source": {
@@ -7,5 +24,7 @@
         "repo": "JuliusBrussee/caveman"
       }
     }
-  }
+  },
+  "theme": "custom:tokyonight",
+  "editorMode": "vim"
 }
