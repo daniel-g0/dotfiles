@@ -13,10 +13,6 @@
 [![Last commit](https://img.shields.io/github/last-commit/daniel-g0/dotfiles?style=flat-square&color=f7768e)](https://github.com/daniel-g0/dotfiles/commits/main)
 [![Repo size](https://img.shields.io/github/repo-size/daniel-g0/dotfiles?style=flat-square&color=7dcfff)](https://github.com/daniel-g0/dotfiles)
 
-</div>
-
-<div align="center">
-
 ![Desktop](screenshots/desktop.png)
 
 </div>
@@ -25,611 +21,78 @@
 
 ## Stack
 
-| Layer | Tool | Notes |
-|-------|------|-------|
+| | Tool | Role |
+|-|------|------|
 | OS | **NixOS** (flakes) | Declarative, reproducible |
-| Compositor | **Hyprland** | Lua config, animated borders |
-| Shell | **Nushell** | Vi mode, SQLite history, structured data |
-| Editor | **Neovim** (NvChad) | |
+| WM | **Hyprland** | Lua config, animated borders |
+| Shell | **Nushell** | Vi mode, SQLite history |
+| Editor | **Neovim** | NvChad |
 | Terminal | **Kitty** | Custom Python tab bar |
-| Prompt | **Starship** | Single-line, icon-only |
-| Status bar | **Waybar** | Modular jsonc + CSS |
-| Lock screen | **Hyprlock** | Blurred wallpaper |
-| Idle daemon | **Hypridle** | Dim → lock → suspend chain |
-| Notifications | **swaync** | Slide-right panel, MPRIS widget |
-| Wallpapers | **awww** + **WallRizz** | Daemon + fuzzy picker with theme sync |
-| Launcher | **Jiffy** | kitty-based fzf launcher |
-| Navigation | **Zoxide** + **FZF** | Smart jump, fuzzy everything |
-
----
+| Bar | **Waybar** | Modular jsonc + CSS |
+| Notifications | **swaync** | Slide-right panel |
+| Wallpapers | **awww** + **WallRizz** | Daemon + fuzzy picker |
+| Launcher | **Jiffy** | fzf in kitty |
+| Prompt | **Starship** | Single-line, icons only |
 
 ---
 
 ## Install
 
 ```bash
-git clone <repo> ~/dotfiles
-cd ~/dotfiles
-./doller
-```
-
-`doller` is a Tokyo Night TUI installer. It shows the symlink status for every config, backs up any conflicts, then links everything into `~/.config`. On NixOS it also links system configs (requires sudo for `/etc/nixos`).
-
-```bash
-./doller --dry-run    # preview only — no changes made
-./doller --force      # skip confirmation prompt
-./install.sh          # shim that calls doller
-```
-
-After symlinking, rebuild NixOS to install all packages:
-
-```bash
+git clone https://github.com/daniel-g0/dotfiles ~/dotfiles
+cd ~/dotfiles && ./doller
 sudo nixos-rebuild switch
-# or the alias:
-nixos-re-sw
 ```
+
+`doller` — TUI symlink installer. `--dry-run` to preview, `--force` to skip prompt.
 
 ---
 
-## Symlink map
+## Symlinks
 
-| Repo path | Symlinked to |
-|-----------|-------------|
-| `nushell/` | `~/.config/nushell` |
-| `nvim/` | `~/.config/nvim` |
-| `starship/starship.toml` | `~/.config/starship.toml` |
-| `kitty/` | `~/.config/kitty` |
-| `wallpapers/` | `~/.config/wallpapers` |
-| `jiffy/` | `~/.config/jiffy` |
-| `wallrizz/` | `~/.config/WallRizz` |
-| `wayland/hypr/` | `~/.config/hypr` |
-| `wayland/swaync/` | `~/.config/swaync` |
-| `wayland/waybar/` | `~/.config/waybar` |
-| `nixos/configuration.nix` | `/etc/nixos/configuration.nix` |
+| Repo | → | Target |
+|------|---|--------|
+| `nushell/` | | `~/.config/nushell` |
+| `nvim/` | | `~/.config/nvim` |
+| `kitty/` | | `~/.config/kitty` |
+| `starship/starship.toml` | | `~/.config/starship.toml` |
+| `yazi/` | | `~/.config/yazi` |
+| `wallpapers/` | | `~/.config/wallpapers` |
+| `wallrizz/` | | `~/.config/wallrizz` |
+| `wayland/hypr/` | | `~/.config/hypr` |
+| `wayland/waybar/` | | `~/.config/waybar` |
+| `wayland/swaync/` | | `~/.config/swaync` |
+| `nixos/configuration.nix` | | `/etc/nixos/configuration.nix` |
 
-> **Never edit `~/.config/*` directly** — they are symlinks. Edits land in the repo automatically.
-
----
-
-## Structure
-
-```
-dotfiles/
-├── doller                          TUI symlink installer
-├── install.sh                      shim → doller
-├── flake.nix                       NixOS flake
-├── flake.lock
-├── nixos/
-│   ├── configuration.nix           system packages, services, custom derivations
-│   └── hardware-configuration.nix
-├── nushell/
-│   ├── config.nu                   shell config, hooks, FZF, env vars
-│   ├── env.nu                      environment variables
-│   ├── aliases/
-│   │   ├── bat/                    b, bn, bp, bl
-│   │   ├── chezmoi/                ch, chad, chap, chd, chda, chs
-│   │   ├── docker/                 35+ aliases (dcls, dbl, dr, dxcit, dsta…)
-│   │   ├── exa/                    legacy exa aliases
-│   │   ├── eza/                    eza aliases
-│   │   ├── git/                    150+ aliases + helpers
-│   │   ├── nixos/                  nixos-re-sw, nixos-edit, nixos-garbage
-│   │   ├── nvim/                   n → nvim
-│   │   ├── rip/                    rm → rip, rd
-│   │   ├── utils/                  grep→rg, find→fd, du→dust, top→btop, cb, cbp
-│   │   └── yazi/
-│   ├── custom-completions/         completions for 15+ tools (bat, docker, gh, git…)
-│   ├── scripts/
-│   │   └── quote.sh                centered fortune formatter
-│   └── themes/
-│       └── tokyo-night.nu          Tokyo Night color theme
-├── nvim/
-│   ├── init.lua                    NvChad entry point
-│   └── lua/
-│       ├── chadrc.lua              NvChad overrides
-│       ├── mappings.lua            custom keymaps
-│       ├── options.lua             editor options
-│       ├── configs/                conform, lspconfig, lazy
-│       └── plugins/
-│           └── init.lua            plugin declarations
-├── kitty/
-│   ├── kitty.conf
-│   └── tab_bar.py                  custom Python tab bar renderer
-├── starship/
-│   └── starship.toml
-├── fastfetch/
-│   └── config.jsonc
-├── yazi/
-│   ├── yazi.toml
-│   └── theme.toml                  Tokyo Night theme
-├── zoxide/
-│   └── config.nu
-├── wallpapers/                     wallpaper images (Tokyo Night palette)
-├── wallrizz/
-│   ├── launch.sh                   kitty launcher
-│   ├── awww@daniel.js              daemon handler (random awww transitions)
-│   ├── color-backend.sh            ImageMagick 16-color palette extractor
-│   └── themeExtensionScripts/
-│       ├── kitty@5hubham5ingh.js   live kitty color sync
-│       └── hyprland@daniel.js      live Hyprland border gradient sync
-├── jiffy/
-│   ├── launch.sh                   kitty launcher (Tokyo Night fzf colors)
-│   └── menu.js                     app entries
-├── rofi/
-│   └── config.rasi
-├── cava/
-│   ├── config                      main config (Tokyo Night)
-│   ├── config-vibe                 alternate vibe mode config
-│   ├── shaders/                    GLSL visualizer shaders
-│   └── themes/                     color themes
-├── cursor/
-│   ├── build.py                    cursor build script
-│   ├── Layan-cursors/              Layan cursor theme
-│   └── nix-logo/                   custom NixOS snowflake cursor
-├── brave/
-│   └── tokyo-night-storm/          Brave browser Tokyo Night theme extension
-├── monkeytype/
-│   └── config.json
-├── scripts/
-│   └── cava-vibe                   toggle cava vibe mode
-├── claude/
-│   └── settings.json               Claude Code settings
-├── wayland/
-│   ├── hypr/
-│   │   ├── hyprland.lua            compositor (Lua API)
-│   │   ├── hyprlock.conf           lock screen
-│   │   ├── hypridle.conf           idle/suspend timers
-│   │   └── cheatsheet.sh           fzf keybindings/alias browser (Super+C)
-│   ├── waybar/
-│   │   ├── config.jsonc            bar layout
-│   │   ├── modules.jsonc           module includes
-│   │   ├── style.css               main stylesheet
-│   │   ├── theme.css               Tokyo Night variables
-│   │   ├── modules/
-│   │   │   ├── custom/             distro, dividers, notifications, power, update, user
-│   │   │   └── hyprland/           window, workspaces
-│   │   ├── menus/                  GTK XML menus (bluetooth, network, nix, power)
-│   │   ├── scripts/                backlight, bluetooth, network, power, update, volume
-│   │   ├── styles/                 fonts, modules-center/left/right, states
-│   │   └── themes/
-│   │       └── tokyo-night.css
-│   └── swaync/
-│       ├── config.json
-│       └── style.css
-└── x11/                            legacy X11 config (i3 + polybar era)
-    ├── i3/
-    │   ├── config
-    │   └── polybar/                polybar configs + community-configs
-    ├── picom/
-    │   └── picom.conf
-    ├── remaps                      xmodmap key remaps
-    └── rofi/
-        └── docu.rasi
-```
+> Never edit `~/.config/*` directly — they're symlinks. Edits land in the repo.
 
 ---
 
-## NixOS
+## Highlights
 
-[![NixOS](https://img.shields.io/badge/NixOS-24.11-5277C3?style=flat-square&logo=nixos)](https://nixos.org)
-
-Config at `nixos/configuration.nix` — single file, flakes enabled.
-
-### System
-- **Boot:** systemd-boot, quiet splash, latest kernel, max 3 generations
-- **Audio:** PipeWire + PulseAudio compat layer + ALSA 32-bit + RTKit realtime
-- **Display:** Hyprland session, X server + dconf + polkit
-- **Input:** Capslock → Escape via `keyd`, Spanish layout (`es`)
-- **Docker:** rootless mode
-- **Network:** NetworkManager, hostname `nixos`
-- **Locale:** `en_US` / `es_ES` regional / `Europe/Madrid` timezone
-- **Shell:** bash auto-launches nushell for interactive sessions
-
-### Custom packages (auto-patched ELF)
-| Package | Version | Source |
-|---------|---------|--------|
-| jiffy | 1.6.3 | GitHub release binary |
-| wallrizz | 1.4.0 | GitHub release binary |
-
-Both use `autoPatchelfHook` — NixOS patches the ELF interpreter and rpath automatically so the binaries work without FHS.
-
-### Private certificates
-
-**Location:** `~/.config/certs/` — outside the repo, never tracked.
-
-Store private CA certificates in `~/.config/certs/*.crt`. On rebuild, `configuration.nix` reads `$SUDO_USER`, locates the directory, copies each cert into the Nix store via `builtins.path`, and installs them system-wide. If the directory is absent, no error occurs — graceful degradation.
-
-**Setup:**
-```bash
-mkdir -p ~/.config/certs
-cp my-private-ca.crt ~/.config/certs/
-nixos-re-sw
-```
-
-Certificates become available system-wide to all tools (curl, Docker, browsers, etc.).
-
-### Notable packages
-```
-Wayland:  hyprlock hypridle awww waybar swaync hyprpicker blueman
-          fastfetch fortune fzf vpnc
-Terminal: kitty starship zoxide yazi bat ripgrep fd delta btop dust rm-improved
-Dev:      neovim git git-lfs gcc uv nodejs claude-code
-Apps:     brave teams-for-linux keepass veracrypt
-
-> **Brave theme:** Search "Tokyo Night Storm" in the Chrome Web Store and add to Brave. Source: [mattCasanova/tokyo-night-storm-google-chrome](https://github.com/mattCasanova/tokyo-night-storm-google-chrome). Theme files kept in `brave/tokyo-night-storm/` for reference.
-Fonts:    JetBrainsMono Nerd Font, Material Icons
-```
-
----
-
-## Hyprland
-
-[![Hyprland](https://img.shields.io/badge/Hyprland-Lua%20API-58E1FF?style=flat-square)](https://hyprland.org)
+**Hyprland** — Lua API, animated gradient border (blue→purple→cyan), 75% opacity kitty, frosted blur.
 
 ![Rice](screenshots/rice.png)
 
-Config at `wayland/hypr/hyprland.lua` — uses the Hyprland Lua API.
+**Waybar** — NixOS menu · CPU/RAM/Temp · Clock · Network · VPN (󰦝 vpnc TUI) · Bluetooth · Volume · Battery · Power.
 
-### Appearance
+**VPN** — `custom/vpn` waybar module. Click → fzf TUI: connect/disconnect/import `.pcf`. Configs at `~/.config/vpns/` (untracked).
 
-| Property | Value |
-|----------|-------|
-| Theme | Tokyo Night |
-| Gaps | in: 5px · out: 20px |
-| Border | 3px |
-| Rounding | 10px / power 2 |
-| Active border | Animated gradient: blue `#7aa2f7` → purple `#bb9af7` → cyan `#2ac3de` · loops |
-| Inactive border | `#414868` at 66% opacity |
-| Shadow | `#7aa2f7` 22% active · `#1a1b26` 12% inactive · range 6px |
-| Blur | 16px · 6 passes · vibrancy 0.3 · noise 0.02 |
-| Opacity | 100% active + inactive (per-app via window rules) |
+**Nushell** — Vi mode, 100k SQLite history, zoxide, FZF (`Ctrl+R/T`, `Alt+C`), 150+ git aliases, 35+ docker aliases.
 
-### Autostart
-```
-kitty · waybar · swaync · hypridle
-awww-daemon → nix-tokyo-night.png (2s fade transition)
-```
+**NixOS certs** — Drop `.crt` in `~/.config/certs/`, run `nixos-re-sw`. Auto-installed system-wide, never tracked.
 
-### Keybindings
-
-| Binding | Action |
-|---------|--------|
-| `Super + Return` | Open kitty terminal |
-| `Super + Q` | Close focused window |
-| `Super + F` | File manager (yazi in kitty) |
-| `Super + E` | Jiffy app launcher |
-| `Super + W` | WallRizz wallpaper picker |
-| `Super + N` | Toggle swaync notification center |
-| `Super + C` | Keybindings cheatsheet (fzf browser) |
-| `Super + T` | Toggle dwindle split |
-| `Super + Shift + L` | Lock screen (hyprlock) |
-| `Super + Shift + R` | Reload Hyprland config |
-| `Super + Shift + S` | Region screenshot → clipboard |
-| `Print` | Full screenshot → `~/Pictures/YYYYMMDD_HHMMSS.png` |
-| `Super + H/L/K/J` | Focus left / right / up / down |
-| `Super + [1–9, 0]` | Switch to workspace |
-| `Super + Shift + [1–9, 0]` | Move window to workspace |
-| `Super + Scroll` | Cycle workspaces |
-| `Super + LMB drag` | Move window |
-| `Super + RMB drag` | Resize window |
-| `XF86AudioRaiseVolume` | Volume +5% (repeating) |
-| `XF86AudioLowerVolume` | Volume −5% (repeating) |
-| `XF86AudioMute` | Toggle mute |
-| `XF86AudioMicMute` | Toggle mic mute |
-| `XF86MonBrightnessUp/Down` | Brightness ±5% (brightnessctl) |
-| `XF86AudioNext/Prev/Play/Pause` | Playerctl |
-
-### Gestures
-- **3-finger horizontal swipe** → switch workspace
-
-### Window rules
-| Rule | Match | Effect |
-|------|-------|--------|
-| Suppress maximize | all windows | Ignores maximize requests |
-| Fix XWayland drags | class `^$`, xwayland float | `no_focus` |
-| Jiffy | class `jiffy` | Float · 700×500 · centered |
-| WallRizz | class `wallpaper-picker` | Float · 900×600 · centered |
-| VPN menu | class `vpn-menu` | Float · 600×400 · centered |
-| Cheatsheet | class `cheatsheet` | Float · 1000×700 · centered |
-
-### Input
-- Keyboard: Spanish layout (`es`) via Hyprland, Capslock → Escape via `keyd`
-- Touchpad: natural scroll off
-- Mouse sensitivity: 0 (no modification)
+**WallRizz** — `Super+W`. fzf picker + awww transitions + live Tokyo Night color sync to kitty/Hyprland borders.
 
 ---
 
-## Hyprlock
-
-Config at `wayland/hypr/hyprlock.conf`.
-
-- **Background:** blurred current wallpaper (8px, 3 passes) with `#1a1b26` fallback
-- **Clock:** 72pt bold · `HH:MM` · 1s refresh
-- **Date:** 18pt · `Day, Month DD` · 60s refresh
-- **Password field:** 300×50px · blue border `#7aa2f7` · centered (−80px vertical offset)
-- No loading bar · cursor hidden · no grace period
-
----
-
-## Hypridle
-
-Config at `wayland/hypr/hypridle.conf`.
-
-| Timeout | Action |
-|---------|--------|
-| 5 min | Dim to 20% brightness (`brightnessctl`) |
-| 10 min | Lock session (`loginctl lock-session`) |
-| 11 min | Turn off display (`hyprctl dispatch dpms off`) |
-| 30 min | Suspend system (`systemctl suspend`) |
-
-Before suspend → lock. After wake → display on.
-
----
-
-## Waybar
-
-[![Waybar](https://img.shields.io/badge/Waybar-modular-F5C2E7?style=flat-square)](https://github.com/Alexays/Waybar)
-
-Config at `wayland/waybar/` — modular jsonc split by module, modular CSS split by section.
-
-Layer: **top** · Mode: **dock** · Auto-reload on CSS change.
-
-### Layout
-
-**Left:**
-`󰍜 NixOS menu` · `󱄅 Distro logo` · `CPU %` · `RAM %` · `Temp °C`
-
-**Center:**
-`Clock HH:MM` · `Date DD-MM` (with calendar popup)
-
-**Right:**
-`Idle inhibitor` · `Network` · `VPN 󰦝` · `Bluetooth` · `Notifications` · `Updates` · `MPRIS` · `Volume` · `Mic` · `Backlight` · `Battery` · `󰍜 Power menu`
-
-### Module details
-
-#### 󰍜 NixOS menu (`custom/user`)
-GTK dropdown — all actions open a dedicated kitty window, tee output to `/tmp/nix-<action>.log`, and wait for Enter before closing:
-
-| Entry | Command |
-|-------|---------|
-| Edit config | `nvim /etc/nixos/configuration.nix` |
-| Rebuild Switch | `nixos-rebuild switch` |
-| Rebuild Test | `nixos-rebuild test` |
-| Update Flake | `nix flake update` |
-| Garbage Collect | `nix-collect-garbage --delete-older-than 7d` |
-| List Generations | `nixos-rebuild list-generations` |
-
-#### 󱄅 Distro logo (`custom/distro`)
-Opens kitty in `$HOME` with `NU_BANNER=1` → triggers fastfetch + centered fortune "Quote of the Day" greeting.
-
-#### Temperature
-CPU temp · critical threshold: **90°C**
-
-#### Memory
-RAM usage % · tooltip: used / total GiB
-
-#### CPU
-Usage % · updates every 10s · warn: 75% · critical: 90%
-
-#### Clock
-- `clock#time` — `HH:MM` · tooltip: 12h AM/PM format
-- `clock#date` — `DD-MM` · click: calendar popup
-
-#### Network
-WiFi signal strength bars · tooltip: SSID, IP, frequency · click: network manager menu · right-click: toggle WiFi
-
-#### VPN (`custom/vpn`)
-vpnc-based VPN manager. Icon: `󰦝` green when connected (shows IP in tooltip), `󰦞` red when disconnected. Click opens VPNC TUI — a floating fzf menu (600×400, centered).
-
-**TUI menu:**
-- **Connections** → list all `~/.config/vpns/*.conf` → Connect / Edit / Remove
-- **Disconnect** — visible only when connected
-- **Import** — finds `.pcf` / `.ovpn` / `.conf` files in `~/Downloads`, `~/Documents`, `~/Desktop`; auto-detects type; converts Cisco PCF via `pcf2vpnc`
-
-Configs live at `~/.config/vpns/` — outside the repo, untracked (contain credentials).
-To skip password prompt: add `Xauth password yourpass` to the `.conf` file.
-
-#### Bluetooth
-Connected device + battery % in tooltip · click: bluetooth manager menu
-
-#### Notifications (`custom/notifications`)
-swaync integration — icon changes per state: normal / DND / inhibited
-
-#### Updates (`custom/update`)
-Hourly package check · click: update TUI in kitty · right-click: refresh
-
-#### Idle inhibitor
-Toggle prevent-screen-sleep; icon changes when active
-
-#### MPRIS
-Current track: `title - artist`
-
-#### PulseAudio (group)
-- Output: volume % · scroll ±5% · click: mute toggle · tooltip: device name
-- Input: mic level · muted state · scroll to adjust
-
-#### Backlight
-Brightness % · scroll to adjust
-
-#### Battery
-% + charging icon · notify-send at 20% (warn), 10% (critical), 100% (full)
-
-#### Power menu (`custom/power`)
-GTK dropdown: Lock / Suspend / Hibernate / Reboot / Shutdown / Logout
-
-### Styling
-Tokyo Night palette throughout. Buttons: 20px border-radius. Powerline dividers between module groups. Frosted look via Hyprland blur on the layer.
-
----
-
-## Nushell
-
-[![Nushell](https://img.shields.io/badge/Nushell-vi%20mode-4E9A06?style=flat-square&logo=powershell&logoColor=white)](https://nushell.sh)
-
-Config at `nushell/config.nu`.
-
-Vi mode — block cursor in normal, line cursor in insert. Indicators: `󱄅 N` (normal) / `󱄅 I` (insert). History: SQLite, 100k entries, per-session, deduped, timestamps, auto-sync on every entry.
-
-### Hooks
-
-| Hook | Trigger | Action |
-|------|---------|--------|
-| Tab bar title | Every prompt | Updates kitty tab title: `~/path 󰊢 branch [+N ~N ?N] \| Nf Nd` |
-| Auto-clear | Directory change | Clears screen on `cd` to any non-home directory (scrollback preserved) |
-| Greeting | Shell start | fastfetch + centered fortune; only when `NU_BANNER=1` is set (waybar logo launch) |
-
-### FZF keybinds
-
-| Key | Action |
-|-----|--------|
-| `Ctrl+R` | Fuzzy history search |
-| `Ctrl+T` | Fuzzy file picker → insert path (fd-powered) |
-| `Alt+C` | Fuzzy `cd` to directory |
-
-### Alias modules
-
-| Module | Key aliases |
-|--------|-------------|
-| `bat` | `b`, `bn` (numbered), `bp` (plain), `bl` |
-| `docker` | 35+ aliases — build, image, container, network, volume; `dsta` (stop all) |
-| `git` | 150+ aliases + helpers (`git_current_branch`, `git_main_branch`, worktree, rebase flows) |
-| `nixos` | `nixos-edit`, `nixos-re-sw` (rebuild switch), `nixos-garbage` (7d+ cleanup) |
-| `nvim` | `n` → `nvim` |
-| `rip` | `rm` → rip (trash, recoverable), `rd` (restore deleted) |
-| `utils` | `grep`→rg · `find`→fd · `du`→dust · `top`→btop · `cb` (wl-copy) · `cbp` (wl-paste) |
-
-### Custom completions
-bat · docker · gh · git · less · make · man · nix · ssh · tar · tldr · uv · zoxide · and more
-
----
-
-## Kitty
-
-[![Kitty](https://img.shields.io/badge/Kitty-terminal-F5A97F?style=flat-square)](https://sw.kovidgoyal.net/kitty/)
-
-Config at `kitty/kitty.conf`.
-
-| Setting | Value |
-|---------|-------|
-| Font | JetBrainsMono Nerd Font 12pt |
-| Theme | Tokyo Night |
-| Opacity | 75% |
-| Blur | Frosted (via Hyprland window rule) |
-| Scrollback | 10,000 lines |
-| Padding | 8px |
-| Cursor | Block, no blink |
-| Repaint | 10ms |
-| Input delay | 3ms |
-| Remote control | Unix socket `/tmp/kitty` |
-
-### Custom tab bar (`tab_bar.py`)
-
-Pure Python renderer. Parses the nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`) and renders:
-
-| Mode | Rendering |
-|------|-----------|
-| Single tab | Title centered full-width |
-| Multi-tab | Segments: directory (blue `#7aa2f7`) · branch (purple `#bb9af7`) · file counts (cyan `#7dcfff`) · time (green `#9ece6a`) |
-
-Background: `#1a1b26` (Tokyo Night storm base)
-
----
-
-## Starship
-
-[![Starship](https://img.shields.io/badge/Starship-prompt-DD0B78?style=flat-square&logo=starship&logoColor=white)](https://starship.rs)
-
-Config at `starship/starship.toml`. Single-line, no newline.
-
-- **Left:** Language icons — C · Python · Node · Rust · Go · Java · Docker — appear only inside matching project directories
-- **Right:** Username — purple `#bb9af7` normally, red `#f7768e` for root
-- No `cmd_duration`, no directory segment, no git in starship — handled by the nushell pre-prompt hook and kitty tab bar
-
-### Git status symbols
-`⇡N` ahead · `⇣N` behind · `⇕` diverged · `~` conflicted · `*` stashed · ` ` modified · `++N` staged · `?` untracked · ` ` deleted
-
----
-
-## WallRizz
-
-[![WallRizz](https://img.shields.io/badge/WallRizz-wallpaper%20picker-7aa2f7?style=flat-square)](https://github.com/5hubham5ingh/WallRizz)
-
-Config at `wallrizz/`. Triggered by `Super+W`.
-
-### How it works
-1. Opens as a floating kitty window (class `wallrizz`, 900×600, centered, 90% opacity)
-2. fzf list with live image preview via `timg`
-3. On selection: `awww-daemon` applies the wallpaper with a random transition (fade / wipe / wave / grow / center / outer) at 60fps, 1s duration
-4. Color backend (`color-backend.sh`) extracts 16 hex colors per image via ImageMagick k-means clustering
-5. Theme extensions update kitty colors and Hyprland border gradient live
-
-### Components
-
-| File | Purpose |
-|------|---------|
-| `launch.sh` | Kitty launcher |
-| `awww@daniel.js` | Daemon handler — random `awww` transitions |
-| `color-backend.sh` | 16-color palette extractor (ImageMagick, always pads to exactly 16) |
-| `themeExtensionScripts/kitty@5hubham5ingh.js` | Live kitty color sync via remote control |
-| `themeExtensionScripts/hyprland@daniel.js` | Live Hyprland border gradient sync via `hyprctl keyword` |
-
-### Wallpapers
-```
-nix-tokyo-night.png   dark-logo.jpg    foggy-forest.jpg
-tokyo-water.jpg       lava-bw.jpg      win10-dark.jpg
-win10-purple.png      win11-wall.jpg   win-bw.webp
-```
-
----
-
-## Jiffy
-
-[![Jiffy](https://img.shields.io/badge/Jiffy-launcher-9ece6a?style=flat-square)](https://github.com/5hubham5ingh/jiffy)
-
-Config at `jiffy/launch.sh`. Triggered by `Super+E`.
-
-fzf-powered application launcher running inside kitty. Single-instance (kitty `-1`). Tokyo Night fzf colors. Floats centered at 700×500 via Hyprland window rule (class `jiffy`).
-
----
-
-## Cheatsheet
-
-Config at `wayland/hypr/cheatsheet.sh`. Triggered by `Super+C`.
-
-fzf-powered keybindings and alias browser. Floats centered at 1000×700 (class `cheatsheet`). Tokyo Night themed. ESC to close.
-
-Sections: **Hyprland** · **Nushell** · **Git** · **Docker** · **Yazi** · **Utils** · **NixOS**
-
----
-
-## swaync
-
-[![swaync](https://img.shields.io/badge/swaync-notifications-f7768e?style=flat-square)](https://github.com/ErikReider/SwayNotificationCenter)
-
-Config at `wayland/swaync/`. Triggered by `Super+N` or clicking the waybar notification icon.
-
-| Setting | Value |
-|---------|-------|
-| Position | Top-right |
-| Width | 400px |
-| Control center size | 400×600 |
-| Open animation | Slide-right · 200ms |
-| Close animation | 100ms |
-| Default timeout | 5s |
-| Low timeout | 3s |
-| Critical timeout | 0 (sticky) |
-
-**Widgets:** Title bar + clear-all · DND toggle · Notifications list · MPRIS player (72px rounded album art)
-
-Keyboard shortcuts enabled. Waybar module reflects DND and inhibited states with distinct icons.
-
----
-
-## Philosophy
-
-Every tool in this setup follows the same three principles:
-
-1. **Vi keys everywhere.** Nushell vi mode, Hyprland `hjkl` focus, Neovim. If you need arrow keys for navigation, wrong repo.
-
-2. **Tokyo Night end-to-end.** One palette (`#1a1b26` base, `#7aa2f7` blue, `#bb9af7` purple, `#7dcfff` cyan, `#9ece6a` green, `#f7768e` red) used in every tool — terminal, bar, compositor borders, lock screen, notifications, launcher.
-
-3. **NixOS or bust.** All packages declared, all configs symlinked, one `nixos-rebuild switch` away from a working system. No manual installs, no stale state.
+## Key aliases
+
+| Alias | Does |
+|-------|------|
+| `nixos-re-sw` | `sudo nixos-rebuild switch` |
+| `n` | nvim |
+| `z` | zoxide jump |
+| `rm` | rip (trash, recoverable) |
+| `grep` / `find` / `du` / `top` | rg / fd / dust / btop |
+| `cb` / `cbp` | wl-copy / wl-paste |
