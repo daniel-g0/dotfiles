@@ -74,6 +74,8 @@ ALL_LINK_DEFS=(
     "cursor|$HOME/.config/cursors|linux"
     "rofi|$HOME/.config/rofi|linux"
     "wallrizz|$HOME/.config/WallRizz|linux"
+    "cava|$HOME/.config/cava|linux"
+    "scripts/cava-vibe|$HOME/.local/bin/cava-vibe|linux"
     "wayland/hypr|$HOME/.config/hypr|linux"
     "wayland/waybar|$HOME/.config/waybar|linux"
     "wayland/swaync|$HOME/.config/swaync|linux"

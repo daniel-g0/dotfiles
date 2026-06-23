@@ -15,6 +15,9 @@ $env.config.cursor_shape        = { vi_insert: line, vi_normal: block }
 $env.PROMPT_INDICATOR_VI_INSERT = "󱄅|𝒾 "
 $env.PROMPT_INDICATOR_VI_NORMAL = "󱄅|𝓃 "
 
+# -- PATH ----------------------------------------------------------------------------
+$env.PATH = ($env.PATH | prepend ($env.HOME | path join ".local/bin"))
+
 # -- Editor & preferences ------------------------------------------------------------
 $env.config.buffer_editor        = "nvim"
 $env.EDITOR                      = "nvim"

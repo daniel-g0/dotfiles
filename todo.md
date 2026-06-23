@@ -29,9 +29,10 @@
 
 ### Features
 - [ ] set up claude-code properly (MCP, permissions, hooks)
-- [ ] improve nvim config (add claude integration)
+- [ ] improve nvim (add claude integration)
 - [ ] super+c: fzf browser for per-stack keybindings cheatsheet
 - [ ] add eye care tool (20-20-20 rule notifications)
+- [x] add cava and other rice tools ✓ (cava TN gradient + cava-vibe noise mode, cmatrix cyan)
 
 ### Big tasks
 - [ ] (important) set up VPN

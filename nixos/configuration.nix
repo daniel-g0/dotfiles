@@ -208,6 +208,9 @@ in
       delta
       btop
       dust
+      cava
+      cmatrix
+      sox
 
       # Wayland utilities
       wl-clipboard
