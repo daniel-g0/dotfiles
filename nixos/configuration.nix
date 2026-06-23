@@ -134,6 +134,9 @@ in
   };
 
   security.polkit.enable = true;
+  security.pki.certificateFiles = [
+    /home/user/Documents/certs/vega_ca.crt
+  ];
   programs.dconf.enable  = true;
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";  # hint electron apps to use wayland
