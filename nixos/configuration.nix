@@ -134,9 +134,11 @@ in
   };
 
   security.polkit.enable = true;
-  security.pki.certificateFiles = lib.lists.flatten [
-    (builtins.map (f: "${../certs}/${f}") (lib.lists.filter (s: lib.strings.hasSuffix ".crt" s) (builtins.attrNames (builtins.readDir ../certs))))
-  ];
+  security.pki.certificateFiles =
+    let certDir = ../certs;
+        certs = builtins.attrNames (builtins.readDir certDir);
+        certFiles = lib.lists.filter (s: lib.strings.hasSuffix ".crt" s) certs;
+    in builtins.map (f: "${certDir}/${f}") certFiles;
   programs.dconf.enable  = true;
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";  # hint electron apps to use wayland
