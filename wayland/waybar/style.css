@@ -91,6 +91,27 @@
 #backlight            { color: #ff9e64; }
 #battery              { color: #9ece6a; }
 
+/* ── Workspaces ──────────────────────────────────────────────────────────── */
+
+#workspaces {
+	padding: 0 4px;
+}
+
+#workspaces button {
+	padding: 0 5px;
+	color: @surface3;
+	border-radius: 8px;
+}
+
+#workspaces button.active {
+	color: @purple;
+}
+
+#workspaces button:hover {
+	color: @hover-fg;
+	background: @hover-bg;
+}
+
 /* ── Module paddings ─────────────────────────────────────────────────────── */
 
 #mpris,

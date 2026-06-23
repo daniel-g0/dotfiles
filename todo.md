@@ -25,7 +25,7 @@
 
 ### Quick config
 - [x] idle → qylock ✓
-- [ ] waybar: add workspace number indicator
+- [x] waybar: add workspace number indicator ✓
 
 ### Features
 - [ ] set up claude-code properly (MCP, permissions, hooks)
