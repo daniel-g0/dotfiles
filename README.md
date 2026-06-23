@@ -85,54 +85,115 @@ nixos-re-sw
 
 ```
 dotfiles/
-├── doller                        TUI symlink installer
-├── install.sh                    shim → doller
+├── doller                          TUI symlink installer
+├── install.sh                      shim → doller
+├── flake.nix                       NixOS flake
+├── flake.lock
 ├── nixos/
-│   ├── configuration.nix         system packages, services, custom derivations
+│   ├── configuration.nix           system packages, services, custom derivations
 │   └── hardware-configuration.nix
 ├── nushell/
-│   ├── config.nu                 shell config, hooks, FZF, env vars
-│   ├── aliases/                  alias modules
-│   │   ├── bat/
-│   │   ├── docker/               35+ aliases
-│   │   ├── git/                  150+ aliases + helpers
-│   │   ├── nixos/
-│   │   ├── nvim/
-│   │   ├── rip/
-│   │   └── utils/
-│   └── custom-completions/       completions for 15+ tools
-├── starship/
-│   └── starship.toml
+│   ├── config.nu                   shell config, hooks, FZF, env vars
+│   ├── env.nu                      environment variables
+│   ├── aliases/
+│   │   ├── bat/                    b, bn, bp, bl
+│   │   ├── chezmoi/                ch, chad, chap, chd, chda, chs
+│   │   ├── docker/                 35+ aliases (dcls, dbl, dr, dxcit, dsta…)
+│   │   ├── exa/                    legacy exa aliases
+│   │   ├── eza/                    eza aliases
+│   │   ├── git/                    150+ aliases + helpers
+│   │   ├── nixos/                  nixos-re-sw, nixos-edit, nixos-garbage
+│   │   ├── nvim/                   n → nvim
+│   │   ├── rip/                    rm → rip, rd
+│   │   ├── utils/                  grep→rg, find→fd, du→dust, top→btop, cb, cbp
+│   │   └── yazi/
+│   ├── custom-completions/         completions for 15+ tools (bat, docker, gh, git…)
+│   ├── scripts/
+│   │   └── quote.sh                centered fortune formatter
+│   └── themes/
+│       └── tokyo-night.nu          Tokyo Night color theme
+├── nvim/
+│   ├── init.lua                    NvChad entry point
+│   └── lua/
+│       ├── chadrc.lua              NvChad overrides
+│       ├── mappings.lua            custom keymaps
+│       ├── options.lua             editor options
+│       ├── configs/                conform, lspconfig, lazy
+│       └── plugins/
+│           └── init.lua            plugin declarations
 ├── kitty/
 │   ├── kitty.conf
-│   └── tab_bar.py                custom Python tab bar renderer
-├── wallpapers/                   wallpaper images (Tokyo Night palette)
+│   └── tab_bar.py                  custom Python tab bar renderer
+├── starship/
+│   └── starship.toml
+├── fastfetch/
+│   └── config.jsonc
+├── yazi/
+│   ├── yazi.toml
+│   └── theme.toml                  Tokyo Night theme
+├── zoxide/
+│   └── config.nu
+├── wallpapers/                     wallpaper images (Tokyo Night palette)
 ├── wallrizz/
-│   ├── launch.sh                 kitty launcher script
-│   ├── awww@daniel.js            daemon handler (awww transitions)
-│   ├── color-backend.sh          ImageMagick 16-color palette extractor
+│   ├── launch.sh                   kitty launcher
+│   ├── awww@daniel.js              daemon handler (random awww transitions)
+│   ├── color-backend.sh            ImageMagick 16-color palette extractor
 │   └── themeExtensionScripts/
-│       ├── kitty@5hubham5ingh.js kitty theme sync
-│       └── hyprland@daniel.js    Hyprland border color sync
+│       ├── kitty@5hubham5ingh.js   live kitty color sync
+│       └── hyprland@daniel.js      live Hyprland border gradient sync
 ├── jiffy/
-│   └── launch.sh
+│   ├── launch.sh                   kitty launcher (Tokyo Night fzf colors)
+│   └── menu.js                     app entries
+├── rofi/
+│   └── config.rasi
+├── cava/
+│   ├── config                      main config (Tokyo Night)
+│   ├── config-vibe                 alternate vibe mode config
+│   ├── shaders/                    GLSL visualizer shaders
+│   └── themes/                     color themes
+├── cursor/
+│   ├── build.py                    cursor build script
+│   ├── Layan-cursors/              Layan cursor theme
+│   └── nix-logo/                   custom NixOS snowflake cursor
+├── brave/
+│   └── tokyo-night-storm/          Brave browser Tokyo Night theme extension
+├── monkeytype/
+│   └── config.json
+├── scripts/
+│   └── cava-vibe                   toggle cava vibe mode
+├── claude/
+│   └── settings.json               Claude Code settings
 ├── wayland/
 │   ├── hypr/
-│   │   ├── hyprland.lua          compositor (Lua API)
-│   │   ├── hyprlock.conf         lock screen
-│   │   └── hypridle.conf         idle/suspend timers
+│   │   ├── hyprland.lua            compositor (Lua API)
+│   │   ├── hyprlock.conf           lock screen
+│   │   ├── hypridle.conf           idle/suspend timers
+│   │   └── cheatsheet.sh           fzf keybindings/alias browser (Super+C)
 │   ├── waybar/
-│   │   ├── config.jsonc          bar layout (includes modular jsonc)
-│   │   ├── style.css             main stylesheet
-│   │   ├── modules/              per-module jsonc definitions
-│   │   │   └── custom/           custom scripts: user, distro, notifications, update, power, dividers
-│   │   ├── menus/                GTK XML menus (nix ops, power)
-│   │   ├── scripts/              shell scripts (volume, brightness)
-│   │   └── styles/               modular CSS partials
+│   │   ├── config.jsonc            bar layout
+│   │   ├── modules.jsonc           module includes
+│   │   ├── style.css               main stylesheet
+│   │   ├── theme.css               Tokyo Night variables
+│   │   ├── modules/
+│   │   │   ├── custom/             distro, dividers, notifications, power, update, user
+│   │   │   └── hyprland/           window, workspaces
+│   │   ├── menus/                  GTK XML menus (bluetooth, network, nix, power)
+│   │   ├── scripts/                backlight, bluetooth, network, power, update, volume
+│   │   ├── styles/                 fonts, modules-center/left/right, states
+│   │   └── themes/
+│   │       └── tokyo-night.css
 │   └── swaync/
 │       ├── config.json
 │       └── style.css
-└── fastfetch/                    fastfetch config
+└── x11/                            legacy X11 config (i3 + polybar era)
+    ├── i3/
+    │   ├── config
+    │   └── polybar/                polybar configs + community-configs
+    ├── picom/
+    │   └── picom.conf
+    ├── remaps                      xmodmap key remaps
+    └── rofi/
+        └── docu.rasi
 ```
 
 ---
@@ -211,6 +272,7 @@ awww-daemon → nix-tokyo-night.png (2s fade transition)
 | `Super + E` | Jiffy app launcher |
 | `Super + W` | WallRizz wallpaper picker |
 | `Super + N` | Toggle swaync notification center |
+| `Super + C` | Keybindings cheatsheet (fzf browser) |
 | `Super + T` | Toggle dwindle split |
 | `Super + Shift + L` | Lock screen (hyprlock) |
 | `Super + Shift + R` | Reload Hyprland config |
@@ -238,7 +300,8 @@ awww-daemon → nix-tokyo-night.png (2s fade transition)
 | Suppress maximize | all windows | Ignores maximize requests |
 | Fix XWayland drags | class `^$`, xwayland float | `no_focus` |
 | Jiffy | class `jiffy` | Float · 700×500 · centered |
-| WallRizz | class `wallrizz` | Float · 900×600 · centered |
+| WallRizz | class `wallpaper-picker` | Float · 900×600 · centered |
+| Cheatsheet | class `cheatsheet` | Float · 1000×700 · centered |
 
 ### Input
 - Keyboard: Spanish layout (`es`) via Hyprland, Capslock → Escape via `keyd`
@@ -486,6 +549,16 @@ win10-purple.png      win11-wall.jpg   win-bw.webp
 Config at `jiffy/launch.sh`. Triggered by `Super+E`.
 
 fzf-powered application launcher running inside kitty. Single-instance (kitty `-1`). Tokyo Night fzf colors. Floats centered at 700×500 via Hyprland window rule (class `jiffy`).
+
+---
+
+## Cheatsheet
+
+Config at `wayland/hypr/cheatsheet.sh`. Triggered by `Super+C`.
+
+fzf-powered keybindings and alias browser. Floats centered at 1000×700 (class `cheatsheet`). Tokyo Night themed. ESC to close.
+
+Sections: **Hyprland** · **Nushell** · **Git** · **Docker** · **Yazi** · **Utils** · **NixOS**
 
 ---
 

@@ -217,7 +217,7 @@ in
       wl-clipboard
       grim
       slurp
-      hyprmon
+      wdisplays
 
       # Development
       neovim

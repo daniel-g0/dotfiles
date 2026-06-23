@@ -110,13 +110,9 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 - Shadow: `#7aa2f7` 22% / inactive `#1a1b26` 12%
 - Blur: 16px, 6 passes, vibrancy 0.3
 
-### Monitor profiles
-**Tool:** `hyprmon` TUI for profile management  
-**File:** `~/.config/hypr/monitors.conf` (managed by hyprmon, not symlinked)  
-**Profiles:**
-- **Work:** DP-3 (left) + DP-4 (middle) + eDP-1 (right)
-- **Home:** eDP-1 only
-Run `hyprmon` to create/switch profiles. Changes saved to monitors.conf (sourced by hyprland.lua).
+### Display configuration
+**Tool:** `wdisplays` GUI for display layout (Super+M)  
+Configure monitor arrangement, resolution, refresh rate graphically.
 
 ### Keybindings (Super key)
 | Binding | Action |
@@ -125,6 +121,7 @@ Run `hyprmon` to create/switch profiles. Changes saved to monitors.conf (sourced
 | `Super+Q` | Close window |
 | `Super+F` | File manager (kitty -e yazi) |
 | `Super+E` | Rofi app launcher |
+| `Super+M` | Display configuration (wdisplays) |
 | `Super+W` | WallRizz wallpaper picker |
 | `Super+N` | Toggle swaync notification center |
 | `Super+C` | Keybindings cheatsheet (fzf browser) |

@@ -280,6 +280,7 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("hyprctl reload; pkill waybar; waybar
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(wallpaper))
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("wdisplays"))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty --class cheatsheet -e ~/.config/hypr/cheatsheet.sh"))
 hl.bind(mainMod .. " + T",         hl.dsp.layout("togglesplit"))    -- dwindle only
