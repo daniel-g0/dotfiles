@@ -135,8 +135,9 @@ in
 
   security.polkit.enable = true;
   security.pki.certificateFiles =
-    let certDir = builtins.toString ../certs;
-        certs = builtins.attrNames (builtins.readDir ../certs);
+    let certDir = /home/user/Projects/personal/dotfiles/certs;
+        certsExist = builtins.pathExists certDir;
+        certs = if certsExist then builtins.attrNames (builtins.readDir certDir) else [];
         certFiles = lib.lists.filter (s: lib.strings.hasSuffix ".crt" s) certs;
     in builtins.map (f: "${certDir}/${f}") certFiles;
   programs.dconf.enable  = true;
