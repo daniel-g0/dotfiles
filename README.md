@@ -168,6 +168,8 @@ Wayland:  hyprlock hypridle awww waybar swaync hyprpicker blueman
 Terminal: kitty starship zoxide yazi bat ripgrep fd delta btop dust rm-improved
 Dev:      neovim git git-lfs gcc uv nodejs claude-code
 Apps:     brave teams-for-linux keepass veracrypt
+
+> **Brave theme:** Search "Tokyo Night Storm" in the Chrome Web Store and add to Brave. Source: [mattCasanova/tokyo-night-storm-google-chrome](https://github.com/mattCasanova/tokyo-night-storm-google-chrome). Theme files kept in `brave/tokyo-night-storm/` for reference.
 Fonts:    JetBrainsMono Nerd Font, Material Icons
 ```
 

@@ -24,7 +24,7 @@
 - [ ] brave tokyonight aint working
 
 ### Quick config
-- [ ] idle → hyprlock (currently going to wrong locker)
+- [ ] idle → qylock (currently going to hyprlock I think)
 - [ ] waybar: add workspace number indicator
 
 ### Features

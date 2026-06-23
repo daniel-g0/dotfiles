@@ -17,3 +17,5 @@ export alias cb  = wl-copy    # pipe into cb to copy
 export alias cbp = wl-paste   # cbp to paste
 
 export alias ç = ls
+
+export alias t = tree -C -L 3
