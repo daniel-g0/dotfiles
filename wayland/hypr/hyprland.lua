@@ -283,7 +283,7 @@ hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty --class cheatsheet -e ~/.config/hypr/cheatsheet.sh"))
 hl.bind(mainMod .. " + T",         hl.dsp.layout("togglesplit"))    -- dwindle only
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen())
-hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("kitty -e whosthere"))
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("kitty --class whosthere -e whosthere"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + H",  hl.dsp.focus({ direction = "left" }))
@@ -395,5 +395,14 @@ hl.window_rule({
     match  = { class = "cheatsheet" },
     float  = true,
     size   = "1000 700",
+    center = true,
+})
+
+-- Whosthere windowrule
+hl.window_rule({
+    name   = "float-whosthere",
+    match  = { class = "whosthere" },
+    float  = true,
+    size   = "900 600",
     center = true,
 })
