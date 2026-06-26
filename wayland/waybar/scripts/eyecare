@@ -19,8 +19,11 @@ now=$(date +%s)
 remaining=$(( INTERVAL - (now - start) ))
 
 if (( remaining <= 0 )); then
-    notify-send -u normal -t 20000 "󰛐 Eye Break" "20-20-20: look 20 ft away for 20 seconds"
-    date +%s > "$STATE_FILE"
+    (
+        flock -n 9 || exit 0
+        date +%s > "$STATE_FILE"
+        notify-send -u normal -t 20000 "󰛐 Eye Break" "20-20-20: look 20 ft away for 20 seconds"
+    ) 9>/tmp/eyecare-notify.lock
     remaining=$INTERVAL
 fi
 
