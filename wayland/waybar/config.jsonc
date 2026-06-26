@@ -8,8 +8,8 @@
 	"reload_style_on_change": true,
 
 	"modules-left":   ["custom/user", "group/left"],
-	"modules-center": ["custom/distro"],
-	"modules-right":  ["clock", "group/right", "custom/power"],
+	"modules-center": [],
+	"modules-right":  ["group/time", "group/right", "custom/power"],
 
 	"include": ["~/.config/waybar/modules.jsonc"]
 }

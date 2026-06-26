@@ -22,10 +22,15 @@
 		"modules": ["backlight", "battery"]
 	},
 
+	"group/time": {
+		"orientation": "horizontal",
+		"modules": ["clock", "custom/eyecare"]
+	},
+
 	// ─── Custom modules ───────────────────────────────────────────────────────────
 
 	"custom/user": {
-		"format": "󰍜",
+		"format": "󱄅",
 		"min-length": 3,
 		"max-length": 3,
 		"tooltip-format": "NixOS",
@@ -37,7 +42,8 @@
 			"test":    "kitty -e bash -c 'sudo nixos-rebuild test --flake $(dirname $(dirname $(readlink -f /etc/nixos/configuration.nix)))#nixos 2>&1 | tee /tmp/nix-test.log; echo; echo Press Enter to close...; read'",
 			"update":  "kitty -e bash -c 'cd /etc/nixos && sudo nix flake update 2>&1 | tee /tmp/nix-update.log; echo; echo Press Enter to close...; read'",
 			"gc":      "kitty -e bash -c 'sudo nix-collect-garbage --delete-older-than 7d 2>&1 | tee /tmp/nix-gc.log; echo; echo Press Enter to close...; read'",
-			"gens":    "kitty -e bash -c 'sudo nix-env --list-generations --profile /nix/var/nix/profiles/system 2>&1 | tee /tmp/nix-gens.log; echo; echo Press Enter to close...; read'"
+			"gens":    "kitty -e bash -c 'sudo nix-env --list-generations --profile /nix/var/nix/profiles/system 2>&1 | tee /tmp/nix-gens.log; echo; echo Press Enter to close...; read'",
+			"rice":    "kitty --directory $HOME -e env NU_BANNER=1 nu"
 		}
 	},
 
@@ -179,6 +185,14 @@
 		"min-length": 2,
 		"max-length": 2,
 		"on-click": "kitty --class vpn-menu -T 'VPN Manager' -e ~/.config/waybar/scripts/vpn-menu"
+	},
+
+	"custom/eyecare": {
+		"exec": "~/.config/waybar/scripts/eyecare",
+		"return-type": "json",
+		"interval": 1,
+		"on-click": "~/.config/waybar/scripts/eyecare reset",
+		"tooltip": true
 	},
 
 	"network": {

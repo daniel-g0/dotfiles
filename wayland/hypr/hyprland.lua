@@ -44,12 +44,12 @@ local wallpaper   = "kitty --class wallpaper-picker -1 -e $HOME/.config/hypr/wal
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function ()
-  hl.exec_cmd(terminal)
   hl.exec_cmd("waybar")
   hl.exec_cmd("swaync")
   hl.exec_cmd("hypridle")
   hl.exec_cmd("awww-daemon")
   hl.exec_cmd("awww img $HOME/.config/wallpapers/nix-tokyo-night.png --transition-type fade --transition-duration 2")
+  hl.exec_cmd("hyprctl setcursor Layan-cursors 24")
 end)
 
 
@@ -59,9 +59,10 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_THEME",   "Layan-cursors")
-hl.env("XCURSOR_SIZE",    "24")
-hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME",    "Layan-cursors")
+hl.env("XCURSOR_SIZE",     "24")
+hl.env("HYPRCURSOR_THEME", "Layan-cursors")
+hl.env("HYPRCURSOR_SIZE",  "24")
 hl.env("GTK_THEME",       "Adwaita:dark")
 
 hl.config({
@@ -106,7 +107,7 @@ hl.config({
         col = {
             -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
             active_border   = { colors = {"rgba(7aa2f7ee)", "rgba(bb9af7ee)", "rgba(2ac3deee)", "rgba(7dcfffee)", "rgba(7aa2f7ee)"}, angle = 0 },
-            inactive_border = "rgba(414868aa)",
+            inactive_border = { colors = {"rgba(7aa2f755)", "rgba(bb9af755)", "rgba(2ac3de55)", "rgba(7dcfff55)", "rgba(7aa2f755)"}, angle = 0 },
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps

@@ -133,6 +133,7 @@ in
     enable   = true;
     withUWSM = false;
   };
+  hardware.uinput.enable = true; # for idling
 
   security.polkit.enable = true;
   # Private certs live at ~/.config/certs/ (outside repo, untracked).
@@ -174,7 +175,7 @@ in
   users.users."user" = {
     isNormalUser = true;
     description  = "user";
-    extraGroups  = [ "networkmanager" "wheel" "video" "libvirtd" "kvm" "input" ];
+    extraGroups  = [ "networkmanager" "wheel" "video" "libvirtd" "kvm" "input" "uinput" ];
     packages     = with pkgs; [
       # Wayland / desktop
       swaynotificationcenter
@@ -219,6 +220,7 @@ in
       delta
       btop
       dust
+      mapscii
       cava
       cmatrix
       sox

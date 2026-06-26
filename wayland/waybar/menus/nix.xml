@@ -40,5 +40,13 @@
         <property name="label">󰋚 Generations</property>
       </object>
     </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="sep4"/>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="rice">
+        <property name="label">󱄅 Rice</property>
+      </object>
+    </child>
   </object>
 </interface>

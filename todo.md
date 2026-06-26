@@ -21,7 +21,7 @@
 - [x] wifi context menu drops when on ethernet — replaced GTK menu with on-click nmtui / right-click wifi toggle ✓
 - [x] verify date display is correct in waybar/kitty — system time correct (CEST), format fine ✓
 - [x] check if new cursor pack renders correctly ✓
-- [x] brave tokyonight aint working
+- [x] brave tokyonight aint working ✓
 
 ### Quick config
 - [x] idle → qylock ✓
@@ -31,22 +31,22 @@
 - [ ] set up claude-code properly (MCP, permissions, hooks)
 - [ ] improve nvim (add claude integration)
 - [x] super+c: fzf browser for per-stack keybindings cheatsheet
-- [ ] add eye care tool (20-20-20 rule notifications)
+- [x] add eye care tool (20-20-20 rule notifications) ✓ (waybar countdown + swaync notification)
 - [x] add cava and other rice tools ✓ (cava TN gradient + cava-vibe noise mode, cmatrix cyan)
 - [x] add whosthere and bind it to a key (super, shift, w) ✓ (Super+Shift+W → kitty -e whosthere)
 - [ ] modulate config nix?
 - [ ] check cool features on hardware
 - [ ] set up idler
-- [ ] add mapscii
+- [x] add mapscii ✓ (added to nixos packages)
 - [ ] subsitute drawio with clin
 - [ ] get gloomberb, cliam, gittop
 
 ### Big tasks
-- [ ] (important) set up VPN
+- [x] (important) set up VPN ✓ (vpnc + waybar module + fzf menu)
 - [x] set multiple monitor profiles (work: DP-3 left, DP-4 middle, eDP-1 right; home: eDP-1 only) ✓ (hyprmon TUI)
-- [ ] add proper screenshots to README and repo graphs
-- [ ] create VM for safe dotfile testing
-- [ ] set up windows VM ready for working and gaming (home setup)
+- [x] add proper screenshots to README and repo graphs ✓
+- [x] create VM for safe dotfile testing ✓
+- [x] set up windows VM ready for working and gaming (home setup) ✓
 
 
 ## Future (when Windows removed / no longer dual boot)

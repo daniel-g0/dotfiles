@@ -36,19 +36,6 @@
 	color: @cpu;
 }
 
-/*-----------------
-    Distro icon
------------------*/
-
-#custom-left_div.5,
-#custom-right_div.2 {
-	color: @accent;
-}
-#custom-distro {
-	padding: 0 12px 0 7px;
-	background-color: @accent;
-	color: @main-bg;
-}
 
 /*--------------------
     Idle inhibitor
@@ -111,6 +98,10 @@
 #custom-update {
 	background-color: @tray;
 	padding: 0 10px 0 2px;
+}
+#custom-eyecare {
+	background-color: @tray;
+	padding: 0 9px;
 }
 #custom-right_div.5 {
 	color: @tray;

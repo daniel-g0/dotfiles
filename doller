@@ -81,6 +81,9 @@ ALL_LINK_DEFS=(
     "wayland/hypr|$HOME/.config/hypr|linux"
     "wayland/waybar|$HOME/.config/waybar|linux"
     "wayland/swaync|$HOME/.config/swaync|linux"
+    "cursor/icons-default/index.theme|$HOME/.icons/default/index.theme|linux"
+    "applications/rofi-filebrowser.desktop|$HOME/.local/share/applications/rofi-filebrowser.desktop|linux"
+    "btop|$HOME/.config/btop|linux"
     "nixos/configuration.nix|/etc/nixos/configuration.nix|nixos"
 )
 

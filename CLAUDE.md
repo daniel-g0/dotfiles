@@ -19,6 +19,9 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `whosthere/` | `~/.config/whosthere` |
 | `wayland/hypr/` | `~/.config/hypr` |
 | `wayland/swaync/` | `~/.config/swaync` |
+| `cursor/icons-default/index.theme` | `~/.icons/default/index.theme` |
+| `applications/rofi-filebrowser.desktop` | `~/.local/share/applications/rofi-filebrowser.desktop` |
+| `btop/` | `~/.config/btop` |
 | `nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
 
 Run `./doller` to (re)create all symlinks. TUI shows status per link, backs up conflicts. `--dry-run` to preview, `--force` to skip prompt. `install.sh` is a shim that calls it.
@@ -101,12 +104,12 @@ Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 **Config:** `wayland/hypr/hyprland.lua` (Lua-based)
 
 ### Autostart
-`kitty`, `waybar`, `swaync`, `hypridle`, `awww-daemon` (wallpaper: `Nix Tokyo Night.png`, 2s fade)
+`waybar`, `swaync`, `hypridle`, `awww-daemon` (wallpaper: `Nix Tokyo Night.png`, 2s fade), `hyprctl setcursor Layan-cursors 24`
 
 ### Appearance
 - Gaps: in 5px / out 20px; border 3px; rounding 10px
 - Active border: liquid gradient blue→purple→cyan (animated, angle loops)
-- Inactive border: `#414868` 66% opacity
+- Inactive border: animated gradient — same hues as active at 33% opacity (`rgba(...55)`)
 - Shadow: `#7aa2f7` 22% / inactive `#1a1b26` 12%
 - Blur: 16px, 6 passes, vibrancy 0.3
 
@@ -186,8 +189,8 @@ Before sleep → lock. After wake → display on.
 ### Modules
 | Module | Description |
 |--------|-------------|
-| `custom/user` (󰍜) | NixOS GTK menu: Edit config, Rebuild Switch/Test, Update Flake, Garbage Collect, Generations. Each action opens kitty, tees output to `/tmp/nix-<action>.log`, waits Enter to close |
-| `custom/distro` (󱄅) | Opens kitty in `$HOME` with `NU_BANNER=1` → shows fastfetch + fortune greeting |
+| `custom/user` (󱄅) | NixOS GTK menu (NixOS logo icon): Edit config, Rebuild Switch/Test, Update Flake, Garbage Collect, Generations, Rice (opens fastfetch+fortune kitty). Each action opens kitty, tees output to `/tmp/nix-<action>.log`, waits Enter to close |
+| `custom/eyecare` (󰛐) | 20-20-20 eye break timer. Lives in `group/time` pill with clock. Fires swaync notification every 20min, auto-resets. Click to reset early. State file: `~/.local/state/eyecare-start`. Script: `wayland/waybar/scripts/eyecare` |
 | Temperature | CPU temp, critical at 90°C |
 | Memory | % usage, tooltip shows used/total GiB |
 | CPU | % usage, updates 10s, warn 75%, critical 90% |
@@ -250,7 +253,7 @@ Tokyo Night palette; buttons with 20px border-radius; layer top, dock mode.
 
 ### Notable user packages
 Wayland: `hyprlock`, `hypridle`, `awww`, `waybar`, `swaync`, `hyprpicker`, `blueman`, `fastfetch`, `fortune`, `fzf`
-Terminal: `kitty`, `starship`, `zoxide`, `yazi`, `bat`, `ripgrep`, `fd`, `delta`, `btop`, `dust`, `rm-improved`
+Terminal: `kitty`, `starship`, `zoxide`, `yazi`, `bat`, `ripgrep`, `fd`, `delta`, `btop`, `dust`, `rm-improved`, `mapscii`
 Dev: `neovim`, `git`, `git-lfs`, `gcc`, `uv`, `nodejs`, `claude-code`
 Apps: `brave`, `teams-for-linux`, `keepass`, `veracrypt`
 
@@ -290,3 +293,5 @@ Certs live at `~/.config/certs/*.crt` — outside the repo, untracked. `configur
 - Don't put certs in the repo — they live at `~/.config/certs/`, outside version control.
 - Don't remove `nofail` from the SHARED-PART mount — it must not block boot if missing.
 - Don't set `NU_BANNER=1` in a normal kitty launch — it triggers fastfetch/fortune on every new shell in that window.
+- Don't add styles to `wayland/waybar/styles/modules-*.css` — those files are **not imported** anywhere and have zero effect. All waybar CSS goes in `wayland/waybar/style.css`.
+- Don't symlink cursor dirs to `~/.config/cursors` expecting X fallback — standard path is `~/.icons/`. `~/.icons/default/index.theme` controls the X11 default cursor (was `Inherits=NixCursor`, fixed to `Inherits=Layan-cursors`).
