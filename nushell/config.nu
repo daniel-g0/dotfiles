@@ -23,13 +23,6 @@ $env.config.buffer_editor        = "nvim"
 $env.EDITOR                      = "nvim"
 $env.VISUAL                      = "nvim"
 $env.WALLPAPER_DIR               = ($env.HOME | path join ".config/wallpapers")
-
-# -- Secrets (untracked — drop keys in ~/.config/secrets/) ---------------------------
-# anthropic-key → ANTHROPIC_API_KEY (used by codecompanion.nvim + claude-code)
-let anthropic_key_file = ($env.HOME | path join ".config/secrets/anthropic-key")
-if ($anthropic_key_file | path exists) {
-  $env.ANTHROPIC_API_KEY = (open $anthropic_key_file | str trim)
-}
 $env.config.show_banner          = false
 $env.config.error_style        = "fancy"
 $env.config.use_kitty_protocol = true
