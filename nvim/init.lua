@@ -1,10 +1,17 @@
--- init.lua — NvChad entry point: bootstrap lazy.nvim, load plugins, colorscheme, custom commands.
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--  init.lua  —  NvChad entry point
+--
+--  Load order:
+--    1. lazy.nvim bootstrap
+--    2. NvChad core  (options, base46 cache, autocmds, mappings)
+--    3. User plugins (lua/plugins/init.lua)
+--    4. Custom commands / autocmds
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
--- NvChad requires this cache path set before lazy loads.
+-- ── bootstrap ─────────────────────────────────────────────────────
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
 vim.g.mapleader    = " "
 
--- Bootstrap lazy.nvim if not already installed
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   local repo = "https://github.com/folke/lazy.nvim.git"
@@ -12,7 +19,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load all plugins: NvChad core + user plugins from lua/plugins/
+-- ── plugins ───────────────────────────────────────────────────────
 local lazy_config = require "configs.lazy"
 require("lazy").setup({
   {
@@ -27,8 +34,8 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
--- Apply NvChad base46 theme cache and register autocmds/mappings
--- Guard against first-run where cache doesn't exist yet (plugins not installed)
+-- ── NvChad post-setup ─────────────────────────────────────────────
+-- base46 cache may not exist on first run (before :Lazy sync)
 if vim.loop.fs_stat(vim.g.base46_cache .. "defaults") then
   dofile(vim.g.base46_cache .. "defaults")
   dofile(vim.g.base46_cache .. "statusline")
@@ -37,6 +44,8 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+-- ── custom commands & autocmds ────────────────────────────────────
 
 -- Tabnine AI completion (disabled — uncomment to enable)
 -- require('tabnine').setup({
@@ -49,6 +58,7 @@ end)
 --   log_file_path        = nil,
 -- })
 
+-- ── run current file ──────────────────────────────────────────────
 -- F9: write and run the current Python file
 local function execpython()
   local file = vim.api.nvim_buf_get_name(0)
@@ -61,12 +71,13 @@ local function execpython()
 end
 vim.api.nvim_set_keymap("n", "<F9>", ":lua execpython()<CR>", { noremap = true, silent = true })
 
--- Auto-save all open buffers after every write event
+-- ── auto-save all buffers on write ────────────────────────────────
 vim.api.nvim_create_autocmd("BufWritePost", {
   pattern = "*",
   command = "silent! wall",
 })
 
+-- ── compile & run C ───────────────────────────────────────────────
 -- F10 / :WallRun — compile and run the current C file, then clean up the binary
 local function crun()
   local file = vim.api.nvim_buf_get_name(0)
@@ -81,53 +92,6 @@ local function crun()
 end
 vim.api.nvim_create_user_command("WallRun", crun, {})
 vim.api.nvim_set_keymap("n", "<F10>", ":WallRun<CR>", { noremap = true, silent = true })
-
--- Cyberdream colorscheme — transparent bg, custom comment/property highlights
-local ok_cd, cyberdream = pcall(require, "cyberdream")
-if ok_cd then
-  cyberdream.setup({
-    transparent          = true,
-    italic_comments      = true,
-    hide_fillchars       = ' ',
-    borderless_telescope = true,
-    terminal_colors      = true,
-    theme = {
-      variant    = "default",
-      highlights = {
-        Comment = { fg = "#696969", bg = "NONE", italic = true },
-      },
-      overrides = function(colors)
-        return {
-          Comment       = { fg = colors.green, bg = "NONE", italic = true },
-          ["@property"] = { fg = colors.magenta, bold = true },
-        }
-      end,
-      colors = {
-        bg      = "#000000",
-        green   = "#00ff00",
-        magenta = "#ff00ff",
-      },
-    },
-    extensions = {
-      telescope = true,
-      notify    = false,
-      mini      = true,
-    },
-  })
-  vim.cmd("colorscheme cyberdream")
-end
-
--- Neogit — git interface (setup must run after lazy loads the plugin)
-local ok_ng, neogit = pcall(require, "neogit")
-if ok_ng then neogit.setup {} end
-
--- Zen mode — focused editing at 75% editor width
-local ok_zm, zenmode = pcall(require, "zen-mode")
-if ok_zm then zenmode.setup({ window = { width = .75 } }) end
-
--- Toggleterm — persistent terminal windows
-local ok_tt, toggleterm = pcall(require, "toggleterm")
-if ok_tt then toggleterm.setup {} end
 
 -- LeetCode (disabled — uncomment to enable)
 -- require("leetcode").setup{
@@ -169,6 +133,3 @@ if ok_tt then toggleterm.setup {} end
 
 -- require("hardtime").setup()
 -- require("mistake")
-
-vim.api.nvim_command('set relativenumber')
-vim.api.nvim_command('set spell')
