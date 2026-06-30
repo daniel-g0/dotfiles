@@ -1,0 +1,91 @@
+# starship.toml — Tokyo Night, single line, vi mode via nushell indicator
+
+format = """
+$c$python$nodejs$rust$golang$java$docker_context\
+$character\
+"""
+
+right_format = """$username"""
+
+add_newline = false
+
+# -- Username (right prompt) -----------------------------------------------------
+[username]
+style_user  = "fg:#bb9af7"
+style_root  = "fg:#f7768e"
+format      = "[$user]($style)"
+show_always = true
+
+# -- Directory -------------------------------------------------------------------
+[directory]
+style             = "fg:#7aa2f7"
+format            = "[ $path ]($style)"
+truncation_length = 5
+truncation_symbol = "…/"
+truncate_to_repo  = true
+home_symbol       = "~"
+
+[directory.substitutions]
+"~" = "~"
+
+# -- Git -------------------------------------------------------------------------
+[git_branch]
+style  = "fg:#9ece6a"
+format = "[ $branch ]($style)"
+
+[git_status]
+style      = "fg:#e0af68"
+conflicted = "~"
+up_to_date = ""
+untracked  = "?"
+ahead      = "⇡${count}"
+diverged   = "⇕⇡${ahead_count}⇣${behind_count}"
+behind     = "⇣${count}"
+stashed    = "*"
+modified   = " "
+staged     = '[++\($count\)](fg:#9ece6a)'
+renamed    = " "
+deleted    = " "
+format     = "[$all_status$ahead_behind ]($style)"
+
+# -- Prompt character (success/error indicator, no symbol — mode handled by nushell) --
+[character]
+success_symbol = ""
+error_symbol   = ""
+format         = "$symbol"
+
+# -- Language symbols (only appear when in a relevant project dir) ----------------
+[c]
+symbol = ""
+style  = "fg:#7dcfff"
+format = "[ $symbol ]($style)"
+
+[python]
+symbol = " "
+style  = "fg:#e0af68"
+format = "[ $symbol ]($style)"
+
+[nodejs]
+symbol = ""
+style  = "fg:#9ece6a"
+format = "[ $symbol ]($style)"
+
+[rust]
+symbol = ""
+style  = "fg:#ff9e64"
+format = "[ $symbol ]($style)"
+
+[golang]
+symbol = "go"
+style  = "fg:#7dcfff"
+format = "[ $symbol ](bold $style)"
+
+[java]
+symbol = ""
+style  = "fg:#f7768e"
+format = "[ $symbol ]($style)"
+
+[docker_context]
+symbol = " "
+style  = "fg:#7dcfff"
+format = "[ $symbol $context ]($style)"

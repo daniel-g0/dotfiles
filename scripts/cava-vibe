@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# pipe sox pink noise → fifo → cava (animated bars without audio)
+
+FIFO=/tmp/cava.fifo
+
+[[ -p $FIFO ]] || mkfifo "$FIFO"
+
+sox -n -t raw -r 44100 -b 16 -e signed-integer -c 2 - synth pinknoise flanger tremolo 0.8 50 gain 18 > "$FIFO" &
+SOX_PID=$!
+
+trap "kill $SOX_PID 2>/dev/null; rm -f $FIFO" EXIT INT TERM
+
+cava -p ~/.config/cava/config-vibe
