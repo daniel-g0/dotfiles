@@ -8,7 +8,7 @@
 
 	"group/right": {
 		"orientation": "horizontal",
-		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications"]
+		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications", "idle_inhibitor"]
 	},
 
 	"group/group-volume": {
@@ -37,13 +37,9 @@
 		"menu": "on-click",
 		"menu-file": "~/.config/waybar/menus/nix.xml",
 		"menu-actions": {
-			"edit":    "kitty -e nvim $(readlink -f /etc/nixos/configuration.nix)",
-			"rebuild": "kitty -e bash -c 'sudo nixos-rebuild switch --flake $(dirname $(dirname $(readlink -f /etc/nixos/configuration.nix)))#nixos 2>&1 | tee /tmp/nix-rebuild.log; echo; echo Press Enter to close...; read'",
-			"test":    "kitty -e bash -c 'sudo nixos-rebuild test --flake $(dirname $(dirname $(readlink -f /etc/nixos/configuration.nix)))#nixos 2>&1 | tee /tmp/nix-test.log; echo; echo Press Enter to close...; read'",
-			"update":  "kitty -e bash -c 'cd /etc/nixos && sudo nix flake update 2>&1 | tee /tmp/nix-update.log; echo; echo Press Enter to close...; read'",
-			"gc":      "kitty -e bash -c 'sudo nix-collect-garbage --delete-older-than 7d 2>&1 | tee /tmp/nix-gc.log; echo; echo Press Enter to close...; read'",
-			"gens":    "kitty -e bash -c 'sudo nix-env --list-generations --profile /nix/var/nix/profiles/system 2>&1 | tee /tmp/nix-gens.log; echo; echo Press Enter to close...; read'",
-			"rice":    "kitty --directory $HOME -e env NU_BANNER=1 nu"
+			"nixopts": "kitty --class nix-options -T 'NixOS Options' -e bash ~/.config/waybar/scripts/nix-options",
+			"rice":    "kitty --directory $HOME -e env NU_BANNER=1 nu",
+			"idler":   "kitty --class idler -T 'Idler' -e bash -c 'cd /home/user/Projects/personal/idler && nix run . 2>&1; read'"
 		}
 	},
 

@@ -2,50 +2,24 @@
 <interface>
   <object class="GtkMenu" id="menu">
     <child>
-      <object class="GtkMenuItem" id="edit">
-        <property name="label">󰏫 Edit Config</property>
+      <object class="GtkMenuItem" id="nixopts">
+        <property name="label">󱄅 Nix Options</property>
       </object>
     </child>
     <child>
       <object class="GtkSeparatorMenuItem" id="sep1"/>
     </child>
     <child>
-      <object class="GtkMenuItem" id="rebuild">
-        <property name="label">󰑓 Rebuild Switch</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="test">
-        <property name="label">󰙦 Rebuild Test</property>
+      <object class="GtkMenuItem" id="rice">
+        <property name="label">󱄅 Rice</property>
       </object>
     </child>
     <child>
       <object class="GtkSeparatorMenuItem" id="sep2"/>
     </child>
     <child>
-      <object class="GtkMenuItem" id="update">
-        <property name="label">󰚰 Update Flake</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="gc">
-        <property name="label">󰩺 Garbage Collect</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="sep3"/>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="gens">
-        <property name="label">󰋚 Generations</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="sep4"/>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="rice">
-        <property name="label">󱄅 Rice</property>
+      <object class="GtkMenuItem" id="idler">
+        <property name="label">󰒲 Idler</property>
       </object>
     </child>
   </object>
