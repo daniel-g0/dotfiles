@@ -21,8 +21,13 @@ remaining=$(( INTERVAL - (now - start) ))
 if (( remaining <= 0 )); then
     (
         flock -n 9 || exit 0
-        date +%s > "$STATE_FILE"
-        notify-send -u normal -t 20000 "󰛐 Eye Break" "20-20-20: look 20 ft away for 20 seconds"
+        # Re-read inside lock to avoid TOCTOU when multiple waybar instances race
+        local_start=$(cat "$STATE_FILE")
+        local_now=$(date +%s)
+        if (( INTERVAL - (local_now - local_start) <= 0 )); then
+            date +%s > "$STATE_FILE"
+            notify-send -u normal -t 20000 "󰛐 Eye Break" "20-20-20: look 20 ft away for 20 seconds"
+        fi
     ) 9>/tmp/eyecare-notify.lock
     remaining=$INTERVAL
 fi

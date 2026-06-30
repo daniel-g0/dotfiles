@@ -40,6 +40,16 @@
 - [x] add mapscii ✓ (added to nixos packages)
 - [ ] subsitute drawio with clin
 - [ ] get gloomberb, cliam, gittop
+- [ ] Fix nvim and rice it  (also add markdown renderer, and make line continue next line instead of wrap and disappear)
+Decoration provider "start" (ns=nvim.treesitter.highlighter):                                                                                                                                                                       
+Lua: ...3/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:215: ...wrapped-0.12.3/share/nvim/runtime/lua/vim/treesitter.lua:197: attempt to call method 'range' (a nil value)                                                 
+stack traceback:                                                                                                                                                                                                                    
+        [C]: in function 'f'                                                                                                                                                                                                        
+        ...3/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:215: in function 'tcall'                                                                                                                                        
+        ...3/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:596: in function 'parse'                                                                                                                                        
+        ....3/share/nvim/runtime/lua/vim/treesitter/highlighter.lua:580: in function <....3/share/nvim/runtime/lua/vim/treesitter/highlighter.lua:557>           
+- [ ] Coloscheme tool finish creation (also add border colors and icons and all)
+
 
 ### Big tasks
 - [x] (important) set up VPN ✓ (vpnc + waybar module + fzf menu)
