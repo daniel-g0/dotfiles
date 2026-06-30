@@ -240,6 +240,7 @@ in
       uv
       nodejs
       claude-code
+      lua-language-server
 
       # Virtualisation
       virt-manager

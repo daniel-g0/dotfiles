@@ -28,7 +28,7 @@ o.splitright = true       -- vsplit → new pane on right
 o.splitbelow = true       -- split  → new pane below
 
 -- ── performance ───────────────────────────────────────────────────
-o.updatetime  = 250       -- faster CursorHold (LSP hover, gitsigns)
+o.updatetime  = 500       -- CursorHold delay for LSP hover + gitsigns
 o.timeoutlen  = 300       -- faster which-key popup
 
 -- ── undo ──────────────────────────────────────────────────────────
