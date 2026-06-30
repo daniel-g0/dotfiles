@@ -89,6 +89,22 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
+-- ── cellular-automaton guard ──────────────────────────────────────
+-- Wraps each animation — warns cleanly if no treesitter parser (e.g. dashboard)
+local function fx(animation)
+  local ft = vim.bo.filetype
+  if ft == "" or ft == "dashboard" then
+    vim.notify("Open a code file first", vim.log.levels.WARN)
+    return
+  end
+  local ok = pcall(require("cellular-automaton").start_animation, animation)
+  if not ok then
+    vim.notify("FX needs treesitter — open a code file first", vim.log.levels.WARN)
+  end
+end
+vim.api.nvim_create_user_command("Rain",       function() fx("make_it_rain") end, {})
+vim.api.nvim_create_user_command("GameOfLife", function() fx("game_of_life") end, {})
+
 -- ── compile & run C ───────────────────────────────────────────────
 -- F10 / :WallRun — compile and run the current C file, then clean up the binary
 local function crun()
