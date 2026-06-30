@@ -1,0 +1,36 @@
+[general]
+mode = normal
+framerate = 60
+bars = 0
+bar_width = 2
+bar_spacing = 1
+sensitivity = 80
+autosens = 0
+overshoot = 0
+
+[input]
+method = fifo
+source = /tmp/cava.fifo
+sample_rate = 44100
+sample_bits = 16
+channels = 2
+
+[output]
+method = ncurses
+channels = stereo
+mono_option = average
+
+[smoothing]
+monstercat = 0
+waves = 0
+gravity = 40
+ignore = 0
+
+[color]
+background = '#1a1b26'
+gradient = 1
+gradient_count = 4
+gradient_color_1 = '#7aa2f7'
+gradient_color_2 = '#bb9af7'
+gradient_color_3 = '#7dcfff'
+gradient_color_4 = '#9ece6a'

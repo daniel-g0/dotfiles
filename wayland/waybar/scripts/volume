@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Adjust default device volume via wpctl and notify current level.
+
+DEF_STEP=5
+
+usage() {
+	cat <<- EOF
+		USAGE: ${0##*/} {input|output} {mute|raise|lower} [step%]
+		  input/output   microphone / speaker
+		  mute           toggle mute
+		  raise/lower    change by [step]% (default: $DEF_STEP)
+	EOF
+}
+
+get_volume() {
+	wpctl get-volume "$DEV" | awk '{
+		val = $2 * 100
+		printf "%d", val
+	}'
+}
+
+is_muted() {
+	wpctl get-volume "$DEV" | grep -q '\[MUTED\]'
+}
+
+do_mute() {
+	wpctl set-mute "$DEV" toggle
+	if is_muted; then
+		notify-send "$DEV_NAME: Muted" -i "$DEV_ICON-muted" \
+			-h string:x-canonical-private-synchronous:volume
+	else
+		local vol; vol=$(get_volume)
+		notify-send "$DEV_NAME: Unmuted ($vol%)" -i "$DEV_ICON-high" \
+			-h string:x-canonical-private-synchronous:volume
+	fi
+}
+
+do_volume() {
+	local step="${1:-$DEF_STEP}"
+	case $ACTION in
+		raise) wpctl set-volume -l 1.0 "$DEV" "${step}%+" ;;
+		lower) wpctl set-volume      "$DEV" "${step}%-" ;;
+	esac
+	local vol; vol=$(get_volume)
+	notify-send "$DEV_NAME: $vol%" \
+		-h int:value:"$vol" \
+		-h string:x-canonical-private-synchronous:volume
+}
+
+main() {
+	local device=$1 action=$2 step=${3:-$DEF_STEP}
+	ACTION=$action
+
+	case $device in
+		output)
+			DEV="@DEFAULT_AUDIO_SINK@"
+			DEV_NAME="Volume"
+			DEV_ICON="audio-volume"
+			;;
+		input)
+			DEV="@DEFAULT_AUDIO_SOURCE@"
+			DEV_NAME="Microphone"
+			DEV_ICON="mic-volume"
+			;;
+		*) usage >&2; return 1 ;;
+	esac
+
+	case $action in
+		mute)          do_mute ;;
+		raise | lower) do_volume "$step" ;;
+		*)             usage >&2; return 1 ;;
+	esac
+}
+
+main "$@"

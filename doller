@@ -1,0 +1,275 @@
+#!/usr/bin/env bash
+# doller — dotfile installer
+
+set -uo pipefail
+
+# ── Tokyo Night palette ────────────────────────────────────────────────────────
+RS='\033[0m'; BD='\033[1m'
+RED='\033[38;2;247;118;142m'
+YLW='\033[38;2;224;175;104m'
+GRN='\033[38;2;158;206;106m'
+CYN='\033[38;2;125;207;255m'
+BLU='\033[38;2;122;162;247m'
+PRP='\033[38;2;187;154;247m'
+FG='\033[38;2;192;202;245m'
+DIM='\033[38;2;86;95;137m'
+
+DOTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DRY=0; FORCE=0
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n) DRY=1 ;;
+        --force|-y)   FORCE=1 ;;
+        --help|-h)
+            echo "Usage: doller [--dry-run|-n] [--force|-y]"
+            exit 0 ;;
+    esac
+done
+
+# ── Header ─────────────────────────────────────────────────────────────────────
+header() {
+    clear
+    echo
+    local logo=(
+        '██████╗  ██████╗ ██╗     ██╗     ███████╗██████╗ '
+        '██╔══██╗██╔═══██╗██║     ██║     ██╔════╝██╔══██╗'
+        '██║  ██║██║   ██║██║     ██║     █████╗  ██████╔╝'
+        '██║  ██║██║   ██║██║     ██║     ██╔══╝  ██╔══██╗'
+        '██████╔╝╚██████╔╝███████╗███████╗███████╗██║  ██║'
+        '╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝'
+    )
+    local cols; cols=$(tput cols 2>/dev/null || echo 80)
+    local logo_w=51
+    local pad=$(( (cols - logo_w) / 2 ))
+    echo -e "${PRP}${BD}"
+    for line in "${logo[@]}"; do printf "%${pad}s%s\n" "" "$line"; done
+    echo -e "${RS}"
+    local sub="dotfile installer  ·  ${DOTS}"
+    local sub_w=${#sub}
+    local sub_pad=$(( (cols - sub_w) / 2 ))
+    echo -e "${DIM}$(printf "%${sub_pad}s" "")${sub}${RS}"
+    echo
+}
+
+# ── OS detection ───────────────────────────────────────────────────────────────
+detect_os() {
+    if command -v nixos-rebuild &>/dev/null; then echo "nixos"
+    elif [[ "$(uname)" == "Darwin" ]];       then echo "macos"
+    elif grep -qi microsoft /proc/version 2>/dev/null; then echo "wsl"
+    else echo "linux"
+    fi
+}
+
+# ── Symlink map: "repo_path|destination|os_filter" ────────────────────────────
+ALL_LINK_DEFS=(
+    "nushell|$HOME/.config/nushell|all"
+    "nvim|$HOME/.config/nvim|all"
+    "starship/starship.toml|$HOME/.config/starship.toml|all"
+    "kitty|$HOME/.config/kitty|all"
+    "wallpapers|$HOME/.config/wallpapers|all"
+    "fastfetch|$HOME/.config/fastfetch|all"
+    "zoxide/config.nu|$HOME/.config/zoxide/config.nu|all"
+    "yazi|$HOME/.config/yazi|all"
+    "claude/settings.json|$HOME/.claude/settings.json|all"
+    "cursor|$HOME/.config/cursors|linux"
+    "rofi|$HOME/.config/rofi|linux"
+    "wallrizz|$HOME/.config/WallRizz|linux"
+    "whosthere|$HOME/.config/whosthere|linux"
+    "cava|$HOME/.config/cava|linux"
+    "scripts/cava-vibe|$HOME/.local/bin/cava-vibe|linux"
+    "wayland/hypr|$HOME/.config/hypr|linux"
+    "wayland/waybar|$HOME/.config/waybar|linux"
+    "wayland/swaync|$HOME/.config/swaync|linux"
+    "cursor/icons-default/index.theme|$HOME/.icons/default/index.theme|linux"
+    "applications/rofi-filebrowser.desktop|$HOME/.local/share/applications/rofi-filebrowser.desktop|linux"
+    "btop|$HOME/.config/btop|linux"
+    "nixos/configuration.nix|/etc/nixos/configuration.nix|nixos"
+)
+
+link_applies() {
+    local filter="$1" os="$2"
+    case "$filter" in
+        all)   return 0 ;;
+        linux) [[ "$os" == "linux" || "$os" == "nixos" || "$os" == "wsl" ]] && return 0 ;;
+        nixos) [[ "$os" == "nixos" ]] && return 0 ;;
+        macos) [[ "$os" == "macos" ]] && return 0 ;;
+    esac
+    return 1
+}
+
+needs_sudo() { [[ "$1" == "nixos" ]]; }
+
+# ── Check a single symlink ─────────────────────────────────────────────────────
+check_link() {
+    local src="$DOTS/$1" dst="$2"
+    if [[ ! -e "$src" ]]; then
+        echo "no_source"; return
+    fi
+    if [[ -L "$dst" ]]; then
+        local target; target="$(readlink "$dst")"
+        [[ "$target" == "$src" ]] && echo "ok" || echo "conflict"
+    elif [[ -e "$dst" ]]; then
+        echo "conflict"
+    else
+        echo "will_link"
+    fi
+}
+
+# ── Status table ───────────────────────────────────────────────────────────────
+print_table() {
+    local os="$1" current_section=""
+    printf "    ${DIM}%-32s %-38s %s${RS}\n" "Source" "Destination" "Status"
+    echo -e "    ${DIM}$(printf '─%.0s' {1..76})${RS}"
+
+    for entry in "${ALL_LINK_DEFS[@]}"; do
+        IFS='|' read -r src dst filter <<< "$entry"
+        link_applies "$filter" "$os" || continue
+
+        if   [[ "$filter" == "all"   && "$current_section" != "all"   ]]; then
+            echo -e "    ${DIM}Universal${RS}"; current_section="all"
+        elif [[ "$filter" == "linux" && "$current_section" != "linux" ]]; then
+            echo -e "\n    ${DIM}Linux / Wayland${RS}"; current_section="linux"
+        elif [[ "$filter" == "nixos" && "$current_section" != "nixos" ]]; then
+            echo -e "\n    ${PRP}NixOS system (sudo)${RS}"; current_section="nixos"
+        elif [[ "$filter" == "macos" && "$current_section" != "macos" ]]; then
+            echo -e "\n    ${BLU}macOS${RS}"; current_section="macos"
+        fi
+
+        local st; st="$(check_link "$src" "$dst")"
+        local sdst="${dst/$HOME/\~}"
+        needs_sudo "$filter" && sdst="[sudo] $sdst"
+
+        case "$st" in
+            ok)        printf "    ${DIM}%-32s %-38s ${GRN}✓ linked${RS}\n"       "$src" "$sdst" ;;
+            will_link) printf "    %-32s %-38s ${CYN}+ will link${RS}\n"          "$src" "$sdst" ;;
+            conflict)  printf "    %-32s %-38s ${YLW}! conflict → .bak${RS}\n"   "$src" "$sdst" ;;
+            no_source) printf "    ${DIM}%-32s %-38s   ? no source${RS}\n"        "$src" "$sdst" ;;
+        esac
+    done
+}
+
+# ── Apply ──────────────────────────────────────────────────────────────────────
+apply_all() {
+    local os="$1"
+    local ok=0 created=0 skipped=0 failed=0
+
+    for entry in "${ALL_LINK_DEFS[@]}"; do
+        IFS='|' read -r src dst filter <<< "$entry"
+        link_applies "$filter" "$os" || continue
+
+        local st; st="$(check_link "$src" "$dst")"
+
+        if [[ "$st" == "no_source" ]]; then
+            skipped=$(( skipped + 1 ))
+            continue
+        fi
+
+        if [[ "$st" == "ok" ]]; then
+            ok=$(( ok + 1 ))
+            continue
+        fi
+
+        local use_sudo=0
+        needs_sudo "$filter" && use_sudo=1
+
+        if (( use_sudo )); then
+            if ! sudo -v 2>/dev/null; then
+                echo -e "    ${RED}✗${RS} sudo auth failed — skipped: $dst"
+                failed=$(( failed + 1 ))
+                continue
+            fi
+        fi
+
+        local full_src="$DOTS/$src"
+        local parent; parent="$(dirname "$dst")"
+
+        if (( use_sudo )); then
+            if ! sudo mkdir -p "$parent"; then
+                echo -e "    ${RED}✗${RS} mkdir failed: $parent"
+                failed=$(( failed + 1 ))
+                continue
+            fi
+        else
+            if ! mkdir -p "$parent"; then
+                echo -e "    ${RED}✗${RS} mkdir failed: $parent"
+                failed=$(( failed + 1 ))
+                continue
+            fi
+        fi
+
+        if [[ "$st" == "conflict" ]]; then
+            local bak="${dst}.bak.$(date +%s)"
+            if (( use_sudo )); then
+                if ! sudo mv "$dst" "$bak"; then
+                    echo -e "    ${RED}✗${RS} backup failed: $dst"
+                    failed=$(( failed + 1 ))
+                    continue
+                fi
+            else
+                if ! mv "$dst" "$bak"; then
+                    echo -e "    ${RED}✗${RS} backup failed: $dst"
+                    failed=$(( failed + 1 ))
+                    continue
+                fi
+            fi
+            echo -e "    ${YLW}↶${RS} ${DIM}backed up $(basename "$dst") → .bak${RS}"
+        fi
+
+        local sdst="${dst/$HOME/\~}"
+        if (( use_sudo )); then
+            if sudo ln -sfn "$full_src" "$dst"; then
+                echo -e "    ${GRN}✓${RS} ${FG}$src${RS} ${DIM}→${RS} ${CYN}[sudo] $sdst${RS}"
+                created=$(( created + 1 ))
+            else
+                echo -e "    ${RED}✗${RS} failed: $dst"
+                failed=$(( failed + 1 ))
+            fi
+        else
+            if ln -sfn "$full_src" "$dst"; then
+                echo -e "    ${GRN}✓${RS} ${FG}$src${RS} ${DIM}→${RS} ${CYN}$sdst${RS}"
+                created=$(( created + 1 ))
+            else
+                echo -e "    ${RED}✗${RS} failed: $dst"
+                failed=$(( failed + 1 ))
+            fi
+        fi
+    done
+
+    echo
+    echo -e "    ${GRN}${ok} already linked${RS}  ${CYN}${created} created${RS}  ${DIM}${skipped} skipped${RS}  ${RED}${failed} failed${RS}"
+}
+
+# ── Main ───────────────────────────────────────────────────────────────────────
+header
+
+OS="$(detect_os)"
+echo -e "    ${DIM}OS:${RS} ${BLU}${OS}${RS}"
+echo
+
+echo -e "    ${BD}${FG}Symlink status${RS}"
+echo
+print_table "$OS"
+echo
+
+if [[ "$DRY" == "1" ]]; then
+    echo -e "    ${DIM}Dry run — nothing changed.${RS}\n"
+    exit 0
+fi
+
+if [[ "$FORCE" != "1" ]]; then
+    echo -ne "    ${BD}Apply?${RS} ${DIM}[Y/n]${RS} "
+    read -r confirm
+    confirm="${confirm:-y}"
+    [[ "${confirm,,}" != "y" ]] && echo -e "\n    ${DIM}Aborted.${RS}\n" && exit 0
+fi
+
+echo
+echo -e "    ${BD}${FG}Linking…${RS}"
+echo
+apply_all "$OS"
+
+echo
+echo -e "    ${BD}${GRN}Done!${RS}"
+[[ "$OS" == "nixos" ]] && echo -e "    ${DIM}Run ${RS}${CYN}nixos-re-sw${RS}${DIM} to rebuild.${RS}"
+echo

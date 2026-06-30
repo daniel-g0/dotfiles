@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Rofi File Browser
+Exec=rofi -show filebrowser -modi filebrowser
+MimeType=inode/directory;
+NoDisplay=true
