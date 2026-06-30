@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# NixOS options fzf menu — runs inside kitty
+
+FZF_COLORS="--color=bg+:#292e42,bg:#1a1b26,spinner:#bb9af7,hl:#565f89,fg:#c0caf5,header:#565f89,info:#7aa2f7,pointer:#bb9af7,marker:#7dcfff,fg+:#c0caf5,prompt:#7aa2f7,hl+:#7dcfff"
+
+CHOICE=$(printf '%s\n' \
+    "󰏫  Edit Config" \
+    "󰑓  Rebuild Switch" \
+    "󰙦  Rebuild Test" \
+    "󰚰  Update Flake" \
+    "󰩺  Garbage Collect" \
+    "󰋚  Generations" \
+    | fzf $FZF_COLORS \
+        --ansi \
+        --border=rounded \
+        --prompt="  NixOS › " \
+        --header=" NixOS Options — ESC to cancel" \
+        --header-first \
+        --no-multi \
+        --height=100% \
+        --layout=reverse)
+
+[ -z "$CHOICE" ] && exit 0
+
+case "$CHOICE" in
+    *"Edit Config"*)
+        nvim "$(readlink -f /etc/nixos/configuration.nix)"
+        ;;
+    *"Rebuild Switch"*)
+        sudo nixos-rebuild switch 2>&1 | tee /tmp/nix-rebuild.log
+        echo; echo "Press Enter to close..."; read
+        ;;
+    *"Rebuild Test"*)
+        sudo nixos-rebuild test 2>&1 | tee /tmp/nix-test.log
+        echo; echo "Press Enter to close..."; read
+        ;;
+    *"Update Flake"*)
+        cd /etc/nixos && sudo nix flake update 2>&1 | tee /tmp/nix-update.log
+        echo; echo "Press Enter to close..."; read
+        ;;
+    *"Garbage Collect"*)
+        sudo nix-collect-garbage --delete-older-than 7d 2>&1 | tee /tmp/nix-gc.log
+        echo; echo "Press Enter to close..."; read
+        ;;
+    *"Generations"*)
+        sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+        echo; echo "Press Enter to close..."; read
+        ;;
+esac
