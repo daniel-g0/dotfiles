@@ -379,6 +379,40 @@ return {
     cmd = "CellularAutomaton",
   },
 
+  -- codecompanion: Claude AI inside nvim — chat, inline assist, action palette
+  -- Reads ANTHROPIC_API_KEY from env (loaded from ~/.config/secrets/anthropic-key)
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+    },
+    event = "VeryLazy",
+    keys = {
+      { "<leader>aa", "<cmd>CodeCompanionActions<cr>",     mode = { "n", "v" }, desc = "AI actions palette" },
+      { "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "AI chat toggle" },
+      { "<leader>ai", "<cmd>CodeCompanion<cr>",            mode = { "n", "v" }, desc = "AI inline assist" },
+      { "ga",         "<cmd>CodeCompanionChat Add<cr>",    mode = "v",          desc = "Add selection to AI chat" },
+    },
+    opts = {
+      strategies = {
+        chat   = { adapter = "anthropic" },
+        inline = { adapter = "anthropic" },
+        agent  = { adapter = "anthropic" },
+      },
+      adapters = {
+        anthropic = function()
+          return require("codecompanion.adapters").extend("anthropic", {
+            schema = {
+              model = { default = "claude-sonnet-4-6" },
+            },
+          })
+        end,
+      },
+    },
+  },
+
   -- precognition: ghost-text showing available motions on current line
   {
     "tris203/precognition.nvim",
