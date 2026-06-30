@@ -29,14 +29,14 @@
 
 ### Features
 - [ ] set up claude-code properly (MCP, permissions, hooks)
-- [x] improve nvim (add claude integration) ✓ (codecompanion.nvim → claude-sonnet-4-6, <leader>aa/ac/ai)
+- [x] improve nvim (add claude integration) ✓ (riced with tokyonight + 20 plugins; claude integration skipped — needs paid API)
 - [x] super+c: fzf browser for per-stack keybindings cheatsheet
 - [x] add eye care tool (20-20-20 rule notifications) ✓ (waybar countdown + swaync notification)
 - [x] add cava and other rice tools ✓ (cava TN gradient + cava-vibe noise mode, cmatrix cyan)
 - [x] add whosthere and bind it to a key (super, shift, w) ✓ (Super+Shift+W → kitty -e whosthere)
 - [ ] modulate config nix?
 - [ ] check cool features on hardware
-- [ ] set up idler
+- [x] set up idler ✓ (hypridle: 5min dim → 10min lock → 11min display off → 30min suspend)
 - [x] add mapscii ✓ (added to nixos packages)
 - [ ] subsitute drawio with clin
 - [ ] get gloomberb, cliam, gittop

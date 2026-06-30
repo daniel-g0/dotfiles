@@ -62,6 +62,7 @@
 #custom-power {
 	padding: 0 16px;
 	border-radius: 20px;
+	background: @module-bg;
 	color: @accent;
 	margin: 0 4px;
 }
