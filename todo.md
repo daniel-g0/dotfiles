@@ -29,7 +29,7 @@
 
 ### Features
 - [ ] set up claude-code properly (MCP, permissions, hooks)
-- [ ] improve nvim (add claude integration)
+- [x] improve nvim (add claude integration) ✓ (codecompanion.nvim → claude-sonnet-4-6, <leader>aa/ac/ai)
 - [x] super+c: fzf browser for per-stack keybindings cheatsheet
 - [x] add eye care tool (20-20-20 rule notifications) ✓ (waybar countdown + swaync notification)
 - [x] add cava and other rice tools ✓ (cava TN gradient + cava-vibe noise mode, cmatrix cyan)
@@ -40,14 +40,7 @@
 - [x] add mapscii ✓ (added to nixos packages)
 - [ ] subsitute drawio with clin
 - [ ] get gloomberb, cliam, gittop
-- [ ] Fix nvim and rice it  (also add markdown renderer, and make line continue next line instead of wrap and disappear)
-Decoration provider "start" (ns=nvim.treesitter.highlighter):                                                                                                                                                                       
-Lua: ...3/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:215: ...wrapped-0.12.3/share/nvim/runtime/lua/vim/treesitter.lua:197: attempt to call method 'range' (a nil value)                                                 
-stack traceback:                                                                                                                                                                                                                    
-        [C]: in function 'f'                                                                                                                                                                                                        
-        ...3/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:215: in function 'tcall'                                                                                                                                        
-        ...3/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:596: in function 'parse'                                                                                                                                        
-        ....3/share/nvim/runtime/lua/vim/treesitter/highlighter.lua:580: in function <....3/share/nvim/runtime/lua/vim/treesitter/highlighter.lua:557>           
+- [x] Fix nvim and rice it ✓ (tokyonight, 20+ plugins, treesitter :TSUpdate fix, markdown renderer, LSP hover)           
 - [ ] Coloscheme tool finish creation (also add border colors and icons and all)
 
 
