@@ -17,6 +17,12 @@
 **VPN Menu**
 ![VPN Menu](screenshots/vpn-menu.png)
 
+**Neovim**
+![Neovim](screenshots/nvim.png)
+
+**WhosThere — LAN Discovery**
+![WhosThere](screenshots/whosthere.png)
+
 **Cheatsheet**
 ![Cheatsheet](screenshots/cheatsheet.png)
 

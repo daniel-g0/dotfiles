@@ -16,40 +16,26 @@ return {
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  󰏘  COLORSCHEME  ━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  -- Cyberdream: futuristic dark colorscheme
+  -- Tokyo Night: canonical dark colorscheme — consistent with system-wide theme
   -- NOTE: overrides NvChad base46 (chadrc.lua theme is cosmetic only when this is active)
   {
-    "scottmckendry/cyberdream.nvim",
+    "folke/tokyonight.nvim",
     lazy     = false,
     priority = 1000,
-    config = function()
-      require("cyberdream").setup({
-        transparent          = true,
-        italic_comments      = true,
-        hide_fillchars       = " ",
-        borderless_telescope = true,
-        terminal_colors      = true,
-        theme = {
-          variant    = "default",
-          overrides = function(colors)
-            return {
-              Comment       = { fg = colors.green, bg = "NONE", italic = true },
-              ["@property"] = { fg = colors.magenta, bold = true },
-            }
-          end,
-          colors = {
-            bg      = "#000000",
-            green   = "#00ff00",
-            magenta = "#ff00ff",
-          },
-        },
-        extensions = {
-          telescope = true,
-          notify    = false,
-          mini      = true,
-        },
-      })
-      vim.cmd("colorscheme cyberdream")
+    opts = {
+      style           = "night",
+      transparent     = true,
+      terminal_colors = true,
+      styles = {
+        comments = { italic = true },
+        keywords = { italic = true },
+        sidebars = "dark",
+        floats   = "dark",
+      },
+    },
+    config = function(_, opts)
+      require("tokyonight").setup(opts)
+      vim.cmd("colorscheme tokyonight")
     end,
   },
 
@@ -68,26 +54,30 @@ return {
   },
 
   -- Mason: install/manage LSP servers, linters, formatters
+  -- lua-language-server installed via NixOS (Mason can't install binaries on NixOS)
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
     opts = {
       ensure_installed = {
-        "lua-language-server", "stylua",
+        "stylua",
         "html-lsp", "css-lsp", "prettier",
       },
     },
   },
 
   -- Treesitter: incremental parsing → syntax highlighting, text objects
+  -- build = ":TSUpdate" keeps parsers in sync with binary (fixes nil range errors)
   {
     "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       ensure_installed = {
         "vim", "lua", "vimdoc",
         "html", "css", "javascript", "typescript",
         "python", "c", "bash",
+        "markdown", "markdown_inline",
       },
     },
   },
@@ -102,18 +92,40 @@ return {
     end,
   },
 
+  -- Fidget: LSP progress spinner bottom-right — disappears when done
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    opts  = { notification = { window = { winblend = 0 } } },
+  },
+
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  󰙀  UI  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  -- Lualine: statusline
+  -- Lualine: statusline with Tokyo Night theme + powerline separators
   {
     "nvim-lualine/lualine.nvim",
     event        = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      options = {
+        theme                = "tokyonight",
+        component_separators = { left = "", right = "" },
+        section_separators   = { left = "", right = "" },
+        globalstatus         = true,
+      },
+      sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch", "diff", "diagnostics" },
+        lualine_c = { { "filename", path = 1 } },
+        lualine_x = { "encoding", "filetype" },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
+      },
+    },
   },
 
   -- Barbar: tabline with git status + file icons
-  -- Loads on BufAdd so the bar appears when the second buffer opens
   {
     "romgrk/barbar.nvim",
     event = "BufAdd",
@@ -136,8 +148,85 @@ return {
     end,
   },
 
+  -- indent-blankline: indent guides with scope highlight
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufReadPost",
+    main  = "ibl",
+    opts  = {
+      indent = { char = "│" },
+      scope  = { enabled = true },
+    },
+  },
+
+  -- nvim-highlight-colors: inline color swatches in CSS/HTML/Lua
+  {
+    "brenoprata10/nvim-highlight-colors",
+    event = "BufReadPost",
+    opts  = { render = "virtual", virtual_symbol = "■" },
+  },
+
+  -- rainbow-delimiters: brackets colored by nesting depth
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = "BufReadPost",
+  },
+
+  -- dressing.nvim: replaces all vim.ui.select/input with telescope-style pickers
+  {
+    "stevearc/dressing.nvim",
+    lazy = true,
+    init = function()
+      vim.ui.select = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.select(...)
+      end
+      vim.ui.input = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.input(...)
+      end
+    end,
+  },
+
+  -- mini.animate: smooth cursor movement + window open/close/resize animations
+  -- scroll disabled — conflicts with centered C-d/C-u mappings
+  {
+    "echasnovski/mini.animate",
+    version = "*",
+    event   = "VeryLazy",
+    opts    = { scroll = { enable = false } },
+  },
+
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  GIT  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  -- Gitsigns: hunk signs in gutter + blame + hunk navigation
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts  = {
+      signs = {
+        add          = { text = "▎" },
+        change       = { text = "▎" },
+        delete       = { text = "" },
+        topdelete    = { text = "" },
+        changedelete = { text = "▎" },
+        untracked    = { text = "▎" },
+      },
+      on_attach = function(buf)
+        local gs  = package.loaded.gitsigns
+        local map = function(m, l, r, desc)
+          vim.keymap.set(m, l, r, { buffer = buf, desc = desc })
+        end
+        map("n", "]h",          gs.next_hunk,                   "Next hunk")
+        map("n", "[h",          gs.prev_hunk,                   "Prev hunk")
+        map("n", "<leader>gb",  gs.toggle_current_line_blame,   "Toggle git blame")
+        map("n", "<leader>gp",  gs.preview_hunk,                "Preview hunk")
+        map("n", "<leader>gr",  gs.reset_hunk,                  "Reset hunk")
+        map("n", "<leader>gs",  gs.stage_hunk,                  "Stage hunk")
+      end,
+    },
+  },
 
   -- Neogit: Magit-style git TUI — :Neogit
   {
@@ -145,7 +234,7 @@ return {
     cmd = "Neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",        -- side-by-side diff view
+      "sindrets/diffview.nvim",
       "nvim-telescope/telescope.nvim",
       "ibhagwan/fzf-lua",
     },
@@ -161,6 +250,32 @@ return {
     event        = "VeryLazy",
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     opts         = {},
+  },
+
+  -- flash.nvim: fast jump with s/S — pairs well with hardtime
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    keys = {
+      { "s",     function() require("flash").jump() end,       mode = { "n", "x", "o" }, desc = "Flash jump" },
+      { "S",     function() require("flash").treesitter() end, mode = { "n", "x", "o" }, desc = "Flash treesitter" },
+      { "r",     function() require("flash").remote() end,     mode = "o",               desc = "Flash remote" },
+      { "<c-s>", function() require("flash").toggle() end,     mode = "c",               desc = "Toggle flash search" },
+    },
+  },
+
+  -- nvim-autopairs: auto-close ()[]{}""'' in insert mode
+  {
+    "windwp/nvim-autopairs",
+    event  = "InsertEnter",
+    config = true,
+  },
+
+  -- nvim-ts-autotag: auto-close and auto-rename HTML/JSX/TSX tags
+  {
+    "windwp/nvim-ts-autotag",
+    event = "BufReadPost",
+    opts  = {},
   },
 
   -- f-string-toggle: toggle Python f-strings with <leader>f
@@ -190,6 +305,14 @@ return {
     opts = { window = { width = 0.75 } },
   },
 
+  -- nvim-surround: add/change/delete surrounding pairs (ys / cs / ds)
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event   = "VeryLazy",
+    config  = true,
+  },
+
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━  󰒙  DIAGNOSTICS & NAVIGATION  ━━━━━━━━━━━━━━━━
 
@@ -208,6 +331,15 @@ return {
     opts = {},
   },
 
+  -- todo-comments: highlight TODO/FIXME/NOTE/HACK in comments + telescope search
+  {
+    "folke/todo-comments.nvim",
+    event        = "BufReadPost",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = { { "<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Search TODOs" } },
+    opts = {},
+  },
+
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  󰒡  UTILITIES  ━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -217,23 +349,62 @@ return {
     event = "VeryLazy",
   },
 
+  -- vim-illuminate: highlight all occurrences of word under cursor
+  -- providers: skip treesitter (nil node bug in locals.lua), use lsp + regex
+  {
+    "RRethy/vim-illuminate",
+    event  = "BufReadPost",
+    opts   = {
+      providers         = { "lsp", "regex" },
+      delay             = 200,
+      large_file_cutoff = 2000,
+    },
+    config = function(_, opts) require("illuminate").configure(opts) end,
+  },
+
+  -- render-markdown: beautiful in-buffer markdown rendering
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft           = { "markdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    opts = {
+      heading = { sign = false },
+      code    = { sign = false },
+    },
+  },
+
+  -- cellular-automaton: :CellularAutomaton make_it_rain / game_of_life
+  {
+    "eandrju/cellular-automaton.nvim",
+    cmd = "CellularAutomaton",
+  },
+
+  -- precognition: ghost-text showing available motions on current line
+  {
+    "tris203/precognition.nvim",
+    event = "VeryLazy",
+    opts  = { startVisible = true },
+  },
+
+  -- duck: hatch a walking animal on screen — :lua require("duck").hatch()
+  -- animals: "🦆" (default), "🐈", "🐎", "🦀", "🐤", "🦖"
+  {
+    "tamton-aquib/duck.nvim",
+    cmd = "DuckHatch",
+    config = function()
+      vim.api.nvim_create_user_command("DuckHatch", function()
+        require("duck").hatch()
+      end, {})
+      vim.api.nvim_create_user_command("DuckCook", function()
+        require("duck").cook()
+      end, {})
+    end,
+  },
+
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  󰐂  RECOMMENDED  ━━━━━━━━━━━━━━━━━━━━━━━━━
 --
 --  Uncomment any block to enable. All are lazy-loaded.
-
-  -- flash.nvim: fast jump with s/S/f/t — replaces hop/leap
-  -- Pairs well with hardtime to learn real motions fast
-  -- {
-  --   "folke/flash.nvim",
-  --   event = "VeryLazy",
-  --   keys = {
-  --     { "s",     function() require("flash").jump() end,              mode = { "n", "x", "o" }, desc = "Flash jump" },
-  --     { "S",     function() require("flash").treesitter() end,        mode = { "n", "x", "o" }, desc = "Flash treesitter" },
-  --     { "r",     function() require("flash").remote() end,            mode = "o",               desc = "Flash remote" },
-  --     { "<c-s>", function() require("flash").toggle() end,            mode = "c",               desc = "Toggle flash search" },
-  --   },
-  -- },
 
   -- oil.nvim: edit the filesystem like a buffer — much faster than nvim-tree for renames/moves
   -- {
@@ -243,50 +414,19 @@ return {
   --   opts = {},
   -- },
 
-  -- todo-comments.nvim: highlight TODO/FIXME/NOTE/HACK in comments + telescope search
-  -- {
-  --   "folke/todo-comments.nvim",
-  --   event        = "BufReadPost",
-  --   dependencies = { "nvim-lua/plenary.nvim" },
-  --   keys = { { "<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Search TODOs" } },
-  --   opts = {},
-  -- },
-
-  -- nvim-surround: add/change/delete surrounding pairs (ys / cs / ds)
-  -- {
-  --   "kylechui/nvim-surround",
-  --   version = "*",
-  --   event   = "VeryLazy",
-  --   config  = true,
-  -- },
-
-  -- nvim-highlight-colors: show color swatches inline in CSS/HTML/Lua
-  -- {
-  --   "brenoprata10/nvim-highlight-colors",
-  --   event = "BufReadPost",
-  --   opts  = { render = "virtual", virtual_symbol = "■" },
-  -- },
-
   -- harpoon (v2): instant bookmarks for 4-5 hot files per project — <leader>h*
   -- {
   --   "ThePrimeagen/harpoon",
   --   branch       = "harpoon2",
   --   dependencies = { "nvim-lua/plenary.nvim" },
   --   keys = {
-  --     { "<leader>ha", function() require("harpoon"):list():add() end,                                       desc = "Harpoon add" },
-  --     { "<leader>hh", function() local h = require("harpoon") h.ui:toggle_quick_menu(h:list()) end,        desc = "Harpoon menu" },
+  --     { "<leader>ha", function() require("harpoon"):list():add() end,                                desc = "Harpoon add" },
+  --     { "<leader>hh", function() local h = require("harpoon") h.ui:toggle_quick_menu(h:list()) end, desc = "Harpoon menu" },
   --     { "<leader>1",  function() require("harpoon"):list():select(1) end, desc = "Harpoon file 1" },
   --     { "<leader>2",  function() require("harpoon"):list():select(2) end, desc = "Harpoon file 2" },
   --     { "<leader>3",  function() require("harpoon"):list():select(3) end, desc = "Harpoon file 3" },
   --     { "<leader>4",  function() require("harpoon"):list():select(4) end, desc = "Harpoon file 4" },
   --   },
-  -- },
-
-  -- nvim-ts-autotag: auto-close and auto-rename HTML/JSX/TSX tags
-  -- {
-  --   "windwp/nvim-ts-autotag",
-  --   event = "BufReadPost",
-  --   opts  = {},
   -- },
 
   -- nvim-dap + dap-ui: debugger (works with clangd/pylsp for C/Python)

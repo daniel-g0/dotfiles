@@ -77,6 +77,18 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   command = "silent! wall",
 })
 
+-- ── LSP hover on cursor hold ───────────────────────────────────────
+-- Shows type info / docs popup after updatetime ms of not moving.
+-- Only fires when an LSP client is attached; silent on no info.
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients > 0 then
+      vim.lsp.buf.hover()
+    end
+  end,
+})
+
 -- ── compile & run C ───────────────────────────────────────────────
 -- F10 / :WallRun — compile and run the current C file, then clean up the binary
 local function crun()
