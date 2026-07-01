@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+THEME="$HOME/.config/waybar/styles/nix-menu.rasi"
+
+choice=$(printf \
+"<span color='#7aa2f7'>󰤨</span>  <span color='#7aa2f7'>Network</span>
+<span color='#7dcfff'>󰂯</span>  <span color='#7dcfff'>Bluetooth</span>
+<span color='#9ece6a'>󰕾</span>  <span color='#9ece6a'>Volume</span>
+<span color='#bb9af7'>󰍬</span>  <span color='#bb9af7'>Mic</span>
+<span color='#e0af68'>󰦝</span>  <span color='#e0af68'>VPN</span>
+<span color='#ff9e64'>󰃠</span>  <span color='#ff9e64'>Brightness</span>
+<span color='#9ece6a'>󰁹</span>  <span color='#9ece6a'>Battery</span>" \
+| rofi -dmenu -i -p "<span color='#7dcfff'>  Settings</span>" -no-custom -markup-rows -theme "$THEME")
+
+case "$choice" in
+    *Network*)    kitty --class settings -T "Network" -e nmtui ;;
+    *Bluetooth*)  blueman-manager ;;
+    *Volume*)     pavucontrol ;;
+    *Mic*)        pavucontrol --tab=4 ;;
+    *VPN*)        kitty --class settings -T "VPN" -e bash "$HOME/.config/waybar/scripts/vpnc-menu" ;;
+    *Brightness*) kitty --class settings -T "Brightness" -e bash -c \
+                    'echo "Current: $(brightnessctl g) / $(brightnessctl m)"
+                     read -rp "Set % (0-100): " v
+                     [[ $v =~ ^[0-9]+$ ]] && brightnessctl s "${v}%"' ;;
+    *Battery*)    kitty --class settings -T "Battery" -e bash -c \
+                    'upower -i $(upower -e | grep BAT) | grep -E "state|percentage|time"; read' ;;
+esac

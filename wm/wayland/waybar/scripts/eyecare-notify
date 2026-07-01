@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Standalone 20-20-20 notifier — no waybar output, just notifications.
+INTERVAL=1200
+STATE_FILE="$HOME/.local/state/eyecare-start"
+mkdir -p "$(dirname "$STATE_FILE")"
+[[ -f "$STATE_FILE" ]] || date +%s > "$STATE_FILE"
+
+while true; do
+    sleep 10
+    start=$(cat "$STATE_FILE")
+    now=$(date +%s)
+    remaining=$(( INTERVAL - (now - start) ))
+    if (( remaining <= 0 )); then
+        date +%s > "$STATE_FILE"
+        notify-send -u normal -t 20000 "󰛐 Eye Break" "20-20-20: look 20 ft away for 20 seconds"
+    fi
+done
