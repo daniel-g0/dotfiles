@@ -13,6 +13,17 @@ _DIM    = as_rgb(0x414868)
 SEP = '   '
 
 
+def _vlen(s: str) -> int:
+    w = 0
+    for c in s:
+        cp = ord(c)
+        if 0xE000 <= cp <= 0xF8FF or 0xF0000 <= cp <= 0xFFFFF:
+            w += 2
+        else:
+            w += 1
+    return w
+
+
 def _parse(title: str) -> list[tuple[str, int]]:
     # Expected: "~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23"
     parts      = title.split(' | ')
@@ -49,7 +60,7 @@ def draw_tab(
     if single:
         total = screen.columns
         plain = SEP.join(t for t, _ in segs)
-        pad   = max(0, (total - len(plain)) // 2)
+        pad   = max(0, (total - _vlen(plain)) // 2)
 
         screen.cursor.fg = _FG
         screen.cursor.bg = _BG
