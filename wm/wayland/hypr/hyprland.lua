@@ -52,12 +52,13 @@ local wallpaper   = "kitty --class wallpaper-picker -1 -e $HOME/.config/hypr/wal
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function ()
-  hl.exec_cmd("waybar")
+  hl.exec_cmd("bash $HOME/.config/waybar/launch")
   hl.exec_cmd("swaync")
   hl.exec_cmd("hypridle")
   hl.exec_cmd("awww-daemon")
   hl.exec_cmd("awww img $HOME/.config/wallpapers/nix-tokyo-night.png --transition-type fade --transition-duration 2")
   hl.exec_cmd("hyprctl setcursor Layan-cursors 24")
+  hl.exec_cmd("bash $HOME/.config/waybar/scripts/eyecare-notify")
 end)
 
 
@@ -285,7 +286,7 @@ hl.bind(mainMod .. " + return", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + S", hl.dsp.exit())
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("qylock-lock"))
-hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("hyprctl reload; pkill waybar; waybar"))
+hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("hyprctl reload; pkill waybar; bash $HOME/.config/waybar/launch"))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(wallpaper))

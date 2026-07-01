@@ -1,0 +1,62 @@
+/* Nix menu — Tokyo Night dropdown */
+
+* {
+    bg:        #0d0d14f7;
+    fg:        #a9b1d6;
+    fg-dim:    #565f89;
+    blue:      #7aa2f7;
+    purple:    #bb9af7;
+    sel-bg:    #7aa2f726;
+    border-c:  #7aa2f740;
+
+    background-color: transparent;
+    text-color:       #a9b1d6;
+    font:             "JetBrainsMono Nerd Font 13";
+}
+
+window {
+    location:         northwest;
+    anchor:           northwest;
+    x-offset:         8px;
+    y-offset:         40px;
+    width:            220px;
+    background-color: #0d0d14f7;
+    border-radius:    16px;
+    border:           1px;
+    border-color:     #7aa2f740;
+    padding:          6px;
+}
+
+mainbox {
+    background-color: transparent;
+    children:         [ listview ];
+    padding:          0px;
+    spacing:          0px;
+}
+
+listview {
+    background-color: transparent;
+    lines:            7;
+    columns:          1;
+    scrollbar:        false;
+    spacing:          2px;
+    padding:          2px;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    10px;
+    padding:          10px 14px;
+    spacing:          12px;
+    orientation:      horizontal;
+    cursor:           pointer;
+}
+
+element normal.normal   { background-color: transparent; text-color: #a9b1d6; }
+element selected.normal { background-color: #7aa2f726;   text-color: #7aa2f7; }
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}

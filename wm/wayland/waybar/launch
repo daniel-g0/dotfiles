@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+PRIMARY=$(hyprctl monitors -j 2>/dev/null | jq -r 'sort_by(.id) | .[0].name // empty')
+[[ -z "$PRIMARY" ]] && PRIMARY="eDP-1"
+
+TMP=$(mktemp --suffix=.jsonc)
+trap "rm -f $TMP" EXIT
+
+sed "s|\"reload_style_on_change\": true|\"output\": \"$PRIMARY\", \"reload_style_on_change\": true|" \
+    "$HOME/.config/waybar/config.jsonc" > "$TMP"
+
+exec waybar --config "$TMP"

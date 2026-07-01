@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+THEME="$HOME/.config/waybar/styles/nix-menu.rasi"
+
+choice=$(printf \
+"<span color='#e0af68'>󰠮</span>  <span color='#e0af68'>Todo</span>
+<span color='#7aa2f7'>󰓅</span>  <span color='#7aa2f7'>Statistics</span>
+<span color='#bb9af7'>󰂚</span>  <span color='#bb9af7'>Notifications</span>
+<span color='#7dcfff'>󰒓</span>  <span color='#7dcfff'>Settings</span>
+<span color='#f7768e'>󰤄</span>  <span color='#f7768e'>Power</span>" \
+| rofi -dmenu -i -p "" -no-custom -markup-rows -theme "$THEME")
+
+case "$choice" in
+    *Todo*)
+        kitty --class todo -e bash -c \
+            'task; echo; read -rp "  [a]dd · [#] done · Enter close: " x
+             [[ $x =~ ^[0-9]+$ ]] && task done "$x" && task
+             [[ $x == a\ * ]]     && task add "${x#a }" && task'
+        ;;
+    *Statistics*)
+        kitty --class stats -T "Statistics" -e btop
+        ;;
+    *Notifications*)
+        swaync-client -t
+        ;;
+    *Settings*)
+        bash "$HOME/.config/waybar/scripts/nix-menu-settings"
+        ;;
+    *Power*)
+        bash "$HOME/.config/waybar/scripts/nix-menu-power"
+        ;;
+esac
