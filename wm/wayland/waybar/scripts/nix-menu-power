@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+THEME="$HOME/.config/waybar/styles/nix-menu.rasi"
+
+choice=$(printf \
+"<span color='#7aa2f7'>󰌾</span>  <span color='#7aa2f7'>Lock</span>
+<span color='#e0af68'>󰤄</span>  <span color='#e0af68'>Suspend</span>
+<span color='#bb9af7'>󰒲</span>  <span color='#bb9af7'>Hibernate</span>
+<span color='#ff9e64'>󰑓</span>  <span color='#ff9e64'>Reboot</span>
+<span color='#f7768e'>󰐥</span>  <span color='#f7768e'>Shutdown</span>
+<span color='#a9b1d6'>󰍃</span>  <span color='#a9b1d6'>Logout</span>" \
+| rofi -dmenu -i -p "<span color='#f7768e'>󰤄  Power</span>" -no-custom -markup-rows -theme "$THEME")
+
+case "$choice" in
+    *Lock*)      loginctl lock-session ;;
+    *Suspend*)   systemctl suspend ;;
+    *Hibernate*) systemctl hibernate ;;
+    *Reboot*)    systemctl reboot ;;
+    *Shutdown*)  systemctl poweroff ;;
+    *Logout*)    loginctl terminate-user "$USER" ;;
+esac

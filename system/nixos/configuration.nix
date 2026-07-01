@@ -255,6 +255,7 @@ in
       nodejs
       claude-code
       lua-language-server
+      taskwarrior3
       gittype
       nethack
 
@@ -365,7 +366,11 @@ in
     enableDefaultPackages = true;
     packages              = with pkgs; [
       nerd-fonts.jetbrains-mono
+      nerd-fonts.recursive-mono
+      recursive
+      nerd-fonts.iosevka
       material-icons
+      inter
     ];
   };
 
