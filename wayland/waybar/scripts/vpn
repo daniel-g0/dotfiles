@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-if pgrep -x vpnc > /dev/null 2>&1; then
-    IP=$(ip addr show tun0 2>/dev/null | awk '/inet /{print $2}')
-    echo "{\"text\":\"󰦝\",\"tooltip\":\"VPN Connected\\n$IP\",\"class\":\"connected\"}"
-else
-    echo '{"text":"󰦞","tooltip":"VPN Disconnected","class":"disconnected"}'
-fi

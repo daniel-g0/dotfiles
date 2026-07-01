@@ -1,0 +1,206 @@
+@import "theme.css";
+
+* {
+	all: initial;
+	color: @main-fg;
+}
+
+@import "styles/fonts.css";
+@import "styles/states.css";
+
+/* ── Bar ─────────────────────────────────────────────────────────────────── */
+
+#waybar {
+	background: transparent;
+	font-size: 15px;
+	font-weight: 700;
+}
+
+/* ── Pills ───────────────────────────────────────────────────────────────── */
+
+#left,
+#right,
+#time {
+	padding: 2px 14px;
+	border-radius: 15px;
+	background: @module-bg;
+	margin: 0 6px;
+}
+
+#clock {
+	padding: 2px 10px;
+}
+
+/* ── NixOS menu ──────────────────────────────────────────────────────────── */
+
+#custom-user {
+	padding: 0 14px;
+	border-radius: 15px;
+	background: @module-bg;
+	color: @accent;
+	margin: 0 4px;
+}
+
+#custom-user:hover {
+	color: @hover-fg;
+}
+
+/* ── NixOS logo (left, next to burger) ──────────────────────────────────── */
+
+#custom-distro {
+	font-size: 22px;
+	color: #bb9af7;
+	padding: 0 6px;
+}
+
+#custom-distro:hover {
+	color: @hover-fg;
+}
+
+/* ── Power menu ──────────────────────────────────────────────────────────── */
+
+#custom-power {
+	padding: 0 16px;
+	border-radius: 20px;
+	background: @module-bg;
+	color: @accent;
+	margin: 0 4px;
+}
+
+#custom-power:hover {
+	background: @hover-bg;
+}
+
+/* ── Idle inhibitor ──────────────────────────────────────────────────────── */
+
+#idle_inhibitor {
+	padding: 0 10px;
+	border-radius: 12px;
+	background: @module-bg;
+	margin: 0 2px;
+}
+
+/* ── Semantic icon colors ────────────────────────────────────────────────── */
+
+#bluetooth            { color: #7aa2f7; }
+#network              { color: #7dcfff; }
+#custom-vpn           { color: #9ece6a; }
+#pulseaudio.output    { color: #9ece6a; }
+#pulseaudio.input     { color: #bb9af7; }
+#custom-notifications { color: #e0af68; }
+#backlight            { color: #ff9e64; }
+#battery              { color: #9ece6a; }
+
+
+/* ── Workspaces ──────────────────────────────────────────────────────────── */
+
+#custom-ws-icon {
+	padding: 0 4px;
+	color: #7dcfff;
+}
+
+#workspaces {
+	padding: 0 4px;
+}
+
+#workspaces button {
+	padding: 0 5px;
+	color: @surface3;
+	border-radius: 8px;
+}
+
+#workspaces button.active {
+	color: @purple;
+}
+
+#workspaces button:hover {
+	color: @hover-fg;
+	background: @hover-bg;
+}
+
+/* ── Module paddings ─────────────────────────────────────────────────────── */
+
+#mpris,
+#temperature,
+#memory,
+#cpu,
+#disk {
+	padding: 0 9px;
+}
+
+#bluetooth,
+#network,
+#custom-vpn,
+#custom-eyecare,
+#custom-notifications,
+#custom-update {
+	padding: 0 7px;
+}
+
+#pulseaudio {
+	padding: 0 7px;
+}
+
+#backlight,
+#battery {
+	padding: 0 7px;
+}
+
+/* ── Hover ───────────────────────────────────────────────────────────────── */
+
+#mpris:hover,
+#temperature:hover,
+#memory:hover,
+#cpu:hover,
+#clock:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#network:hover,
+#custom-vpn:hover,
+#custom-eyecare:hover,
+#custom-notifications:hover,
+#custom-update:hover,
+#idle_inhibitor:hover,
+#backlight:hover,
+#battery:hover {
+	color: @hover-fg;
+}
+
+/* ── States ──────────────────────────────────────────────────────────────── */
+
+#idle_inhibitor.activated {
+	color: @accent;
+}
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+
+tooltip {
+	border: 2px solid @main-br;
+	border-radius: 12px;
+	background: @main-bg;
+}
+
+tooltip label {
+	padding: 2px 10px;
+	font-weight: 600;
+}
+
+/* ── Context menus ───────────────────────────────────────────────────────── */
+
+menu {
+	background: @main-bg;
+	border: 1px solid @main-br;
+	border-radius: 10px;
+	padding: 4px 0;
+	color: @main-fg;
+}
+
+menuitem {
+	padding: 8px 20px;
+	border-radius: 8px;
+	color: @main-fg;
+}
+
+menuitem:hover {
+	background: @hover-bg;
+}

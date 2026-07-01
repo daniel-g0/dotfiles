@@ -8,21 +8,27 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 
 | Repo path | Symlinked to |
 |-----------|-------------|
-| `nushell/` | `~/.config/nushell` |
-| `nvim/` | `~/.config/nvim` |
-| `starship/starship.toml` | `~/.config/starship.toml` |
-| `kitty/` | `~/.config/kitty` |
-| `wallpapers/` | `~/.config/wallpapers` |
-| `zoxide/config.nu` | `~/.config/zoxide/config.nu` |
-| `yazi/` | `~/.config/yazi` |
-| `wallrizz/` | `~/.config/wallrizz` |
-| `whosthere/` | `~/.config/whosthere` |
-| `wayland/hypr/` | `~/.config/hypr` |
-| `wayland/swaync/` | `~/.config/swaync` |
-| `cursor/icons-default/index.theme` | `~/.icons/default/index.theme` |
-| `applications/rofi-filebrowser.desktop` | `~/.local/share/applications/rofi-filebrowser.desktop` |
-| `btop/` | `~/.config/btop` |
-| `nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
+| `shell/nushell/` | `~/.config/nushell` |
+| `dev/nvim/` | `~/.config/nvim` |
+| `shell/starship/starship.toml` | `~/.config/starship.toml` |
+| `apps/kitty/` | `~/.config/kitty` |
+| `wm/wallpapers/` | `~/.config/wallpapers` |
+| `shell/zoxide/config.nu` | `~/.config/zoxide/config.nu` |
+| `apps/yazi/` | `~/.config/yazi` |
+| `apps/wallrizz/` | `~/.config/WallRizz` |
+| `apps/whosthere/` | `~/.config/whosthere` |
+| `wm/wayland/hypr/` | `~/.config/hypr` |
+| `wm/wayland/waybar/` | `~/.config/waybar` |
+| `wm/wayland/swaync/` | `~/.config/swaync` |
+| `wm/cursor/icons-default/index.theme` | `~/.icons/default/index.theme` |
+| `wm/applications/rofi-filebrowser.desktop` | `~/.local/share/applications/rofi-filebrowser.desktop` |
+| `apps/btop/` | `~/.config/btop` |
+| `apps/fastfetch/` | `~/.config/fastfetch` |
+| `apps/cava/` | `~/.config/cava` |
+| `apps/rofi/` | `~/.config/rofi` |
+| `dev/claude/settings.json` | `~/.claude/settings.json` |
+| `shell/scripts/cava-vibe` | `~/.local/bin/cava-vibe` |
+| `system/nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
 
 Run `./doller` to (re)create all symlinks. TUI shows status per link, backs up conflicts. `--dry-run` to preview, `--force` to skip prompt. `install.sh` is a shim that calls it.
 

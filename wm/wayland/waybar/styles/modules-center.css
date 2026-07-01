@@ -1,0 +1,108 @@
+/*-----------------
+    Temperature
+-----------------*/
+
+#custom-left_div.2 {
+	color: @temperature;
+}
+#temperature {
+	background-color: @temperature;
+}
+
+/*------------
+    Memory
+------------*/
+
+#custom-left_div.3 {
+	background-color: @temperature;
+	color: @memory;
+}
+#memory {
+	background-color: @memory;
+}
+
+/*---------
+    CPU
+---------*/
+
+#custom-left_div.4 {
+	background-color: @memory;
+	color: @cpu;
+}
+#cpu {
+	background-color: @cpu;
+}
+#custom-left_inv.1 {
+	color: @cpu;
+}
+
+
+/*--------------------
+    Idle inhibitor
+--------------------*/
+
+#custom-right_inv.1 {
+	color: @time;
+}
+#idle_inhibitor {
+	background-color: @time;
+}
+
+/*----------
+    Time
+----------*/
+
+#clock.time {
+	padding-right: 8px;
+	background-color: @time;
+}
+#custom-right_div.3 {
+	background-color: @date;
+	color: @time;
+}
+
+/*----------
+    Date
+----------*/
+
+#clock.date {
+	padding-left: 8px;
+	background-color: @date;
+}
+#custom-right_div.4 {
+	background-color: @tray;
+	color: @date;
+}
+
+/*-----------------
+    System tray
+-----------------*/
+
+#network {
+	background-color: @tray;
+	padding: 0 8px 0 4px;
+}
+#bluetooth {
+	background-color: @tray;
+	padding: 0 7px;
+}
+#custom-notifications {
+	background-color: @tray;
+	padding: 0 8px;
+}
+#custom-notifications.dnd-none,
+#custom-notifications.dnd-notification {
+	color: @hover-fg;
+}
+
+#custom-update {
+	background-color: @tray;
+	padding: 0 10px 0 2px;
+}
+#custom-eyecare {
+	background-color: @tray;
+	padding: 0 9px;
+}
+#custom-right_div.5 {
+	color: @tray;
+}
