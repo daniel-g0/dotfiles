@@ -11,7 +11,8 @@
 /* ── Bar ─────────────────────────────────────────────────────────────────── */
 
 #waybar {
-	background: transparent;
+	background: @module-bg;
+	border-radius: 16px;
 	font-size: 15px;
 	font-weight: 700;
 }
@@ -22,8 +23,6 @@
 #right,
 #time {
 	padding: 2px 14px;
-	border-radius: 15px;
-	background: @module-bg;
 	margin: 0 6px;
 }
 
@@ -35,8 +34,6 @@
 
 #custom-user {
 	padding: 0 14px;
-	border-radius: 15px;
-	background: @module-bg;
 	color: @accent;
 	margin: 0 4px;
 }
@@ -61,8 +58,6 @@
 
 #custom-power {
 	padding: 0 16px;
-	border-radius: 20px;
-	background: @module-bg;
 	color: @accent;
 	margin: 0 4px;
 }
@@ -75,8 +70,6 @@
 
 #idle_inhibitor {
 	padding: 0 10px;
-	border-radius: 12px;
-	background: @module-bg;
 	margin: 0 2px;
 }
 

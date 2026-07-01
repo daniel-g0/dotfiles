@@ -47,6 +47,18 @@ Fixes to try:
 - [x] idle → qylock ✓
 - [x] waybar: add workspace number indicator ✓
 
+### Waybar frosted glass corners (TEMP FIX ACTIVE)
+Current state: frosted bg + border-radius set in CSS, blur layerrule active in hyprland.lua.
+Problem: Hyprland renders the full rectangular blur surface behind the waybar, making corners appear square even though GTK clips them.
+Tried: `ignorezero = true` in layerrule (unknown if it works), `ignorealpha` (invalid field in Lua API).
+Fix directions to try:
+- `layerrule = rounding N, waybar` in native hyprctl (not Lua) — might clip the layer surface itself
+- Remove blur layerrule entirely, rely on semi-transparent bg only (no frosted effect but clean corners)
+- Try `xray = true` in layerrule to see if it changes compositing
+- Check if newer Hyprland Lua API exposes `rounding` on layer_rule
+
+Also TODO: match waybar width to windows (`margin: "5 20"` = gaps_out) once corners are fixed.
+
 ### Features
 - [ ] set up claude-code properly (MCP, permissions, hooks)
 - [x] improve nvim (add claude integration) ✓ (riced with tokyonight + 20 plugins; claude integration skipped — needs paid API)
