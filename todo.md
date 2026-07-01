@@ -16,6 +16,26 @@
 ## Active
 
 ### Bugs
+
+#### Suspend/lock freeze on resume
+Symptoms: black screen, freeze, or compositor not loading after suspend or lock.
+Likely causes:
+- GPU/DRM state not restored (hybrid graphics — Intel iGPU + dGPU)
+- qylock race: `before_sleep_cmd` fires lock before qylock renders first frame → deadlock on resume
+- `after_sleep_cmd = hyprctl dispatch dpms on` fires before Hyprland socket ready → display stays off
+- pipewire/wireplumber crash on resume → systemd session bad state
+
+Diagnose after next freeze:
+```bash
+journalctl -b -1 -p err --no-pager | tail -50
+journalctl -b -1 -u systemd-suspend --no-pager
+```
+
+Fixes to try:
+- Add `sleep 1 &&` before `hyprctl dispatch dpms on` in hypridle `after_sleep_cmd`
+- Check amdgpu/nvidia kernel module sleep_state options
+
+
 - [x] kitty tab bar background black text after content scrolls ✓
 - [x] wallrizz (super+w) freezes/crashes on image caching — replaced with yazi picker ✓
 - [x] wifi context menu drops when on ethernet — replaced GTK menu with on-click nmtui / right-click wifi toggle ✓
@@ -49,6 +69,7 @@
 - [x] set multiple monitor profiles (work: DP-3 left, DP-4 middle, eDP-1 right; home: eDP-1 only) ✓ (hyprmon TUI)
 - [x] add proper screenshots to README and repo graphs ✓
 - [x] create VM for safe dotfile testing ✓
+- [x] create distributable demo VM image (virt-manager qcow2) ✓ (nixos/vm.nix + nixos-generators)
 - [x] set up windows VM ready for working and gaming (home setup) ✓
 
 

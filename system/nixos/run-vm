@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Run the demo VM. Builds if not already built.
+set -e
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+VM_CONFIG="$REPO_ROOT/nixos/vm.nix"
+DISK_IMAGE="$REPO_ROOT/nixos/demo.qcow2"
+
+cd "$REPO_ROOT"
+
+if [ ! -L result ] || [ ! -f result/bin/run-dotfiles-demo-vm ]; then
+    echo "Building VM..."
+    nix-build '<nixpkgs/nixos>' -A vm --arg configuration "$VM_CONFIG"
+fi
+
+export NIX_DISK_IMAGE="$DISK_IMAGE"
+
+exec ./result/bin/run-dotfiles-demo-vm \
+    -m 8192 \
+    -smp 8,cores=8 \
+    -cpu host \
+    -vga virtio \
+    -display sdl,gl=on,grab-mod=lshift \
+    -device usb-kbd \
+    "$@"

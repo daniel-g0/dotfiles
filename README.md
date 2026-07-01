@@ -57,6 +57,31 @@ Stack: Hyprland · Hyprlock · Hypridle · Waybar · swaync · WallRizz · Rofi 
 
 ---
 
+## Try it in a VM
+
+No install needed — boot the full setup in virt-manager.
+
+**Build the image** (on any NixOS machine with flakes enabled):
+```bash
+git clone https://github.com/daniel-g0/dotfiles
+cd dotfiles
+nix run github:nix-community/nixos-generators -- --format qcow2 --configuration ./nixos/vm.nix
+```
+
+**Import into virt-manager:**
+1. New VM → Import existing disk image → select `nixos.qcow2`
+2. Set OS to `Generic Linux` — at least 4GB RAM, 2 CPUs recommended
+3. Boot → login: `user` / `nixos`
+
+Dotfiles clone and install automatically on first boot (needs internet). Watch progress:
+```bash
+journalctl -u setup-dotfiles -f
+```
+
+> The VM config strips hardware-specific stuff (IOMMU, GPU passthrough). Everything else is identical.
+
+---
+
 ## Install
 
 We use ***doller***, a custom dotfile installer, it basically symlinks configs to where they should be, makes life easy.

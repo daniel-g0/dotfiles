@@ -1,0 +1,506 @@
+history --clear 
+sudo nixos-rebuild switch
+ls
+rmdir Documents/ Downloads/
+ls
+mkdir Proyects
+ls
+mv Proyects/ Projects
+sl
+ls
+cd Volumes/
+ls
+lsblk -afm
+sudo mount /dev/nvme0n1p4 shared-part/
+nvim
+hx
+cd shared-part/
+ls
+..
+ls
+mkdir backups
+lsblk -afm
+sudo mount /dev/sda1 backups/
+nvim
+hx
+cd backups/Devices/home-pc/Migration/
+ls
+cd wsl/
+ls
+mkdir Downloads
+cd downloads/
+ls
+mv ai-sbx-0b0edc3/ ~/Downloads/
+sudo mv ai-sbx-0b0edc3/ ~/Downloads/
+sudo mv ai-sbx-0b0edc3/ ~/Downloads
+cd Downloads/
+ls
+cd ai-sbx-0b0edc3/
+ls
+make
+nvim
+cd
+sudo nvim /etc/nixos/configuration.nix
+sudo nixos-rebuild switch
+waybar
+nvim
+sudo nixos-rebuild switch
+sld
+ls
+fc-cache
+fc-cache -v
+fc-cache -fv
+ls
+systemctl hibernate
+systemctl suspend
+keepass 
+hx .config/hypr/hyprland.lua
+ls
+reboot now
+reboot 
+lsblk -afm
+sudo mount /dev/sda1 Volumes/backups/
+ls
+cd Projects/
+ls
+git clone https://github.com/daniel-g0/dotfiles.git
+ls
+mv ~/Volumes/backups/Devices/home-pc/Migration/ ../
+..
+ls
+mv ~/Volumes/backups/Devices/home-pc/Migration/ .
+ls
+mv ~/Volumes/backups/Devices/home-pc/Migration/ Migration
+ls
+nvim
+yazi
+ls
+mv Migration/ Volumes/backups/Devices/home-pc/
+mv Migration/ Volumes/backups/Devices/home-pc/Migration/
+sudo mv Migration/ Volumes/backups/Devices/home-pc/Migration-mix
+ls
+mv Volumes/backups/Devices/home-pc/Migration/work-bookmarks.html Projects/dotfiles/
+sudo mv Volumes/backups/Devices/home-pc/Migration/work-bookmarks.html Projects/dotfiles/
+cd Projects/dotfiles/
+ls
+sudo chown user:user work-bookmarks.html
+sudo chown uesr work-bookmarks.html
+sudo chown user work-bookmarks.html
+ls
+la
+ls -la
+-ls
+mkdir bookmarks
+mv work-bookmarks.html bookmarks/
+ls
+sudo nvim /etc/nixos/configuration.nix
+sudo nixos-rebuild switch
+sudo nvim /etc/nixos/configuration.nix
+sudo nixos-rebuild switch
+teams-for-linux 
+ssh-keygen -a
+ssh-keygen 
+cat .ssh/id_ed25519.pub
+ls
+rm -rf Downloads/a
+ls
+cd Documents/
+ls
+..
+rmdir Documents/
+ls
+sl
+ls
+cd Projects/
+ls
+cd dotfiles/
+ls
+..
+git clone git@github.com:daniel-g0/dotfiles.git
+rm -rf dotfiles/
+git clone git@github.com:daniel-g0/dotfiles.git
+cd dotfiles/
+ls
+cp /etc/nixos/configuration.nix nixos/configuration.nix
+cp ~/.config/hypr/ wayland/hypr/hyprland.lua
+cp ~/.config/hypr/hyprland.lua wayland/hypr/hyprland.lua
+ls
+git add .
+git commit -m "NixOS and Hyrpland configs updates (vim keys + pckgs and net)"
+git push
+ls
+nvim
+hx
+rm -rf Documents/
+ls
+cd Projects/
+ls
+cd dotfiles/
+ls
+gs
+git status
+ls
+cd
+ls
+cd Downloads/
+ls
+cd ai-sbx-0b0edc3/
+ls
+make 
+make buiñd
+make build
+ls
+./Makefile
+sh
+ls
+cd scripts/
+ls
+..
+ls
+./a
+nvim
+ls
+cd Volumes/
+ls
+lsblk -afm
+sudo mount /dev/nvme0n1p4 shared-part/
+ls
+cd shared-part/
+ls
+cat webpages.txt
+rm webpages.txt
+ls
+cat wsl-structure.txt
+ls
+rmdir Documents/
+sl
+ls
+cd Downloads/
+ls
+..
+ls
+cd Projects/
+ls
+mkdir personal
+mkdir studies
+mkdir work
+mkdir work/clients
+mkdir work/it
+mkdir work/utils
+ls
+cd
+..
+cat .ssh/id_ed25519.pub
+hx
+ls
+cd Projects/
+ls
+cd work/
+ls
+cd it
+git clone https://gitea.btesa.com/IT/oppia.git
+git clone ssh://git@172.31.110.18:222/IT/oppia.git
+git clone ssh://git@172.31.110.18:222/IT/core-updater.git
+git clone ssh://git@172.31.110.18:222/IT/docker-puller.git
+git clone ssh://git@172.31.110.18:222/IT/server_vega.git
+cd ..
+ls
+cd utils/
+ls
+git clone ssh://git@172.31.110.18:222/utils/text-sanitizer
+git clone ssh://git@172.31.110.18:222/utils/docker
+git clone ssh://git@172.31.110.18:222/utils/cdci
+git clone ssh://git@172.31.110.18:222/utils/development-resources
+git clone ssh://git@172.31.110.18:222/utils/unikernels
+git clone ssh://git@172.31.110.18:222/utils/mqtt
+git clone ssh://git@172.31.110.18:222/utils/ssh
+nvim
+hx
+:q
+..
+ls
+cd clients/
+git clone ssh://git@172.31.110.18:222/btesa/iiot_cepsa.git
+sl
+ls
+$nu.config-path
+hx /home/user/.config/nushell/config.nu
+config nu
+cd
+ls
+mkdir -P /root/.config/helix
+mkdir /root/.config/helix
+sudo mkdir /root/.config/helix
+sudo cp .config/helix/ /root/.config/helix
+sudo cp -r .config/helix/ /root/.config/helix
+sudo hx
+cd /root/
+sudo cd /root/
+sudo 
+sudo su
+su .
+su -
+sudo su -s bash
+sudo su -s sh
+sudo su  sh
+sudo su --sh
+sudo su
+sudo nix-shell   
+sudo nvim /etc/nixos/configuration.nix
+sudo nixos-rebuild switch
+starship 
+config nu
+cd $nu.data-dir
+ls
+cd ve
+cd vendor/autoload/
+sl
+ls
+cat starship.nu
+cd
+z
+zoxide
+ls
+cd .config/
+ls
+mkdir zoxide
+cd zoxide/
+zoxide init nushell --hook prompt | save config.nu
+pwd
+ls
+config nu
+z
+ls
+wpd
+config nu
+:q!
+cd Projects/dotfiles/helix/
+ls
+..
+starship preset tokyo-night -o ~/.config/starship.toml
+ls
+pwd
+config nu
+ls
+cd .config/nushell/
+ls
+themees
+mkdir themes
+cd themes/
+touch black-metal-venom.nu
+hx black-metal-venom.nu
+nu black-metal-venom.nu
+ls
+source black-metal-venom.nu
+ls
+..
+ls
+pwd
+ls
+hx config.nu
+cd themes/
+ls
+touch black-metal-dark-funeral.nu
+ls
+hx
+config nix
+ls
+cd Projects/
+ls
+cd dotfiles/
+ls
+..
+is
+ls
+mv dotfiles/ personal/
+ls
+cd personal/
+ls
+git clone git@github.com:nushell/nu_scripts.git
+ls
+yazi
+cp -r nu_scripts/aliases/ nu_scripts/custom-completions/ ~/.config/nushell/
+config nu
+cd
+ls
+nvim .config/nushell/config.nu
+docker 
+docker attach 
+man 30-systemd-environment-d-generator.8
+config nu
+nvim
+hx
+cd .config/nushell/
+ls
+cd aliases/
+ls
+mkdir nixos
+nvim nixos/
+..
+ls
+hx
+cd aliases/bat/
+ls
+cat bat-aliases.nu
+cp bat-aliases.nu ../nixos/nixos-aliases.nu
+..
+ls
+nvim
+sudoedit
+sudoedit /etc/nixos/configuration.nix
+nixos-edit 
+rm -rf nushell; ln -s /home/user/.config/nushell/ .
+ls
+hx
+nixos-edit 
+nixos-rebuild 
+sudo nixos-rebuild  switch
+:q!
+tldr
+^tldr
+^tldr ls
+tldr ls
+tldr pwd
+tldr nix
+ls
+cd Volumes/
+ls
+mv shared-part/wallpapers ../Projects/personal/
+sudo mv shared-part/wallpapers ../Projects/personal/dotfiles/
+z dot
+z 
+cd
+ls
+z Projects/personal/dotfiles/
+ls
+z wallpapers/
+ls
+..
+git lfs install   
+ln -s wallpapers/ ~/.config/wallpapers
+nixos-rebuild 
+sudo nixos-rebuild switch
+ls
+rm -rf nixos/ 
+cp /etc/nixos/ nixos
+cp -r /etc/nixos/ nixos
+cp -r ~/.config/nushell/ .
+ls
+git add .
+gc
+gp
+rm -rf nixos/ nushell/
+ln -s /etc/nixos .
+ln -s /home/user/.config/nushell/ .
+ls
+rm -rf kitty/ 
+ln -s /home/user/.config/kitty/ .
+cd nixos/
+ls
+..
+ls
+ln -s /home/user/.config/helix/ .
+rm -rf helix/
+ln -s /home/user/.config/helix/ .
+ls
+rm -rf wallpapers/
+chmod +x wallpapers/
+sudo chown user wallpapers/
+ls
+rm ~/.config/wallpapers && mv wallpapers/ /home/user/.config/wallpapers
+rm ~/.config/wallpapers ; mv wallpapers/ /home/user/.config/wallpapers
+ls
+ln -s /home/user/.config/wallpapers/ .
+git lfs
+git lfs insall
+git lfs install
+ls wallpapers/
+git lfs track "*.jpg"<\n>
+la
+ls -la
+cd wallpapers/
+ls
+ls -la
+chown user *
+sudo chown user *
+exit
+exit
+..
+ls
+git lfs track "*.jpg"<\n>
+git lfs track "*.webp"<\n>
+git add .gitattributes<\n>git commit -m "Configure Git LFS tracking"   
+git lfs ls-files   
+git push
+git lfs ls-files   
+cat .gitattributes
+tree
+ls
+ls wallpapers/
+git add wallpapers/   
+git add wallpapers
+git lfs ls-filesCopied!   
+git lfs ls-filesC
+git lfs ls-files
+gs
+git status
+git add .
+gs
+git status
+ls
+git lfs ls-files
+rm helix/
+ls
+rm -f helix/
+rm helix
+rm kitty/
+rm kitty
+mv /home/user/.config/helix/ .
+ln -s helix/ /home/user/.config/helix
+ls
+mv /home/user/.config/kitty/ .
+ln -s kitty/ /home/user/.config/kitty
+ls
+rm nixos
+mv /etc/nixos .
+sudo mv /etc/nixos .
+ln -s nixos/ /etc/nixos
+sudo ln -s nixos/ /etc/nixos
+ls
+ls -la
+rm nushell
+nvim
+ls
+h
+nvim
+nixos-re-sw
+hyprlock
+sudo ln -sfn ~/Projects/personal/dotfiles/nixos/configuration.nix /etc/nixos/configuration.nix
+sudo ln -sfn ~/Projects/personal/dotfiles/nixos/hardware-configuration.nix /etc/nixos/hardware-configuration.nix<\n>
+z dot
+ls
+nixos-re-sw
+hyprctl relaod
+hyprctl reload
+z doty
+z dot
+ls
+cd kitty/
+lñs
+ls
+cat kitty.conf
+nixos-re-sw
+hyprctl reload
+awww-daemon & awww img /home/user/.config/wallpapers/a_foggy_forest_with_trees.jpg --transition-type fade --transition-duration 2
+sh
+awww img /home/user/.config/wallpapers/tokyo_water.jpg --transition-type fade --transition-duration 2
+nvim
+nixos-re-sw
+claude
+z dot
+nvim
+fg
+nvim
+claude --resume 212a3382-698a-4def-819c-5a49c13ccc0f
+z dot
+cd Projects/personal/dotfiles/
