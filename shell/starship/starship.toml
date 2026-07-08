@@ -1,7 +1,7 @@
 # starship.toml — Tokyo Night, single line, vi mode via nushell indicator
 
 format = """
-$c$python$nodejs$rust$golang$java$docker_context\
+$c$python$nodejs$rust$golang$java\
 $character\
 """
 
@@ -84,8 +84,3 @@ format = "[ $symbol ](bold $style)"
 symbol = ""
 style  = "fg:#f7768e"
 format = "[ $symbol ]($style)"
-
-[docker_context]
-symbol = " "
-style  = "fg:#7dcfff"
-format = "[ $symbol $context ]($style)"
