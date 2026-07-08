@@ -189,7 +189,7 @@ in
   users.users."user" = {
     isNormalUser = true;
     description  = "user";
-    extraGroups  = [ "networkmanager" "wheel" "video" "libvirtd" "kvm" "input" "uinput" ];
+    extraGroups  = [ "networkmanager" "wheel" "video" "libvirtd" "kvm" "input" "uinput" "docker" ];
     packages     = with pkgs; [
       # Wayland / desktop
       swaynotificationcenter
@@ -278,6 +278,7 @@ in
       veracrypt
       drawio
       chezmoi
+      kdePackages.okular
     ];
   };
 
@@ -313,10 +314,11 @@ in
     mode   = "0755";
   };
 
-  # -- Docker (rootless) ---------------------------------------------------------
-  virtualisation.docker.enable                     = true;
-  virtualisation.docker.rootless.enable            = true;
-  virtualisation.docker.rootless.setSocketVariable = true;
+  # -- Docker --------------------------------------------------------------------
+  virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings = {
+    insecure-registries = [ "172.31.110.20:5000" ];
+  };
 
   # -- Keyboard remapping --------------------------------------------------------
   # Remap capslock → escape system-wide via keyd daemon.

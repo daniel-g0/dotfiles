@@ -9,8 +9,8 @@
   },
   "enabledPlugins": {
     "caveman@caveman": true,
-    "context7@claude-plugins-official": true,
-    "serena@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
+    "serena@claude-plugins-official": false,
     "security-guidance@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "session-report@claude-plugins-official": true,
