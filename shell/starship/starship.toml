@@ -1,7 +1,6 @@
 # starship.toml — Tokyo Night, single line, vi mode via nushell indicator
 
 format = """
-$c$python$rust$golang$java\
 $character\
 """
 
