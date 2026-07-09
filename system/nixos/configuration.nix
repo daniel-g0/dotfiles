@@ -106,6 +106,7 @@ in
   networking.hostName              = "nixos";
   networking.networkmanager.enable = true;
   networking.networkmanager.plugins = [ pkgs.networkmanager-vpnc ];
+  networking.nameservers            = [ "1.1.1.1" "1.0.0.1" ];
 
   # -- Bluetooth -----------------------------------------------------------------
   hardware.bluetooth.enable      = true;
