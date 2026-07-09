@@ -247,6 +247,7 @@ return {
   -- Hardtime: enforces good vim motion habits — breaks arrow keys / hjkl spam
   {
     "m4xshen/hardtime.nvim",
+    enabled      = false,
     event        = "VeryLazy",
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     opts         = {},
@@ -383,8 +384,9 @@ return {
   -- precognition: ghost-text showing available motions on current line
   {
     "tris203/precognition.nvim",
-    event = "VeryLazy",
-    opts  = {
+    enabled = false,
+    event   = "VeryLazy",
+    opts    = {
       startVisible = true,
       disabled_fts = { "dashboard", "alpha", "neo-tree", "NvimTree", "TelescopePrompt", "lazy", "mason" },
     },

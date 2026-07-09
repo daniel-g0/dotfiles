@@ -16,13 +16,20 @@
     "session-report@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "hookify@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "tips@tips": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
       "source": {
         "source": "github",
         "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "tips": {
+      "source": {
+        "source": "github",
+        "repo": "daniel-g0/tips"
       }
     }
   },
