@@ -88,7 +88,7 @@ let
 in
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ /etc/nixos/hardware-configuration.nix ];
 
   # -- Nix settings --------------------------------------------------------------
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
