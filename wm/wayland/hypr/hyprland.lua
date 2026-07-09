@@ -296,6 +296,7 @@ hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty --class cheatsheet -e ~/.confi
 hl.bind(mainMod .. " + T",         hl.dsp.layout("togglesplit"))    -- dwindle only
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("kitty --class whosthere -e whosthere"))
+hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("kitty --class sshs -e sshs"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + H",  hl.dsp.focus({ direction = "left" }))
@@ -414,6 +415,15 @@ hl.window_rule({
 hl.window_rule({
     name   = "float-whosthere",
     match  = { class = "whosthere" },
+    float  = true,
+    size   = "900 600",
+    center = true,
+})
+
+-- sshs SSH manager windowrule
+hl.window_rule({
+    name   = "float-sshs",
+    match  = { class = "sshs" },
     float  = true,
     size   = "900 600",
     center = true,
