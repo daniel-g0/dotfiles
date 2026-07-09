@@ -317,10 +317,6 @@ in
 
   # -- Docker --------------------------------------------------------------------
   virtualisation.docker.enable = true;
-  virtualisation.docker.daemon.settings = {
-    insecure-registries = [ "172.31.110.20:5000" ];
-  };
-
   # -- Keyboard remapping --------------------------------------------------------
   # Remap capslock → escape system-wide via keyd daemon.
   services.keyd = {
