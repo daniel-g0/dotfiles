@@ -22,3 +22,6 @@ export alias t = tree -C -L 3
 
 # cmatrix — tokyo night cyan rain
 export alias matrix = cmatrix -C cyan -b
+
+# reload shell — replaces current process with fresh nu (picks up config changes)
+export alias reload = exec nu
