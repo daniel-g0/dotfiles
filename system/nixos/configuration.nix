@@ -258,6 +258,7 @@ in
       taskwarrior3
       gittype
       nethack
+      sshs
 
       # Virtualisation
       virt-manager
