@@ -27,19 +27,19 @@ case "$CHOICE" in
         nvim "$(readlink -f /etc/nixos/configuration.nix)"
         ;;
     *"Rebuild Switch"*)
-        sudo nixos-rebuild switch 2>&1 | tee /tmp/nix-rebuild.log
+        sudo nixos-rebuild switch 2>&1 | tee "$HOME/.local/state/nix-rebuild.log"
         echo; echo "Press Enter to close..."; read
         ;;
     *"Rebuild Test"*)
-        sudo nixos-rebuild test 2>&1 | tee /tmp/nix-test.log
+        sudo nixos-rebuild test 2>&1 | tee "$HOME/.local/state/nix-test.log"
         echo; echo "Press Enter to close..."; read
         ;;
     *"Update Flake"*)
-        cd /etc/nixos && sudo nix flake update 2>&1 | tee /tmp/nix-update.log
+        cd /etc/nixos && sudo nix flake update 2>&1 | tee "$HOME/.local/state/nix-update.log"
         echo; echo "Press Enter to close..."; read
         ;;
     *"Garbage Collect"*)
-        sudo nix-collect-garbage --delete-older-than 7d 2>&1 | tee /tmp/nix-gc.log
+        sudo nix-collect-garbage --delete-older-than 7d 2>&1 | tee "$HOME/.local/state/nix-gc.log"
         echo; echo "Press Enter to close..."; read
         ;;
     *"Generations"*)

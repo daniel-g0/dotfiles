@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 WALLPAPER_DIR="$HOME/.config/wallpapers"
 CHOOSER=$(mktemp)
+trap 'rm -f "$CHOOSER"' EXIT
 
 yazi "$WALLPAPER_DIR" --chooser-file="$CHOOSER"
 

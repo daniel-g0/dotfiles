@@ -28,7 +28,7 @@ if (( remaining <= 0 )); then
             date +%s > "$STATE_FILE"
             notify-send -u normal -t 20000 "󰛐 Eye Break" "20-20-20: look 20 ft away for 20 seconds"
         fi
-    ) 9>/tmp/eyecare-notify.lock
+    ) 9>"${XDG_RUNTIME_DIR:-/run/user/$UID}/eyecare-notify.lock"
     remaining=$INTERVAL
 fi
 
