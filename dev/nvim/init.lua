@@ -8,6 +8,18 @@
 --    4. Custom commands / autocmds
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+-- ── nvim 0.12 treesitter directive crash guard ────────────────────
+-- Stale injection nodes lose :range() in nvim 0.12; wrap add_directive early
+-- so every handler registered by any plugin is pcall-protected.
+do
+  local orig = vim.treesitter.query.add_directive
+  vim.treesitter.query.add_directive = function(name, handler, opts)
+    return orig(name, function(match, pattern, bufnr, pred, metadata)
+      pcall(handler, match, pattern, bufnr, pred, metadata)
+    end, opts)
+  end
+end
+
 -- ── bootstrap ─────────────────────────────────────────────────────
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
 vim.g.mapleader    = " "
@@ -161,3 +173,4 @@ vim.api.nvim_set_keymap("n", "<F10>", ":WallRun<CR>", { noremap = true, silent =
 
 -- require("hardtime").setup()
 -- require("mistake")
+
