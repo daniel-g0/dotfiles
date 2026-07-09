@@ -33,7 +33,9 @@
       }
     }
   },
+  "effortLevel": "low",
   "theme": "custom:tokyonight",
   "editorMode": "vim",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "model": "Fable"
 }
