@@ -113,11 +113,8 @@ in
   hardware.bluetooth.powerOnBoot = true;
 
   # -- Hardware ------------------------------------------------------------------
-  hardware.graphics = {
-    enable        = true;
-    extraPackages = [ pkgs.intel-media-driver ];
-  };
-  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";  # Intel VA-API
+  # Machine-specific GPU config (nvidia, intel, amd) goes in hardware-configuration.nix.
+  hardware.graphics.enable = true;
 
   zramSwap.enable    = true;
   zramSwap.algorithm = "zstd";
