@@ -226,6 +226,15 @@ nushell/history.sqlite3-shm
 # Claude Code local settings and user-specific configs
 claude/**/*.local.*
 claude/settings.local.json
+
+# Personal notes and private local docs (never commit)
+.personal/
+
+# Private key/cert formats (belt-and-suspenders)
+*.pem
+*.key
+*.p12
+*.pfx
 # VM build artifacts
 *.qcow2
 result
