@@ -240,6 +240,7 @@ in
       cmatrix
       sox
       whosthere
+      mpv
 
       # Wayland utilities
       wl-clipboard
@@ -281,6 +282,7 @@ in
       drawio
       chezmoi
       kdePackages.okular
+      libreoffice
     ];
   };
 

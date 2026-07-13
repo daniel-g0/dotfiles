@@ -3,6 +3,7 @@
     "EDITOR": "nvim",
     "VISUAL": "nvim"
   },
+  "model": "claude-sonnet-4-6",
   "statusLine": {
     "type": "command",
     "command": "bash \"/home/user/.claude/statusline-command.sh\""
@@ -33,9 +34,8 @@
       }
     }
   },
-  "effortLevel": "low",
-  "theme": "custom:tokyonight",
+  "effortLevel": "high",
+  "theme": "auto",
   "editorMode": "vim",
-  "skipAutoPermissionPrompt": true,
-  "model": "Fable"
+  "skipAutoPermissionPrompt": true
 }
