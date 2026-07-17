@@ -57,6 +57,14 @@ MODEL=$(printf '%s' "$INPUT" | jq -r '.model.display_name // empty')
 TOK_5H=$(printf '%s' "$INPUT" | jq -r '.rate_limits.five_hour.used_percentage // empty | if type == "number" then round else . end')
 TOK_WK=$(printf '%s' "$INPUT" | jq -r '.rate_limits.seven_day.used_percentage // empty | if type == "number" then round else . end')
 
+# --- Time until 5h window resets ---
+RESET_TIME=""
+RESETS_AT=$(printf '%s' "$INPUT" | jq -r '.rate_limits.five_hour.resets_at // empty')
+if [ -n "$RESETS_AT" ]; then
+  SECS_LEFT=$(( RESETS_AT - $(date +%s) ))
+  [ "$SECS_LEFT" -gt 0 ] && RESET_TIME="$(( SECS_LEFT / 60 ))m"
+fi
+
 # --- Build output ---
 OUT=""
 
@@ -76,9 +84,14 @@ if [ -n "$MODEL" ]; then
   OUT="${OUT} $(printf "${PURPLE}[%s]${RESET}" "$SHORT_MODEL")"
 fi
 
-# token usage %
-[ -n "$TOK_5H" ] && OUT="${OUT} $(printf "${CYAN}5h:%s%%${RESET}" "$TOK_5H")"
-[ -n "$TOK_WK" ] && OUT="${OUT} $(printf "${CYAN}wk:%s%%${RESET}" "$TOK_WK")"
+# token usage % + time until reset
+if [ -n "$TOK_5H" ] || [ -n "$RESET_TIME" ]; then
+  TOK_PART="${TOK_5H:+${TOK_5H}%}"
+  RESET_PART="${RESET_TIME:+⟳${RESET_TIME}}"
+  SEP=$( [ -n "$TOK_PART" ] && [ -n "$RESET_PART" ] && printf ' ' )
+  OUT="${OUT} ${CYAN}5h:${TOK_PART}${SEP}${RESET_PART}${RESET}"
+fi
+[ -n "$TOK_WK" ] && OUT="${OUT} ${CYAN}wk:${TOK_WK}%${RESET}"
 
 # --- Caveman badge (append if active) ---
 CAVEMAN_BADGE=$(bash "/home/user/.claude/plugins/cache/caveman/caveman/25d22f864ad6/src/hooks/caveman-statusline.sh" 2>/dev/null)
