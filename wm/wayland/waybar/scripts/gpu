@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+read -r util mem_used mem_total name < <(
+    nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.total,name \
+        --format=csv,noheader,nounits 2>/dev/null | tr ',' ' '
+)
+printf '{"text":"%s%%","tooltip":"%s\\n%s / %s MiB VRAM"}\n' \
+    "$util" "$name" "$mem_used" "$mem_total"

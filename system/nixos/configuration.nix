@@ -91,9 +91,16 @@ in
   imports = [ /etc/nixos/hardware-configuration.nix ];
 
   # -- Nix settings --------------------------------------------------------------
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features  = [ "nix-command" "flakes" ];
+  nix.optimise.automatic = true;
+  nix.gc = {
+    automatic = true;
+    dates     = "weekly";
+    options   = "--delete-older-than 7d";
+  };
 
   # -- Boot ----------------------------------------------------------------------
+  boot.tmp.cleanOnBoot = true;
   boot.loader.systemd-boot.enable             = true;
   boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables        = true;
@@ -122,6 +129,11 @@ in
   services.hardware.bolt.enable = true;  # Thunderbolt device authorization
   services.fwupd.enable         = true;  # Firmware updates (NVMe, Thunderbolt, etc.)
   services.auto-cpufreq.enable  = true;  # Adaptive CPU frequency scaling
+
+  services.journald.extraConfig = ''
+    SystemMaxUse=200M
+    MaxRetentionSec=2weeks
+  '';
 
   # -- Locale & timezone ---------------------------------------------------------
   time.timeZone      = "Europe/Madrid";
@@ -173,7 +185,7 @@ in
   # -- Printing ------------------------------------------------------------------
   services.printing.enable = true;
 
-  # -- Audio (pipewire) ----------------------------------------------------------
+  # -- Audio ---------------------------------------------------------------------
   services.pulseaudio.enable = false;
   security.rtkit.enable      = true;
   services.pipewire = {
@@ -182,6 +194,11 @@ in
     alsa.support32Bit = true;
     pulse.enable      = true;
   };
+
+  # Speech synthesis daemon — browsers (chromium/firefox) call this for TTS.
+  # Without it, window.speechSynthesis.getVoices() returns []. Backends the
+  # Inteli app's Voice card by default (see app/src/core/voice/speak.ts).
+  services.speechd.enable = true;
 
   # -- User ----------------------------------------------------------------------
   users.users."user" = {
@@ -238,6 +255,7 @@ in
       sox
       whosthere
       mpv
+      ncdu
 
       # Wayland utilities
       wl-clipboard
@@ -249,6 +267,7 @@ in
       neovim
       git
       git-lfs
+      github-cli
       gcc
       uv
       nodejs
@@ -272,7 +291,7 @@ in
       vpnc
 
       # Apps
-      brave
+      (pkgs.brave.override { commandLineArgs = "--disk-cache-size=209715200 --aggressive-cache-discard --disable-gpu-memory-buffer-video-frames --disable-features=AcceleratedVideoDecodeLinuxGL,UseChromeOSDirectVideoDecoder"; })
       teams-for-linux
       keepass
       veracrypt
@@ -289,6 +308,8 @@ in
     nushell
     python3
     tokyonight-gtk-theme
+    # TTS backend for services.speechd (browser voice output).
+    espeak-ng
   ];
 
   # -- Virtualisation ------------------------------------------------------------
@@ -317,6 +338,8 @@ in
 
   # -- Docker --------------------------------------------------------------------
   virtualisation.docker.enable = true;
+  # GPU passthrough to containers (needed by Ollama's `--profile gpu` compose).
+  hardware.nvidia-container-toolkit.enable = true;
   # -- Keyboard remapping --------------------------------------------------------
   # Remap capslock → escape system-wide via keyd daemon.
   services.keyd = {

@@ -3,7 +3,7 @@
 
 	"group/left": {
 		"orientation": "horizontal",
-		"modules": ["mpris", "temperature", "memory", "cpu", "disk"]
+		"modules": ["mpris", "temperature", "memory", "cpu", "custom/gpu", "disk"]
 	},
 
 	"group/right": {
@@ -133,6 +133,15 @@
 		"format-critical": "<span color='#f7768e'>󰀨</span> {usage}%",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip": false
+	},
+
+	"custom/gpu": {
+		"exec-if": "which nvidia-smi",
+		"exec": "~/.config/waybar/scripts/gpu",
+		"return-type": "json",
+		"interval": 5,
+		"format": "<span color='#9ece6a'>󰢮</span> {}",
+		"tooltip": true
 	},
 
 	"disk": {

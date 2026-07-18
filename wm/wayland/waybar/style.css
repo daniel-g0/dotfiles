@@ -117,8 +117,9 @@
 #temperature,
 #memory,
 #cpu,
+#custom-gpu,
 #disk {
-	padding: 0 9px;
+	padding: 0 13px;
 }
 
 #bluetooth,
@@ -127,16 +128,16 @@
 #custom-eyecare,
 #custom-notifications,
 #custom-update {
-	padding: 0 7px;
+	padding: 0 11px;
 }
 
 #pulseaudio {
-	padding: 0 7px;
+	padding: 0 11px;
 }
 
 #backlight,
 #battery {
-	padding: 0 7px;
+	padding: 0 11px;
 }
 
 /* ── Hover ───────────────────────────────────────────────────────────────── */
