@@ -174,3 +174,11 @@ vim.api.nvim_set_keymap("n", "<F10>", ":WallRun<CR>", { noremap = true, silent =
 -- require("hardtime").setup()
 -- require("mistake")
 
+-- Transparent background — force after base46 paints highlights
+vim.schedule(function()
+  local hls = { "Normal", "NormalNC", "NormalFloat", "FloatBorder", "SignColumn", "EndOfBuffer" }
+  for _, hl in ipairs(hls) do
+    vim.api.nvim_set_hl(0, hl, { bg = "none" })
+  end
+end)
+

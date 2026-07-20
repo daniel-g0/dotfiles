@@ -7,10 +7,14 @@ local M = {}
 M.ui = {
   theme = "tokyonight",
 
-  -- hl_override = {
-  --   Comment = { italic = true },
-  --   ["@comment"] = { italic = true },
-  -- },
+  hl_override = {
+    Normal        = { bg = "NONE" },
+    NormalNC      = { bg = "NONE" },
+    NormalFloat   = { bg = "NONE" },
+    FloatBorder   = { bg = "NONE" },
+    SignColumn    = { bg = "NONE" },
+    EndOfBuffer   = { bg = "NONE" },
+  },
 }
 
 return M
