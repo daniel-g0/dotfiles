@@ -11,49 +11,49 @@
 [![Last commit](https://img.shields.io/github/last-commit/daniel-g0/dotfiles?style=flat-square&color=f7768e)](https://github.com/daniel-g0/dotfiles/commits/main)
 [![Repo size](https://img.shields.io/github/repo-size/daniel-g0/dotfiles?style=flat-square&color=7dcfff)](https://github.com/daniel-g0/dotfiles)
 
-![Desktop](screenshots/desktop.png)
-![Rice](screenshots/rice.png)
-
-**VPN Menu**
-![VPN Menu](screenshots/vpn-menu.png)
-
-**Neovim**
-![Neovim](screenshots/nvim.png)
-
-**WhosThere — LAN Discovery**
-![WhosThere](screenshots/whosthere.png)
-
-**Cheatsheet**
-![Cheatsheet](screenshots/cheatsheet.png)
-
-**Kitty Title Bar with Starship Prompt**
-![Kitty Title Bar](screenshots/kitty-titlebar.png)
+![Showcase](screenshots/showcase.png)
 
 </div>
 
 ---
 
-**Bleeding-edge tools built for maximum efficiency and aesthetics — configs that actually make sense. Tokyo Night across every surface. Vim keys everywhere: Nushell, Hyprland, Neovim, Brave, even Claude.**
+Tokyo Night across every surface. Vi keys everywhere. Custom tools that actually get used.
 
-Stack: Hyprland · Hyprlock · Hypridle · Waybar · swaync · WallRizz · Rofi · Kitty · Nushell · Starship · Neovim · Yazi · Zoxide · Fastfetch · Cava · NixOS
+**Stack:** NixOS · Hyprland · Waybar · Kitty · Nushell · Neovim (NvChad) · Yazi · Starship · Swaync · WallRizz · Rofi · Zoxide · Fastfetch · Cava
 
-## What's custom
+---
 
-**Kitty** — tab bar built from scratch in Python. Shows current dir, git branch, file counts and time. Updates every keystroke.
+## What makes this different
 
-**Nushell** — vi mode, 150+ git aliases, 35+ docker aliases, every basic tool swapped for a modern one. Shell greets you with fastfetch + a quote. Screen clears on every `cd`.
+**Hyprland config is written in Lua** — not the standard format. Borders animate as a liquid blue→purple→cyan gradient. Window rules, keybinds, autostart, all in one structured file.
 
-**Hyprland** — written in Lua (not the standard format). Borders animate as a liquid gradient. Full GPU passthrough for a Windows VM — discrete GPU auto-detaches on VM start, re-attaches on stop.
+**Kitty tab bar built from scratch in Python.** Every keypress updates the tab: current directory, git branch, staged/modified/untracked counts, and a clock. Not using any plugin.
 
-**WallRizz** — changing wallpaper resyncs your entire color scheme live: Hyprland borders, kitty colors, all of it. Transitions are random every time.
+**WallRizz live color sync.** Change the wallpaper → Hyprland border colors, kitty terminal colors, and your whole desktop resync instantly. Every transition is a different random animation.
 
-**NixOS** — custom-built packages for tools that don't exist in nixpkgs. Private certs drop-in folder. Entire system declared, one command to rebuild.
+**GPU passthrough baked in.** A QEMU hook auto-detects your discrete GPU, unbinds it from the host driver, and hands it to the Windows VM on start. Re-attaches on stop. No manual steps.
 
-**Waybar** — NixOS control panel baked in (rebuild, update, garbage collect). Live VPN indicator with a full management TUI: connect, import, edit configs.
+**Cheatsheet at `Super+C`.** fzf browser with 139 keyboard shortcuts across Hyprland, Nushell, Neovim, Yazi, Git, Docker, VPN, and more. Searchable, instant.
 
-**Cheatsheet** — `Super+C`. Searchable fzf browser, 139 shortcuts across every tool.
+**VPN manager TUI in the taskbar.** Click the waybar indicator → fzf menu: connect, disconnect, import `.pcf`/`.ovpn`/`.conf`, edit configs in nvim. Auto-converts Cisco PCF to vpnc format. Green/red status at a glance.
 
-**doller** — custom installer. Symlinks everything, backs up conflicts, Tokyo Night UI.
+**Eye care timer built into waybar.** 20-20-20 rule — fires a notification every 20 minutes to look away. Countdown visible in the bar. Click to reset. Race-condition safe.
+
+**NixOS control panel in waybar.** Rebuild switch, test, update flake, garbage collect, view generations — each opens in kitty, tees output to a log, waits for Enter. Full system management without touching a terminal manually.
+
+**Entire system is one file.** Drop a `.crt` in `~/.config/certs/` → rebuild → cert trusted system-wide. Change a package, a font, a kernel param → one command. Private stuff stays out of the repo.
+
+---
+
+## Shell
+
+Nushell with vi mode. Block cursor in normal, line in insert. SQLite history (100k entries, dedup, timestamps, per-session). Screen clears on `cd` to any non-home directory.
+
+Modern replacements wired up as defaults: `grep`→rg · `find`→fd · `du`→dust · `top`→btop · `rm`→rip (recoverable — restore with `rd`)
+
+Clipboard shortcuts: `cb` to copy (pipe into it), `cbp` to paste. `reload` hot-reloads config without opening a new window.
+
+FZF everywhere: `Ctrl+R` fuzzy history · `Ctrl+T` fuzzy file insert · `Alt+C` fuzzy cd.
 
 ---
 
@@ -84,11 +84,12 @@ journalctl -u setup-dotfiles -f
 
 ## Install
 
-We use ***doller***, a custom dotfile installer, it basically symlinks configs to where they should be, makes life easy.
+Uses **doller**, a custom symlink installer. TUI shows status per link, backs up conflicts automatically.
 
 ```bash
 git clone https://github.com/daniel-g0/dotfiles ~/dotfiles
 cd ~/dotfiles && ./doller
-nixos-re-sw                                                                                     # (rebuild switch with tweaks)
+nixos-re-sw
 ```
+
 > Never edit `~/.config/*` directly — they're symlinks. Edits land in the repo.
