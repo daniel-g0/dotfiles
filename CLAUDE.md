@@ -291,6 +291,19 @@ Certs live at `~/.config/certs/*.crt` — outside the repo, untracked. `configur
 
 ---
 
+## Non-Nix tools (uv-managed)
+
+Some tools aren't in nixpkgs. These are installed via `uv tool install` (uv is in system packages) and live in `~/.local/share/uv/tools/`. Binaries exposed at `~/.local/bin/`.
+
+| Tool | Install | Purpose |
+|------|---------|---------|
+| `claude-swap` (`cswap`) | `uv tool install claude-swap` | Multi-account Claude Code manager — switch accounts, track quota, auto-switch before rate limits |
+
+To reinstall after a fresh system: `uv tool install claude-swap && echo "Y" \| cswap list` (registers current Claude account).
+To upgrade: `cswap upgrade` or `uv tool upgrade claude-swap`.
+
+---
+
 ## What NOT to do
 
 - Don't edit files in `~/.config/` directly — they're symlinks, edits land in the repo automatically.
