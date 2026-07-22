@@ -295,12 +295,14 @@ Certs live at `~/.config/certs/*.crt` — outside the repo, untracked. `configur
 
 Some tools aren't in nixpkgs. These are installed via `uv tool install` (uv is in system packages) and live in `~/.local/share/uv/tools/`. Binaries exposed at `~/.local/bin/`.
 
-| Tool | Install | Purpose |
-|------|---------|---------|
-| `claude-swap` (`cswap`) | `uv tool install claude-swap` | Multi-account Claude Code manager — switch accounts, track quota, auto-switch before rate limits |
+| Tool | Install | Purpose | Status |
+|------|---------|---------|--------|
+| `claude-swap` (`cswap`) | `uv tool install claude-swap` | Multi-account Claude Code manager — switch accounts, track quota, auto-switch before rate limits | ⏳ pending nixpkgs / custom derivation |
 
 To reinstall after a fresh system: `uv tool install claude-swap && echo "Y" \| cswap list` (registers current Claude account).
 To upgrade: `cswap upgrade` or `uv tool upgrade claude-swap`.
+
+> **TODO:** Package these as proper Nix derivations once in nixpkgs, or write `buildPythonApplication` derivations. Track at: https://github.com/NixOS/nixpkgs/issues (search "claude-swap").
 
 ---
 
