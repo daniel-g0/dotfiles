@@ -296,6 +296,9 @@ in
       # Disk management
       gnome-disk-utility
 
+      # Filesystem tools
+      ntfs3g
+
       # VPN
       vpnc
 
@@ -308,6 +311,7 @@ in
       chezmoi
       kdePackages.okular
       libreoffice
+      vesktop
     ];
   };
 
@@ -358,6 +362,9 @@ in
     source = gpuHook;
     mode   = "0755";
   };
+
+  # -- Steam ---------------------------------------------------------------------
+  programs.steam.enable = true;
 
   # -- Docker --------------------------------------------------------------------
   virtualisation.docker.enable = true;
