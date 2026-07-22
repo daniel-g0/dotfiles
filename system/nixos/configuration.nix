@@ -20,6 +20,12 @@ let
     '';
   };
 
+  # Detected at eval time via PCI vendor IDs — requires --impure (already set in nixos-re-sw).
+  hasNvidia = builtins.any
+    (d: let vf = "/sys/bus/pci/devices/${d}/vendor";
+        in builtins.pathExists vf && lib.hasPrefix "0x10de" (builtins.readFile vf))
+    (builtins.attrNames (builtins.readDir "/sys/bus/pci/devices"));
+
   # Detected at eval time — builds on same machine so this is correct.
   iommuParam =
     if lib.hasInfix "AuthenticAMD" (builtins.readFile "/proc/cpuinfo")
@@ -113,7 +119,7 @@ in
   networking.hostName              = "nixos";
   networking.networkmanager.enable = true;
   networking.networkmanager.plugins = [ pkgs.networkmanager-vpnc ];
-  networking.nameservers            = [ "1.1.1.1" "1.0.0.1" ];
+  networking.nameservers            = [ "9.9.9.9" "149.112.112.112 " ];
 
   # -- Bluetooth -----------------------------------------------------------------
   hardware.bluetooth.enable      = true;
@@ -158,6 +164,12 @@ in
     withUWSM = false;
   };
   hardware.uinput.enable = true; # for idling
+
+  services.displayManager.sddm = {
+    enable        = true;
+    wayland.enable = true;
+    theme         = "where_is_my_sddm_theme";
+  };
 
   security.polkit.enable = true;
   # Private certs live at ~/.config/certs/ (outside repo, untracked).
@@ -310,6 +322,20 @@ in
     tokyonight-gtk-theme
     # TTS backend for services.speechd (browser voice output).
     espeak-ng
+    (where-is-my-sddm-theme.override {
+      themeConfig.General = {
+        background            = "#1a1b26";
+        backgroundFill        = "#1a1b26";
+        backgroundFillMode    = "none";
+        blurRadius            = "0";
+        basicTextColor        = "#c0caf5";
+        passwordInputBackground     = "#24283b";
+        passwordInputCursorColor    = "#7aa2f7";
+        passwordInputPlaceholderColor = "#565f89";
+        sessionButtonTextColor = "#c0caf5";
+        userButtonTextColor    = "#c0caf5";
+      };
+    })
   ];
 
   # -- Virtualisation ------------------------------------------------------------
@@ -339,7 +365,7 @@ in
   # -- Docker --------------------------------------------------------------------
   virtualisation.docker.enable = true;
   # GPU passthrough to containers (needed by Ollama's `--profile gpu` compose).
-  hardware.nvidia-container-toolkit.enable = true;
+  hardware.nvidia-container-toolkit.enable = hasNvidia;
   # -- Keyboard remapping --------------------------------------------------------
   # Remap capslock → escape system-wide via keyd daemon.
   services.keyd = {
