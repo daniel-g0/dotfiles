@@ -20,11 +20,8 @@ let
     '';
   };
 
-  # Detected at eval time via PCI vendor IDs — requires --impure (already set in nixos-re-sw).
-  hasNvidia = builtins.any
-    (d: let vf = "/sys/bus/pci/devices/${d}/vendor";
-        in builtins.pathExists vf && lib.hasPrefix "0x10de" (builtins.readFile vf))
-    (builtins.attrNames (builtins.readDir "/sys/bus/pci/devices"));
+  # True when the nvidia kernel module is loaded — reliable sysfs check, no file reads.
+  hasNvidia = builtins.pathExists "/sys/module/nvidia";
 
   # Detected at eval time — builds on same machine so this is correct.
   iommuParam =
