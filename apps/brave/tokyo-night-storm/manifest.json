@@ -13,38 +13,163 @@
   },
   "theme": {
     "colors": {
-      "background_tab": [26, 27, 38],
-      "background_tab_inactive": [26, 27, 38],
-      "background_tab_incognito": [65, 72, 104],
-      "background_tab_incognito_inactive": [41, 46, 66],
-      "bookmark_text": [122, 162, 247],
-      "button_background": [247, 118, 142],
-      "frame": [26, 27, 38],
-      "frame_inactive": [26, 27, 38],
-      "frame_incognito": [65, 72, 104],
-      "frame_incognito_inactive": [65, 72, 104],
-      "ntp_background": [26, 27, 38],
-      "ntp_header": [36, 40, 58],
-      "ntp_link": [247, 118, 142],
-      "ntp_text": [247, 118, 142],
-      "omnibox_background": [26, 27, 38],
-      "omnibox_text": [115, 218, 202],
-      "tab_text": [187, 154, 247],
-      "tab_background_text": [65, 72, 104],
-      "tab_background_text_inactive": [65, 72, 104],
-      "tab_background_text_incognito": [169, 177, 214],
-      "tab_background_text_incognito_inactive": [154, 165, 206],
-      "toolbar": [36, 40, 58],
-      "toolbar_button_icon": [247, 118, 142],
-      "toolbar_text": [247, 118, 142]
+      "background_tab": [
+        40,
+        36,
+        32
+      ],
+      "background_tab_inactive": [
+        40,
+        36,
+        32
+      ],
+      "background_tab_incognito": [
+        40,
+        36,
+        32
+      ],
+      "background_tab_incognito_inactive": [
+        40,
+        36,
+        32
+      ],
+      "bookmark_text": [
+        227,
+        162,
+        88
+      ],
+      "button_background": [
+        40,
+        36,
+        32
+      ],
+      "frame": [
+        27,
+        24,
+        23
+      ],
+      "frame_inactive": [
+        20,
+        18,
+        17
+      ],
+      "frame_incognito": [
+        40,
+        36,
+        32
+      ],
+      "frame_incognito_inactive": [
+        40,
+        36,
+        32
+      ],
+      "ntp_background": [
+        27,
+        24,
+        23
+      ],
+      "ntp_header": [
+        40,
+        36,
+        32
+      ],
+      "ntp_link": [
+        227,
+        162,
+        88
+      ],
+      "ntp_text": [
+        242,
+        227,
+        177
+      ],
+      "omnibox_background": [
+        40,
+        36,
+        32
+      ],
+      "omnibox_text": [
+        242,
+        227,
+        177
+      ],
+      "tab_text": [
+        242,
+        227,
+        177
+      ],
+      "tab_background_text": [
+        138,
+        117,
+        96
+      ],
+      "tab_background_text_inactive": [
+        138,
+        117,
+        96
+      ],
+      "tab_background_text_incognito": [
+        138,
+        117,
+        96
+      ],
+      "tab_background_text_incognito_inactive": [
+        138,
+        117,
+        96
+      ],
+      "toolbar": [
+        40,
+        36,
+        32
+      ],
+      "toolbar_button_icon": [
+        242,
+        227,
+        177
+      ],
+      "toolbar_text": [
+        242,
+        227,
+        177
+      ],
+      "tab_background_frame": [
+        27,
+        24,
+        23
+      ]
     },
     "tints": {
-      "buttons": [0.6, 0.4, 0.9],
-      "frame": [-1,-1, -1],
-      "frame_inactive": [-1,-1, -1],
-      "frame_incognito": [-1, -1, 0.2],
-      "frame_incognito_inactive": [-1, -1, 0.3],
-      "background_tab": [-1, -1, 0.4]
+      "buttons": [
+        0.6,
+        0.4,
+        0.9
+      ],
+      "frame": [
+        -1,
+        -1,
+        -1
+      ],
+      "frame_inactive": [
+        -1,
+        -1,
+        -1
+      ],
+      "frame_incognito": [
+        -1,
+        -1,
+        0.2
+      ],
+      "frame_incognito_inactive": [
+        -1,
+        -1,
+        0.3
+      ],
+      "background_tab": [
+        -1,
+        -1,
+        -1
+      ]
     }
   }
 }

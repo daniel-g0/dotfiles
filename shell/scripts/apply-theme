@@ -215,6 +215,7 @@ color14               {p["cyan"]}
 color15               {p["fg"]}
 cursor                {p["fg"]}
 cursor_text_color     {p["bg"]}
+tab_bar_background    {p["bg"]}
 """
     KITTY_DYN.write_text(content)
 
@@ -667,31 +668,61 @@ def apply_brave(p):
         r, g, b = rgb_ints(c)
         return [r, g, b]
 
+    # Derive a slightly darker bg for inactive/incognito frames
+    hb, lb, sb = _hls(p["bg"])
+    bg_dark = _hex(*colorsys.hls_to_rgb(hb, max(lb * 0.75, 0.02), sb))
+
     data = json.loads(BRAVE_REPO.read_text())
-    colors = data.setdefault("theme", {}).setdefault("colors", {})
-    colors["frame"]                      = rgb(p["bg"])
-    colors["toolbar"]                    = rgb(p["bg_alt"])
-    colors["tab_background_frame"]       = rgb(p["bg"])
-    colors["ntp_background"]             = rgb(p["bg"])
-    colors["omnibox_background"]         = rgb(p["bg_alt"])
-    colors["tab_text"]                   = rgb(p["fg"])
-    colors["tab_background_text"]        = rgb(p["fg_dim"])
-    colors["tab_background_text_inactive"] = rgb(p["fg_dim"])
-    colors["toolbar_text"]               = rgb(p["fg"])
-    colors["toolbar_button_icon"]        = rgb(p["fg"])
-    colors["ntp_text"]                   = rgb(p["fg"])
-    colors["ntp_link"]                   = rgb(p["blue"])
-    colors["bookmark_text"]              = rgb(p["blue"])
-    colors["omnibox_text"]               = rgb(p["fg"])
-    colors["button_background"]          = rgb(p["bg_alt"])
+    theme = data.setdefault("theme", {})
+    colors = theme.setdefault("colors", {})
+
+    # Frame / chrome
+    colors["frame"]                              = rgb(p["bg"])
+    colors["frame_inactive"]                     = rgb(bg_dark)
+    colors["frame_incognito"]                    = rgb(p["bg_alt"])
+    colors["frame_incognito_inactive"]           = rgb(p["bg_alt"])
+    colors["tab_background_frame"]               = rgb(p["bg"])
+
+    # Toolbar / omnibox
+    colors["toolbar"]                            = rgb(p["bg_alt"])
+    colors["toolbar_text"]                       = rgb(p["fg"])
+    colors["toolbar_button_icon"]                = rgb(p["fg"])
+    colors["omnibox_background"]                 = rgb(p["bg_alt"])
+    colors["omnibox_text"]                       = rgb(p["fg"])
+    colors["button_background"]                  = rgb(p["bg_alt"])
+
+    # Tabs
+    colors["background_tab"]                     = rgb(p["bg_alt"])
+    colors["background_tab_inactive"]            = rgb(p["bg_alt"])
+    colors["background_tab_incognito"]           = rgb(p["bg_alt"])
+    colors["background_tab_incognito_inactive"]  = rgb(p["bg_alt"])
+    colors["tab_text"]                           = rgb(p["fg"])
+    colors["tab_background_text"]                = rgb(p["fg_dim"])
+    colors["tab_background_text_inactive"]       = rgb(p["fg_dim"])
+    colors["tab_background_text_incognito"]      = rgb(p["fg_dim"])
+    colors["tab_background_text_incognito_inactive"] = rgb(p["fg_dim"])
+
+    # NTP (new tab page)
+    colors["ntp_background"]                     = rgb(p["bg"])
+    colors["ntp_header"]                         = rgb(p["bg_alt"])
+    colors["ntp_text"]                           = rgb(p["fg"])
+    colors["ntp_link"]                           = rgb(p["blue"])
+
+    # Bookmarks
+    colors["bookmark_text"]                      = rgb(p["blue"])
+
+    # Disable tints that override our colors
+    tints = theme.setdefault("tints", {})
+    tints["background_tab"]   = [-1, -1, -1]
+    tints["frame"]            = [-1, -1, -1]
+    tints["frame_inactive"]   = [-1, -1, -1]
 
     updated = json.dumps(data, indent=2)
     BRAVE_REPO.write_text(updated)
     (live / "manifest.json").write_text(updated)
 
-    cached_pak = live / "Cached Theme.pak"
-    if cached_pak.exists():
-        cached_pak.unlink()
+    for pak in live.glob("*.pak"):
+        pak.unlink()
 
 # ── Reload ────────────────────────────────────────────────────────────────────
 
