@@ -5,19 +5,63 @@ set -euo pipefail
 APPLY="$HOME/Projects/personal/dotfiles/shell/scripts/apply-theme"
 THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine)
 
+# swatch <#rrggbb> <label>
+swatch() {
+  local hex="${1#'#'}" label="$2"
+  local r=$((16#${hex:0:2})) g=$((16#${hex:2:2})) b=$((16#${hex:4:2}))
+  printf '\033[48;2;%d;%d;%dm   \033[0m %s\n' "$r" "$g" "$b" "$label"
+}
+
+# row of swatches on one line: swatch_row <label> <hex> <hex> ...
+swatch_row() {
+  local label="$1"; shift
+  printf '%-12s' "$label"
+  for hex in "$@"; do
+    local h="${hex#'#'}"
+    local r=$((16#${h:0:2})) g=$((16#${h:2:2})) b=$((16#${h:4:2}))
+    printf '\033[48;2;%d;%d;%dm   \033[0m ' "$r" "$g" "$b"
+  done
+  printf '\n'
+}
+
+preview() {
+  case "$1" in
+    tokyo-night)
+      swatch_row "bg / text" "#1a1b26" "#c0caf5" "#565f89" "#24283b"
+      swatch_row "accents"   "#bb9af7" "#7aa2f7" "#2ac3de" "#9ece6a" "#e0af68" "#f7768e"
+      ;;
+    warm-earth)
+      swatch_row "bg / text" "#1b1817" "#f2e3b1" "#8a7560" "#282420"
+      swatch_row "accents"   "#e35e58" "#e3a258" "#d4956a" "#9ece6a" "#e0af68" "#f7768e"
+      ;;
+    catppuccin)
+      swatch_row "bg / text" "#1e1e2e" "#cdd6f4" "#6c7086" "#313244"
+      swatch_row "accents"   "#cba6f7" "#89b4fa" "#89dceb" "#a6e3a1" "#f9e2af" "#f38ba8"
+      ;;
+    nord)
+      swatch_row "bg / text" "#2e3440" "#eceff4" "#4c566a" "#3b4252"
+      swatch_row "accents"   "#b48ead" "#5e81ac" "#88c0d0" "#a3be8c" "#ebcb8b" "#bf616a"
+      ;;
+    gruvbox)
+      swatch_row "bg / text" "#282828" "#ebdbb2" "#928374" "#3c3836"
+      swatch_row "accents"   "#d3869b" "#83a598" "#8ec07c" "#b8bb26" "#fabd2f" "#fb4934"
+      ;;
+    rose-pine)
+      swatch_row "bg / text" "#191724" "#e0def4" "#6e6a86" "#26233a"
+      swatch_row "accents"   "#c4a7e7" "#9ccfd8" "#31748f" "#31748f" "#f6c177" "#eb6f92"
+      ;;
+  esac
+}
+
+export -f swatch swatch_row preview
+
 chosen=$(printf '%s\n' "${THEMES[@]}" \
   | fzf \
       --prompt="  Palette: " \
       --height=100% \
       --border=rounded \
-      --preview='case {} in
-        tokyo-night) echo -e "Theme: Tokyo Night\n─────────────────────────────────────\nbg #1a1b26  fg #c0caf5\naccent #bb9af7  blue #7aa2f7  cyan #2ac3de  green #9ece6a" ;;
-        warm-earth)  echo -e "Theme: Warm Earth (classical still-life)\n─────────────────────────────────────\nbg #1b1817  fg #f2e3b1\naccent #e35e58  amber #e3a258  terra #d4956a  green #9ece6a" ;;
-        catppuccin)  echo -e "Theme: Catppuccin Mocha\n─────────────────────────────────────\nbg #1e1e2e  fg #cdd6f4\nmauve #cba6f7  blue #89b4fa  sky #89dceb  green #a6e3a1" ;;
-        nord)        echo -e "Theme: Nord\n─────────────────────────────────────\nbg #2e3440  fg #eceff4\npurple #b48ead  blue #5e81ac  frost #88c0d0  green #a3be8c" ;;
-        gruvbox)     echo -e "Theme: Gruvbox Dark\n─────────────────────────────────────\nbg #282828  fg #ebdbb2\npink #d3869b  aqua #83a598  green #8ec07c  lime #b8bb26" ;;
-        rose-pine)   echo -e "Theme: Rose Pine\n─────────────────────────────────────\nbg #191724  fg #e0def4\niris #c4a7e7  foam #9ccfd8  pine #31748f  rose #eb6f92" ;;
-      esac' \
+      --ansi \
+      --preview='preview {}' \
       --preview-window=down:4:wrap \
       --no-sort \
   ) || exit 0
