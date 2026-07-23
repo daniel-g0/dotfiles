@@ -81,10 +81,25 @@ def map_palette(colors, wall=""):
     by_lum = sorted(colors, key=lum)
     n = len(by_lum)
 
+    # bg: darkest colour, floored at l=0.04 (never pure black)
     bg     = clamp_dark(by_lum[0], 0.10)
+    h0, l0, s0 = _hls(bg)
+    if l0 < 0.04:
+        bg = _hex(*colorsys.hls_to_rgb(h0, 0.05, s0))
+
     bg_alt = clamp_dark(by_lum[min(2, n-1)], 0.18)
+
+    # fg: lightest colour, capped at l=0.93 (never pure white)
     fg     = clamp_light(by_lum[-1], 0.82)
-    fg_dim = by_lum[max(-3, -n)]
+    hf, lf, sf = _hls(fg)
+    if lf > 0.93:
+        fg = _hex(*colorsys.hls_to_rgb(hf, 0.90, sf))
+
+    # fg_dim: must be readable — between 35% and 65% lightness
+    raw_dim = by_lum[max(-3, -n)]
+    hd, ld, sd = _hls(raw_dim)
+    ld = max(0.35, min(0.65, ld))
+    fg_dim = _hex(*colorsys.hls_to_rgb(hd, ld, max(sd, 0.05)))
 
     # Mid-range colours, ranked by saturation — these become accent hues
     lo, hi = max(1, n // 5), max(n - 1, n * 3 // 4)
@@ -319,8 +334,8 @@ def apply_waybar_border(p):
         f"{p['cyan']}, {p['blue']})"
     )
     text = re.sub(
-        r"linear-gradient\(90deg,[^;]+(?=border-box)",
-        new_grad + " ",
+        r"linear-gradient\(90deg,[^)]+\)",
+        new_grad,
         text
     )
     # Update glow box-shadow colours
