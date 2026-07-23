@@ -701,10 +701,14 @@ def reload_tools():
         "pkill waybar; sleep 0.3; bash ~/.config/waybar/launch",
         shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
-    # Kitty: live colour swap via remote control
+    # Kitty: set colors + reload config so tab_bar.py picks up new palette
     subprocess.Popen(
         ["kitty", "@", "--to=unix:/tmp/kitty", "set-colors",
          "--all", str(KITTY_DYN)],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
+    subprocess.Popen(
+        ["kitty", "@", "--to=unix:/tmp/kitty", "load-config"],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
     # Swaync: reload CSS

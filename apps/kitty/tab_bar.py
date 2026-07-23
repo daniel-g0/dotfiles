@@ -1,14 +1,49 @@
+import json, os
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData, as_rgb
 
-# Tokyo Night palette
-_BG     = as_rgb(0x16161e)
+# ── Dynamic palette (auto-reloads from palette.json on change) ────────────────
+
+_PALETTE_PATH = os.path.expanduser("~/.cache/dynamic-theme/palette.json")
+_mtime        = 0.0
+
+_BG     = as_rgb(0x1a1b26)
 _BLUE   = as_rgb(0x7aa2f7)
 _PURPLE = as_rgb(0xbb9af7)
-_CYAN   = as_rgb(0x7dcfff)
+_CYAN   = as_rgb(0x2ac3de)
 _GREEN  = as_rgb(0x9ece6a)
 _FG     = as_rgb(0xc0caf5)
-_DIM    = as_rgb(0x414868)
+_DIM    = as_rgb(0x565f89)
+
+
+def _h(c: str) -> int:
+    return as_rgb(int(c.lstrip("#"), 16))
+
+
+def _reload():
+    global _mtime, _BG, _BLUE, _PURPLE, _CYAN, _GREEN, _FG, _DIM
+    try:
+        mt = os.stat(_PALETTE_PATH).st_mtime
+    except OSError:
+        return
+    if mt <= _mtime:
+        return
+    _mtime = mt
+    try:
+        with open(_PALETTE_PATH) as f:
+            p = json.load(f)
+        _BG     = _h(p.get("bg",     "#1a1b26"))
+        _BLUE   = _h(p.get("blue",   "#7aa2f7"))
+        _PURPLE = _h(p.get("accent", "#bb9af7"))
+        _CYAN   = _h(p.get("cyan",   "#2ac3de"))
+        _GREEN  = _h(p.get("green",  "#9ece6a"))
+        _FG     = _h(p.get("fg",     "#c0caf5"))
+        _DIM    = _h(p.get("fg_dim", "#565f89"))
+    except Exception:
+        pass
+
+
+# ── Tab bar ───────────────────────────────────────────────────────────────────
 
 SEP = '   '
 
@@ -53,6 +88,7 @@ def draw_tab(
     before: int, max_title_length: int, index: int,
     is_last: bool, extra_data: ExtraData,
 ) -> int:
+    _reload()
     segs = _parse(tab.title or '')
 
     single = index == 1 and is_last
