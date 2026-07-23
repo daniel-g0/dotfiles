@@ -19,3 +19,7 @@ while [ ${#colors[@]} -lt $N ]; do
 done
 
 printf '%s\n' "${colors[@]:0:$N}"
+
+# Apply full theme in background — stdout is already done, so this is safe
+"$HOME/Projects/personal/dotfiles/shell/scripts/apply-theme" "$IMAGE" \
+  >> "$HOME/.cache/dynamic-theme/apply-theme.log" 2>&1 &

@@ -10,7 +10,7 @@ add_newline = false
 
 # -- Username (right prompt) -----------------------------------------------------
 [username]
-style_user  = "fg:#bb9af7"
+style_user  = "fg:#5863e3"
 style_root  = "fg:#f7768e"
 format      = "[$user]($style)"
 show_always = true

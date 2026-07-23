@@ -4,32 +4,32 @@
 
 :root {
   /* Core palette */
-  --tn-bg:        #16161e;
+  --tn-bg:        #18181a;
   --tn-bg-alt:    #1a1b26;
-  --tn-surface:   #24283b;
-  --tn-surface2:  #414868;
-  --tn-surface3:  #565f89;
-  --tn-fg:        #c0caf5;
-  --tn-fg-dim:    rgba(192, 202, 245, 0.55);
-  --tn-accent:    #bb9af7;
+  --tn-surface:   #1a1b26;
+  --tn-surface2:  #1a1b26;
+  --tn-surface3:  #1a1b26;
+  --tn-fg:        #cfcfd2;
+  --tn-fg-dim:    rgba(207, 207, 210, 0.55);
+  --tn-accent:    #5863e3;
   --tn-blue:      #7aa2f7;
-  --tn-cyan:      #7dcfff;
+  --tn-cyan:      #2ac3de;
   --tn-green:     #9ece6a;
   --tn-yellow:    #e0af68;
   --tn-red:       #f7768e;
 
   /* Swaync semantic vars */
-  --cc-bg:                    rgba(22, 22, 30, 0.97);
-  --noti-border-color:        rgba(65, 72, 104, 0.9);
-  --noti-bg:                  26, 27, 38;     /* #1a1b26 as r,g,b for rgba() */
+  --cc-bg:                    rgba(24, 24, 26, 0.97);
+  --noti-border-color:        rgba(26, 27, 38, 0.9);
+  --noti-bg:                  24, 24, 26;     /* #1a1b26 as r,g,b for rgba() */
   --noti-bg-alpha:            0.97;
-  --noti-bg-opaque:           rgb(26, 27, 38);
-  --noti-bg-darker:           rgb(22, 22, 30);
-  --noti-bg-hover:            rgb(36, 40, 59);
-  --noti-bg-focus:            rgba(36, 40, 59, 0.7);
+  --noti-bg-opaque:           rgb(24, 24, 26);
+  --noti-bg-darker:           rgb(20, 20, 22);
+  --noti-bg-hover:            rgb(26, 27, 38);
+  --noti-bg-focus:            rgba(26, 27, 38, 0.7);
   --noti-close-bg:            rgba(65, 72, 104, 0.5);
   --noti-close-bg-hover:      rgba(247, 118, 142, 0.25);
-  --text-color:               #c0caf5;
+  --text-color:               #cfcfd2;
   --text-color-disabled:      rgba(192, 202, 245, 0.4);
   --bg-selected:              #7aa2f7;
 
