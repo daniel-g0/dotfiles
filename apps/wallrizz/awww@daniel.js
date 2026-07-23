@@ -7,6 +7,12 @@
 export async function setWallpaper(wallpaperPath) {
   const command = createAwwwCommand(wallpaperPath, generateRandomOptions());
   await execAsync(command);
+  // Fire theme apply in background — don't await, keep wallpaper switch fast
+  const home = process.env.HOME;
+  execAsync([
+    "bash", "-c",
+    `"${home}/Projects/personal/dotfiles/shell/scripts/apply-theme" "${wallpaperPath}" >> "${home}/.cache/dynamic-theme/apply-theme.log" 2>&1`
+  ]).catch(() => {});
 }
 
 function createAwwwCommand(imagePath, options) {
