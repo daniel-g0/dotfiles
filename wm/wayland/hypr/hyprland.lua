@@ -57,7 +57,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("hypridle")
   hl.exec_cmd("awww-daemon")
   hl.exec_cmd("awww img $HOME/.config/wallpapers/nix-tokyo-night.png --transition-type fade --transition-duration 2")
-  hl.exec_cmd("hyprctl setcursor Layan-cursors 24")
+  hl.exec_cmd("hyprctl setcursor capitaine-cursors 24")
   hl.exec_cmd("bash $HOME/.config/waybar/scripts/eyecare-notify")
 end)
 
@@ -68,9 +68,9 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_THEME",    "Layan-cursors")
+hl.env("XCURSOR_THEME",    "capitaine-cursors")
 hl.env("XCURSOR_SIZE",     "24")
-hl.env("HYPRCURSOR_THEME", "Layan-cursors")
+hl.env("HYPRCURSOR_THEME", "capitaine-cursors")
 hl.env("HYPRCURSOR_SIZE",  "24")
 hl.env("GTK_THEME",       "Adwaita:dark")
 
