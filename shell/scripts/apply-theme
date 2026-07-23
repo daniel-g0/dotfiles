@@ -23,6 +23,7 @@ NVIM_CHADRC  = DOTFILES / "dev/nvim/lua/chadrc.lua"
 CHEATSHEET   = DOTFILES / "wm/wayland/hypr/cheatsheet.sh"
 NIX_MENU_RASI= DOTFILES / "wm/wayland/waybar/styles/nix-menu.rasi"
 MODULES_JSON = DOTFILES / "wm/wayland/waybar/modules.jsonc"
+CLAUDE_CFG   = DOTFILES / "dev/claude/settings.json"
 CACHE        = Path.home() / ".cache/dynamic-theme"
 
 # ── Colour math ───────────────────────────────────────────────────────────────
@@ -732,6 +733,13 @@ def apply_brave(p):
     for pak in live.glob("*.pak"):
         pak.unlink()
 
+def apply_claude_code(p):
+    # Claude Code only has dark/light/auto — pick based on background luminance
+    mode = "dark" if lum(p["bg"]) < 0.5 else "light"
+    data = json.loads(CLAUDE_CFG.read_text())
+    data["theme"] = mode
+    CLAUDE_CFG.write_text(json.dumps(data, indent=2))
+
 # ── Reload ────────────────────────────────────────────────────────────────────
 
 def reload_tools():
@@ -908,6 +916,7 @@ def main():
         ("nix-menu",        lambda p: apply_nix_menu(p, prev)),
         ("modules.jsonc",   lambda p: apply_modules(p, prev)),
         ("nvim",            lambda p: apply_nvim(preset_name)),
+        ("claude-code",     lambda p: apply_claude_code(p)),
     ]
     for label, fn in steps:
         try:
