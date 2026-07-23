@@ -20,7 +20,7 @@
         {
           programs.qylock = {
             enable      = true;
-            theme       = "pixel-night-city";
+            theme       = "enfield";
             sddm.enable = true;
           };
 

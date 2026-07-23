@@ -229,7 +229,7 @@ in
       rofi
       wallrizz
       brightnessctl
-      layan-cursors
+      capitaine-cursors
       papirus-icon-theme
       xdg-utils
 
