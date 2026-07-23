@@ -432,26 +432,64 @@ def reload_tools():
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
+PRESETS = {
+    "tokyo-night": {
+        "bg": "#1a1b26", "bg_alt": "#24283b", "fg": "#c0caf5", "fg_dim": "#565f89",
+        "accent": "#bb9af7", "blue": "#7aa2f7", "cyan": "#2ac3de", "green": "#9ece6a",
+        "red": "#f7768e", "yellow": "#e0af68",
+    },
+    "warm-earth": {
+        "bg": "#1b1817", "bg_alt": "#282420", "fg": "#f2e3b1", "fg_dim": "#8a7560",
+        "accent": "#e35e58", "blue": "#e3a258", "cyan": "#d4956a", "green": "#9ece6a",
+        "red": "#f7768e", "yellow": "#e0af68",
+    },
+    "catppuccin": {
+        "bg": "#1e1e2e", "bg_alt": "#313244", "fg": "#cdd6f4", "fg_dim": "#6c7086",
+        "accent": "#cba6f7", "blue": "#89b4fa", "cyan": "#89dceb", "green": "#a6e3a1",
+        "red": "#f38ba8", "yellow": "#f9e2af",
+    },
+    "nord": {
+        "bg": "#2e3440", "bg_alt": "#3b4252", "fg": "#eceff4", "fg_dim": "#4c566a",
+        "accent": "#b48ead", "blue": "#5e81ac", "cyan": "#88c0d0", "green": "#a3be8c",
+        "red": "#bf616a", "yellow": "#ebcb8b",
+    },
+    "gruvbox": {
+        "bg": "#282828", "bg_alt": "#3c3836", "fg": "#ebdbb2", "fg_dim": "#928374",
+        "accent": "#d3869b", "blue": "#83a598", "cyan": "#8ec07c", "green": "#b8bb26",
+        "red": "#fb4934", "yellow": "#fabd2f",
+    },
+    "rose-pine": {
+        "bg": "#191724", "bg_alt": "#26233a", "fg": "#e0def4", "fg_dim": "#6e6a86",
+        "accent": "#c4a7e7", "blue": "#9ccfd8", "cyan": "#31748f", "green": "#31748f",
+        "red": "#eb6f92", "yellow": "#f6c177",
+    },
+}
+
 def main():
     if len(sys.argv) < 2:
-        sys.exit("Usage: apply-theme <wallpaper-path>")
-
-    wall = sys.argv[1]
-    print(f"apply-theme: extracting palette from {Path(wall).name} …", flush=True)
-
-    colors  = extract_colors(wall)
-    palette = map_palette(colors, wall)
+        sys.exit("Usage: apply-theme <wallpaper-path>|--preset <name>")
 
     CACHE.mkdir(parents=True, exist_ok=True)
-    (CACHE / "last-wallpaper").write_text(wall)
-
-    # Load previous palette BEFORE overwriting — needed for starship replacement
     prev_file = CACHE / "palette.json"
     prev = json.loads(prev_file.read_text()) if prev_file.exists() else {
         "accent": "#bb9af7", "blue": "#7aa2f7", "green": "#9ece6a",
     }
-    prev_file.write_text(json.dumps(palette, indent=2))
 
+    if sys.argv[1] == "--preset":
+        if len(sys.argv) < 3 or sys.argv[2] not in PRESETS:
+            sys.exit(f"Usage: apply-theme --preset <{'|'.join(PRESETS)}>")
+        name = sys.argv[2]
+        palette = dict(PRESETS[name])
+        palette.setdefault("wall", "")
+        print(f"apply-theme: applying preset '{name}' …", flush=True)
+    else:
+        wall = sys.argv[1]
+        print(f"apply-theme: extracting palette from {Path(wall).name} …", flush=True)
+        colors  = extract_colors(wall)
+        palette = map_palette(colors, wall)
+        (CACHE / "last-wallpaper").write_text(wall)
+
+    prev_file.write_text(json.dumps(palette, indent=2))
     steps = [
         ("waybar CSS",      lambda p: apply_waybar(p)),
         ("waybar border",   lambda p: apply_waybar_border(p)),
