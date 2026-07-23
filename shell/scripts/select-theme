@@ -5,36 +5,21 @@ set -euo pipefail
 APPLY="$HOME/Projects/personal/dotfiles/shell/scripts/apply-theme"
 THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine)
 
-PALETTE_PREVIEW() {
-  local name="$1"
-  case "$name" in
-    tokyo-night) echo "bg #1a1b26 · fg #c0caf5 · purple #bb9af7 · blue #7aa2f7 · cyan #2ac3de · green #9ece6a" ;;
-    warm-earth)  echo "bg #1b1817 · fg #f2e3b1 · red    #e35e58 · amber #e3a258 · terra #d4956a · green #9ece6a" ;;
-    catppuccin)  echo "bg #1e1e2e · fg #cdd6f4 · mauve  #cba6f7 · blue  #89b4fa · sky   #89dceb · green #a6e3a1" ;;
-    nord)        echo "bg #2e3440 · fg #eceff4 · purple #b48ead · blue  #5e81ac · frost #88c0d0 · green #a3be8c" ;;
-    gruvbox)     echo "bg #282828 · fg #ebdbb2 · pink   #d3869b · aqua  #83a598 · green #8ec07c · lime  #b8bb26" ;;
-    rose-pine)   echo "bg #191724 · fg #e0def4 · iris   #c4a7e7 · foam  #9ccfd8 · pine  #31748f · rose  #eb6f92" ;;
-  esac
-}
-
-preview_cmd() {
-  local name="$1"
-  echo "Theme: $name"
-  echo "─────────────────────────────────────"
-  PALETTE_PREVIEW "$name"
-}
-
-export -f PALETTE_PREVIEW preview_cmd
-
 chosen=$(printf '%s\n' "${THEMES[@]}" \
   | fzf \
       --prompt="  Palette: " \
-      --height=40% \
+      --height=50% \
       --border=rounded \
-      --preview='bash -c "source /dev/stdin <<< \"$(declare -f PALETTE_PREVIEW preview_cmd)\"; preview_cmd {}"' \
-      --preview-window=down:4:wrap \
+      --preview='case {} in
+        tokyo-night) echo -e "Theme: Tokyo Night\n─────────────────────────────────────\nbg #1a1b26  fg #c0caf5\naccent #bb9af7  blue #7aa2f7  cyan #2ac3de  green #9ece6a" ;;
+        warm-earth)  echo -e "Theme: Warm Earth (classical still-life)\n─────────────────────────────────────\nbg #1b1817  fg #f2e3b1\naccent #e35e58  amber #e3a258  terra #d4956a  green #9ece6a" ;;
+        catppuccin)  echo -e "Theme: Catppuccin Mocha\n─────────────────────────────────────\nbg #1e1e2e  fg #cdd6f4\nmauve #cba6f7  blue #89b4fa  sky #89dceb  green #a6e3a1" ;;
+        nord)        echo -e "Theme: Nord\n─────────────────────────────────────\nbg #2e3440  fg #eceff4\npurple #b48ead  blue #5e81ac  frost #88c0d0  green #a3be8c" ;;
+        gruvbox)     echo -e "Theme: Gruvbox Dark\n─────────────────────────────────────\nbg #282828  fg #ebdbb2\npink #d3869b  aqua #83a598  green #8ec07c  lime #b8bb26" ;;
+        rose-pine)   echo -e "Theme: Rose Pine\n─────────────────────────────────────\nbg #191724  fg #e0def4\niris #c4a7e7  foam #9ccfd8  pine #31748f  rose #eb6f92" ;;
+      esac' \
+      --preview-window=down:5:wrap \
       --no-sort \
-      --ansi \
   ) || exit 0
 
 [ -z "$chosen" ] && exit 0
