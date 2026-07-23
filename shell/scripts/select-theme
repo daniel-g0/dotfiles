@@ -3,7 +3,7 @@
 set -euo pipefail
 
 APPLY="$HOME/Projects/personal/dotfiles/shell/scripts/apply-theme"
-THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine dracula one-dark monokai solarized-dark everforest ayu-dark kanagawa nightfox palenight horizon night-owl material-ocean)
+THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine dracula one-dark monokai solarized-dark everforest ayu-dark kanagawa nightfox palenight horizon night-owl material-ocean crimson claude)
 
 # swatch <#rrggbb> <label>
 swatch() {
@@ -97,6 +97,14 @@ preview() {
     material-ocean)
       swatch_row "bg / text" "#0f111a" "#8f93a2" "#464b5d" "#1a1c25"
       swatch_row "accents"   "#c792ea" "#82aaff" "#89ddff" "#c3e88d" "#ffcb6b" "#ff5370"
+      ;;
+    crimson)
+      swatch_row "bg / text" "#1a0f10" "#f0d5d8" "#8a5f66" "#261518"
+      swatch_row "accents"   "#e05560" "#9b7fc9" "#7fbfb5" "#7db87d" "#d4965a" "#e05560"
+      ;;
+    claude)
+      swatch_row "bg / text" "#1a1510" "#e8dcc8" "#7a6e5e" "#252017"
+      swatch_row "accents"   "#d97757" "#c4885f" "#8faa90" "#8fa876" "#d4a843" "#c44b4b"
       ;;
   esac
 }

@@ -656,6 +656,7 @@ NVCHAD_THEME_MAP = {
     "palenight":      "palenight",
     "everforest":     "everforest",
     "material-ocean": "material-ocean",
+    "claude":         "rosepine",
 }
 
 def apply_nvim(preset_name):
@@ -848,6 +849,16 @@ PRESETS = {
         "bg": "#0f111a", "bg_alt": "#1a1c25", "fg": "#8f93a2", "fg_dim": "#464b5d",
         "accent": "#c792ea", "blue": "#82aaff", "cyan": "#89ddff", "green": "#c3e88d",
         "red": "#ff5370", "yellow": "#ffcb6b",
+    },
+    "crimson": {
+        "bg": "#1a0f10", "bg_alt": "#261518", "fg": "#f0d5d8", "fg_dim": "#8a5f66",
+        "accent": "#e05560", "blue": "#9b7fc9", "cyan": "#7fbfb5", "green": "#7db87d",
+        "red": "#e05560", "yellow": "#d4965a",
+    },
+    "claude": {
+        "bg": "#1a1510", "bg_alt": "#252017", "fg": "#e8dcc8", "fg_dim": "#7a6e5e",
+        "accent": "#d97757", "blue": "#c4885f", "cyan": "#8faa90", "green": "#8fa876",
+        "red": "#c44b4b", "yellow": "#d4a843",
     },
 }
 
