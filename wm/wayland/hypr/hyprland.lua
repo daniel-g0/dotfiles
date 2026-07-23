@@ -59,6 +59,8 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("awww img $HOME/.config/wallpapers/nix-tokyo-night.png --transition-type fade --transition-duration 2")
   hl.exec_cmd("hyprctl setcursor capitaine-cursors 24")
   hl.exec_cmd("bash $HOME/.config/waybar/scripts/eyecare-notify")
+  -- Re-apply last wallpaper theme so border colours survive reboot
+  hl.exec_cmd("bash -c 'lw=$HOME/.cache/dynamic-theme/last-wallpaper; [ -f \"$lw\" ] && $HOME/Projects/personal/dotfiles/shell/scripts/apply-theme \"$(cat $lw)\" >> $HOME/.cache/dynamic-theme/apply-theme.log 2>&1 &'")
 end)
 
 
