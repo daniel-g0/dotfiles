@@ -15,6 +15,7 @@ SWAYNC_CSS   = DOTFILES / "wm/wayland/swaync/style.css"
 ROFI_RASI    = DOTFILES / "apps/rofi/config.rasi"
 CAVA_CFG     = DOTFILES / "apps/cava/config"
 STARSHIP_CFG = DOTFILES / "shell/starship/starship.toml"
+BRAVE_REPO   = DOTFILES / "apps/brave/tokyo-night-storm/manifest.json"
 CACHE        = Path.home() / ".cache/dynamic-theme"
 
 # ── Colour math ───────────────────────────────────────────────────────────────
@@ -58,6 +59,28 @@ def rgba8(c, alpha_hex="ee"):
 def rgb_ints(c):
     r, g, b = _rgb(c)
     return int(r*255), int(g*255), int(b*255)
+
+# ── Brave extension discovery ─────────────────────────────────────────────────
+
+def find_brave_ext():
+    """Return the live Brave extension dir for our Tokyo Night theme, or None."""
+    base = Path.home() / ".config/BraveSoftware/Brave-Browser/Default/Extensions"
+    if not base.exists():
+        return None
+    for ext_dir in base.iterdir():
+        if not ext_dir.is_dir():
+            continue
+        for version_dir in ext_dir.iterdir():
+            manifest = version_dir / "manifest.json"
+            if not manifest.exists():
+                continue
+            try:
+                data = json.loads(manifest.read_text())
+                if "tokyo night" in data.get("name", "").lower():
+                    return version_dir
+            except Exception:
+                pass
+    return None
 
 # ── Extraction ────────────────────────────────────────────────────────────────
 
@@ -351,6 +374,41 @@ def apply_waybar_border(p):
     )
     style.write_text(text)
 
+def apply_brave(p):
+    live = find_brave_ext()
+    if not live:
+        raise RuntimeError("Brave Tokyo Night extension not found — is it installed?")
+
+    def rgb(c):
+        r, g, b = rgb_ints(c)
+        return [r, g, b]
+
+    data = json.loads(BRAVE_REPO.read_text())
+    colors = data.setdefault("theme", {}).setdefault("colors", {})
+    colors["frame"]                      = rgb(p["bg"])
+    colors["toolbar"]                    = rgb(p["bg_alt"])
+    colors["tab_background_frame"]       = rgb(p["bg"])
+    colors["ntp_background"]             = rgb(p["bg"])
+    colors["omnibox_background"]         = rgb(p["bg_alt"])
+    colors["tab_text"]                   = rgb(p["fg"])
+    colors["tab_background_text"]        = rgb(p["fg_dim"])
+    colors["tab_background_text_inactive"] = rgb(p["fg_dim"])
+    colors["toolbar_text"]               = rgb(p["fg"])
+    colors["toolbar_button_icon"]        = rgb(p["fg"])
+    colors["ntp_text"]                   = rgb(p["fg"])
+    colors["ntp_link"]                   = rgb(p["blue"])
+    colors["bookmark_text"]              = rgb(p["blue"])
+    colors["omnibox_text"]               = rgb(p["fg"])
+    colors["button_background"]          = rgb(p["bg_alt"])
+
+    updated = json.dumps(data, indent=2)
+    BRAVE_REPO.write_text(updated)
+    (live / "manifest.json").write_text(updated)
+
+    cached_pak = live / "Cached Theme.pak"
+    if cached_pak.exists():
+        cached_pak.unlink()
+
 # ── Reload ────────────────────────────────────────────────────────────────────
 
 def reload_tools():
@@ -404,6 +462,7 @@ def main():
         ("btop",            lambda p: apply_btop(p)),
         ("starship",        lambda p: apply_starship(p, prev)),
         ("hyprland border", lambda p: apply_hyprland(p)),
+        ("brave",           lambda p: apply_brave(p)),
     ]
     for label, fn in steps:
         try:
