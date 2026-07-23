@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-FZF_COLORS="--color=bg+:#292e42,bg:#1a1b26,spinner:#bb9af7,hl:#565f89,fg:#c0caf5,header:#565f89,info:#7aa2f7,pointer:#bb9af7,marker:#7dcfff,fg+:#c0caf5,prompt:#7aa2f7,hl+:#7dcfff"
+FZF_COLORS="--color=bg+:#313244,bg:#1e1e2e,spinner:#cba6f7,hl:#6c7086,fg:#cdd6f4,header:#6c7086,info:#89b4fa,pointer:#cba6f7,marker:#89dceb,fg+:#cdd6f4,prompt:#89b4fa,hl+:#89dceb"
 
-P='\033[38;2;187;154;247m'
-B='\033[38;2;122;162;247m'
-Y='\033[38;2;224;175;104m'
-D='\033[38;2;86;95;137m'
+P='\033[38;2;203;166;247m'
+B='\033[38;2;137;180;250m'
+Y='\033[38;2;249;226;175m'
+D='\033[38;2;108;112;134m'
 R='\033[0m'
 
 section() {
@@ -24,9 +24,11 @@ generate() {
     row "Super+F"                 "file manager (yazi)"
     row "Super+E"                 "app launcher"
     row "Super+W"                 "wallpaper picker"
+    row "Super+Shift+P"           "palette / theme picker"
     row "Super+N"                 "toggle notifications"
     row "Super+C"                 "cheatsheet (this)"
     row "Super+Shift+W"           "LAN discovery (whosthere)"
+    row "Super+Shift+C"           "SSH host picker (sshs)"
     row "Super+M"                 "display config (wdisplays)"
 
     section "Hyprland — windows"
