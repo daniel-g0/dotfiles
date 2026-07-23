@@ -4,34 +4,34 @@
 
 :root {
   /* Core palette */
-  --tn-bg:        #18181a;
-  --tn-bg-alt:    #1a1b26;
-  --tn-surface:   #1a1b26;
-  --tn-surface2:  #1a1b26;
-  --tn-surface3:  #1a1b26;
-  --tn-fg:        #cfcfd2;
-  --tn-fg-dim:    rgba(207, 207, 210, 0.55);
-  --tn-accent:    #5863e3;
-  --tn-blue:      #7aa2f7;
-  --tn-cyan:      #2ac3de;
+  --tn-bg:        #131616;
+  --tn-bg-alt:    #0f2f34;
+  --tn-surface:   #0f2f34;
+  --tn-surface2:  #a1c387;
+  --tn-surface3:  #a1c387;
+  --tn-fg:        #d1d4cd;
+  --tn-fg-dim:    rgba(209, 212, 205, 0.55);
+  --tn-accent:    #58d8e3;
+  --tn-blue:      #84ebbb;
+  --tn-cyan:      #b0eb84;
   --tn-green:     #9ece6a;
   --tn-yellow:    #e0af68;
   --tn-red:       #f7768e;
 
   /* Swaync semantic vars */
-  --cc-bg:                    rgba(24, 24, 26, 0.97);
-  --noti-border-color:        rgba(26, 27, 38, 0.9);
-  --noti-bg:                  24, 24, 26;     /* #1a1b26 as r,g,b for rgba() */
+  --cc-bg:                    rgba(19, 22, 22, 0.97);
+  --noti-border-color:        rgba(15, 47, 52, 0.9);
+  --noti-bg:                  19, 22, 22;     /* #1a1b26 as r,g,b for rgba() */
   --noti-bg-alpha:            0.97;
-  --noti-bg-opaque:           rgb(24, 24, 26);
-  --noti-bg-darker:           rgb(20, 20, 22);
-  --noti-bg-hover:            rgb(26, 27, 38);
-  --noti-bg-focus:            rgba(26, 27, 38, 0.7);
+  --noti-bg-opaque:           rgb(19, 22, 22);
+  --noti-bg-darker:           rgb(16, 18, 18);
+  --noti-bg-hover:            rgb(15, 47, 52);
+  --noti-bg-focus:            rgba(15, 47, 52, 0.7);
   --noti-close-bg:            rgba(65, 72, 104, 0.5);
   --noti-close-bg-hover:      rgba(247, 118, 142, 0.25);
-  --text-color:               #cfcfd2;
+  --text-color:               #d1d4cd;
   --text-color-disabled:      rgba(192, 202, 245, 0.4);
-  --bg-selected:              #7aa2f7;
+  --bg-selected:              #84ebbb;
 
   --notification-icon-size:   56px;
   --notification-app-icon-size: calc(var(--notification-icon-size) / 3);

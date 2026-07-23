@@ -23,10 +23,10 @@ gravity = 100
 ignore = 0
 
 [color]
-background = '#18181a'
+background = '#131616'
 gradient = 1
 gradient_count = 4
-gradient_color_1 = '#5863e3'
-gradient_color_2 = '#7aa2f7'
-gradient_color_3 = '#2ac3de'
+gradient_color_1 = '#58d8e3'
+gradient_color_2 = '#84ebbb'
+gradient_color_3 = '#b0eb84'
 gradient_color_4 = '#9ece6a'
