@@ -10,14 +10,14 @@ add_newline = false
 
 # -- Username (right prompt) -----------------------------------------------------
 [username]
-style_user  = "fg:#5863e3"
+style_user  = "fg:#e35e58"
 style_root  = "fg:#f7768e"
 format      = "[$user]($style)"
 show_always = true
 
 # -- Directory -------------------------------------------------------------------
 [directory]
-style             = "fg:#7aa2f7"
+style             = "fg:#e3a258"
 format            = "[ $path ]($style)"
 truncation_length = 5
 truncation_symbol = "…/"

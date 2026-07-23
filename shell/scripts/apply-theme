@@ -317,12 +317,15 @@ def apply_starship(p, prev):
 
 def apply_hyprland(p):
     a, b, c = p["accent"], p["blue"], p["cyan"]
-    active   = f"{rgba8(a)} {rgba8(b)} {rgba8(c)} {rgba8(a)} 90deg"
-    inactive = f"{rgba8(a,'44')} {rgba8(b,'44')} {rgba8(c,'44')} {rgba8(a,'44')} 90deg"
-    for key, val in [("general:col.active_border", active),
-                     ("general:col.inactive_border", inactive)]:
-        subprocess.run(["hyprctl", "keyword", key, val],
-                       capture_output=True)
+
+    def lua_colors(alpha):
+        cols = [rgba8(a, alpha), rgba8(b, alpha), rgba8(c, alpha), rgba8(a, alpha)]
+        return "{" + ",".join(f"'{x}'" for x in cols) + "}"
+
+    active_lua   = "hl.config({{general={{col={{active_border={{colors={c},angle=0}}}}}}}})" .format(c=lua_colors('ee'))
+    inactive_lua = "hl.config({{general={{col={{inactive_border={{colors={c},angle=0}}}}}}}})" .format(c=lua_colors('44'))
+    for lua in [active_lua, inactive_lua]:
+        subprocess.run(["hyprctl", "eval", lua], capture_output=True)
 
 def apply_waybar_border(p):
     """Update waybar CSS gradient border to match new palette."""
