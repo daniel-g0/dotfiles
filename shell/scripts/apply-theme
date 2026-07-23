@@ -643,12 +643,19 @@ def apply_modules(p, prev):
     MODULES_JSON.write_text(text)
 
 NVCHAD_THEME_MAP = {
-    "tokyo-night": "tokyonight",
-    "warm-earth":  "rosepine",
-    "catppuccin":  "catppuccin",
-    "nord":        "nord",
-    "gruvbox":     "gruvbox",
-    "rose-pine":   "rosepine",
+    "tokyo-night":    "tokyonight",
+    "warm-earth":     "rosepine",
+    "catppuccin":     "catppuccin",
+    "nord":           "nord",
+    "gruvbox":        "gruvbox",
+    "rose-pine":      "rosepine",
+    "dracula":        "dracula",
+    "one-dark":       "onedark",
+    "kanagawa":       "kanagawa",
+    "nightfox":       "nightfox",
+    "palenight":      "palenight",
+    "everforest":     "everforest",
+    "material-ocean": "material-ocean",
 }
 
 def apply_nvim(preset_name):
@@ -781,6 +788,66 @@ PRESETS = {
         "bg": "#191724", "bg_alt": "#26233a", "fg": "#e0def4", "fg_dim": "#6e6a86",
         "accent": "#c4a7e7", "blue": "#9ccfd8", "cyan": "#31748f", "green": "#31748f",
         "red": "#eb6f92", "yellow": "#f6c177",
+    },
+    "dracula": {
+        "bg": "#282a36", "bg_alt": "#44475a", "fg": "#f8f8f2", "fg_dim": "#6272a4",
+        "accent": "#ff79c6", "blue": "#6272a4", "cyan": "#8be9fd", "green": "#50fa7b",
+        "red": "#ff5555", "yellow": "#f1fa8c",
+    },
+    "one-dark": {
+        "bg": "#282c34", "bg_alt": "#2c313a", "fg": "#abb2bf", "fg_dim": "#5c6370",
+        "accent": "#c678dd", "blue": "#61afef", "cyan": "#56b6c2", "green": "#98c379",
+        "red": "#e06c75", "yellow": "#e5c07b",
+    },
+    "monokai": {
+        "bg": "#272822", "bg_alt": "#3e3d32", "fg": "#f8f8f2", "fg_dim": "#75715e",
+        "accent": "#f92672", "blue": "#66d9e8", "cyan": "#a1efe4", "green": "#a6e22e",
+        "red": "#f92672", "yellow": "#e6db74",
+    },
+    "solarized-dark": {
+        "bg": "#002b36", "bg_alt": "#073642", "fg": "#839496", "fg_dim": "#586e75",
+        "accent": "#d33682", "blue": "#268bd2", "cyan": "#2aa198", "green": "#859900",
+        "red": "#dc322f", "yellow": "#b58900",
+    },
+    "everforest": {
+        "bg": "#2d353b", "bg_alt": "#343f44", "fg": "#d3c6aa", "fg_dim": "#7a8478",
+        "accent": "#e67e80", "blue": "#7fbbb3", "cyan": "#83c092", "green": "#a7c080",
+        "red": "#e67e80", "yellow": "#dbbc7f",
+    },
+    "ayu-dark": {
+        "bg": "#0a0e14", "bg_alt": "#0d1017", "fg": "#b3b1ad", "fg_dim": "#3d424d",
+        "accent": "#ff8f40", "blue": "#59c2ff", "cyan": "#95e6cb", "green": "#aad94c",
+        "red": "#f07178", "yellow": "#e6b673",
+    },
+    "kanagawa": {
+        "bg": "#1f1f28", "bg_alt": "#2a2a37", "fg": "#dcd7ba", "fg_dim": "#727169",
+        "accent": "#957fb8", "blue": "#7e9cd8", "cyan": "#6a9589", "green": "#76946a",
+        "red": "#c34043", "yellow": "#c0a36e",
+    },
+    "nightfox": {
+        "bg": "#192330", "bg_alt": "#212e3f", "fg": "#cdcecf", "fg_dim": "#71839b",
+        "accent": "#c099ff", "blue": "#82aaff", "cyan": "#86e1fc", "green": "#b8db87",
+        "red": "#fc5d7c", "yellow": "#ffc777",
+    },
+    "palenight": {
+        "bg": "#292d3e", "bg_alt": "#2f3347", "fg": "#a6accd", "fg_dim": "#676e95",
+        "accent": "#c792ea", "blue": "#82b1ff", "cyan": "#89ddff", "green": "#c3e88d",
+        "red": "#f07178", "yellow": "#ffcb6b",
+    },
+    "horizon": {
+        "bg": "#1c1e26", "bg_alt": "#232530", "fg": "#d5d8da", "fg_dim": "#6c6f93",
+        "accent": "#e95678", "blue": "#25b0bc", "cyan": "#25b0bc", "green": "#09f7a0",
+        "red": "#e95678", "yellow": "#fab795",
+    },
+    "night-owl": {
+        "bg": "#011627", "bg_alt": "#0e2233", "fg": "#d6deeb", "fg_dim": "#4b6479",
+        "accent": "#c792ea", "blue": "#82aaff", "cyan": "#7fdbca", "green": "#addb67",
+        "red": "#ff5874", "yellow": "#ecc48d",
+    },
+    "material-ocean": {
+        "bg": "#0f111a", "bg_alt": "#1a1c25", "fg": "#8f93a2", "fg_dim": "#464b5d",
+        "accent": "#c792ea", "blue": "#82aaff", "cyan": "#89ddff", "green": "#c3e88d",
+        "red": "#ff5370", "yellow": "#ffcb6b",
     },
 }
 
