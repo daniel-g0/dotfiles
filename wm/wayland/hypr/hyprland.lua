@@ -405,6 +405,15 @@ hl.window_rule({
     center = true,
 })
 
+-- Theme picker windowrule
+hl.window_rule({
+    name   = "float-select-theme",
+    match  = { class = "select-theme" },
+    float  = true,
+    size   = "500 320",
+    center = true,
+})
+
 -- Cheatsheet windowrule
 hl.window_rule({
     name   = "float-cheatsheet",

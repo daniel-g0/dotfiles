@@ -8,7 +8,7 @@ THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine)
 chosen=$(printf '%s\n' "${THEMES[@]}" \
   | fzf \
       --prompt="  Palette: " \
-      --height=50% \
+      --height=100% \
       --border=rounded \
       --preview='case {} in
         tokyo-night) echo -e "Theme: Tokyo Night\n─────────────────────────────────────\nbg #1a1b26  fg #c0caf5\naccent #bb9af7  blue #7aa2f7  cyan #2ac3de  green #9ece6a" ;;
