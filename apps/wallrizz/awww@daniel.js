@@ -7,14 +7,6 @@
 export async function setWallpaper(wallpaperPath) {
   const command = createAwwwCommand(wallpaperPath, generateRandomOptions());
   await execAsync(command);
-  // Deno.env.get is the proper Deno API (process.env doesn't exist in Deno)
-  const home = Deno.env.get("HOME");
-  if (home) {
-    execAsync([
-      `${home}/Projects/personal/dotfiles/shell/scripts/apply-theme`,
-      wallpaperPath,
-    ]).catch(() => {});
-  }
 }
 
 function createAwwwCommand(imagePath, options) {

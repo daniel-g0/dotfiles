@@ -78,6 +78,8 @@ ALL_LINK_DEFS=(
     "apps/whosthere|$HOME/.config/whosthere|linux"
     "apps/cava|$HOME/.config/cava|linux"
     "shell/scripts/cava-vibe|$HOME/.local/bin/cava-vibe|linux"
+    "shell/scripts/apply-theme|$HOME/.local/bin/apply-theme|linux"
+    "shell/scripts/select-theme|$HOME/.local/bin/select-theme|linux"
     "wm/wayland/hypr|$HOME/.config/hypr|linux"
     "wm/wayland/waybar|$HOME/.config/waybar|linux"
     "wm/wayland/swaync|$HOME/.config/swaync|linux"
