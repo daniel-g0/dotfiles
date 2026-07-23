@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# reset-theme — restore Tokyo Night across all tools
+# Equivalent to: apply-theme ~/.config/wallpapers/nix-tokyo-night.png
+
+exec "$(dirname "$0")/apply-theme" \
+  "$HOME/.config/wallpapers/nix-tokyo-night.png"
