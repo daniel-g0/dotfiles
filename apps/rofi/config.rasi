@@ -8,13 +8,13 @@ configuration {
 
 * {
     /* palette */
-    bg:       #000000;
-    bg-alt:   #0d0d0d;
-    fg:       #a9b1d6;
-    fg-dim:   #565f89;
+    bg:       #18181a;
+    bg-alt:   #1a1b26;
+    fg:       #cfcfd2;
+    fg-dim:   #1a1b26;
     blue:     #7aa2f7;
-    purple:   #bb9af7;
-    cyan:     #7dcfff;
+    purple:   #5863e3;
+    cyan:     #2ac3de;
     green:    #9ece6a;
     red:      #f7768e;
 
