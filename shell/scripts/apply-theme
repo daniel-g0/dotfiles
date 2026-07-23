@@ -822,7 +822,7 @@ def main():
         ("btop",            lambda p: apply_btop(p)),
         ("starship",        lambda p: apply_starship(p, prev)),
         ("hyprland border", lambda p: apply_hyprland(p)),
-        ("brave",           lambda p: apply_brave(p)),
+        # brave: extension-based theming not reliable — skipped
         ("fastfetch",       lambda p: apply_fastfetch(p, prev)),
         ("yazi",            lambda p: apply_yazi(p)),
         ("hyprlock",        lambda p: apply_hyprlock(p, prev)),
