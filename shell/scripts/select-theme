@@ -18,7 +18,7 @@ chosen=$(printf '%s\n' "${THEMES[@]}" \
         gruvbox)     echo -e "Theme: Gruvbox Dark\n─────────────────────────────────────\nbg #282828  fg #ebdbb2\npink #d3869b  aqua #83a598  green #8ec07c  lime #b8bb26" ;;
         rose-pine)   echo -e "Theme: Rose Pine\n─────────────────────────────────────\nbg #191724  fg #e0def4\niris #c4a7e7  foam #9ccfd8  pine #31748f  rose #eb6f92" ;;
       esac' \
-      --preview-window=down:5:wrap \
+      --preview-window=down:4:wrap \
       --no-sort \
   ) || exit 0
 
