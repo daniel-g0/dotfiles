@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Fixed-count color backend for WallRizz — always outputs exactly 16 hex colors.
+echo "$(date): color-backend called with: $1" >> ~/.cache/dynamic-theme/color-backend.log
 IMAGE="$1"
 N=16
 
