@@ -162,12 +162,6 @@ in
   };
   hardware.uinput.enable = true; # for idling
 
-  services.displayManager.sddm = {
-    enable        = true;
-    wayland.enable = true;
-    theme         = "where_is_my_sddm_theme";
-  };
-
   security.polkit.enable = true;
   # Private certs live at ~/.config/certs/ (outside repo, untracked).
   # builtins.path copies each cert into the store at eval time so the sandbox can access it.
@@ -323,20 +317,6 @@ in
     tokyonight-gtk-theme
     # TTS backend for services.speechd (browser voice output).
     espeak-ng
-    (where-is-my-sddm-theme.override {
-      themeConfig.General = {
-        background            = "#1a1b26";
-        backgroundFill        = "#1a1b26";
-        backgroundFillMode    = "none";
-        blurRadius            = "0";
-        basicTextColor        = "#c0caf5";
-        passwordInputBackground     = "#24283b";
-        passwordInputCursorColor    = "#7aa2f7";
-        passwordInputPlaceholderColor = "#565f89";
-        sessionButtonTextColor = "#c0caf5";
-        userButtonTextColor    = "#c0caf5";
-      };
-    })
   ];
 
   # -- Virtualisation ------------------------------------------------------------
