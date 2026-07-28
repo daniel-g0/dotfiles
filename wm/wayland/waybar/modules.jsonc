@@ -1,37 +1,30 @@
 {
 	// ─── Groups ──────────────────────────────────────────────────────────────────
 
+	"group/left": {
+		"orientation": "horizontal",
+		"modules": ["mpris", "temperature", "memory", "cpu", "custom/gpu", "disk"]
+	},
+
+	"group/right": {
+		"orientation": "horizontal",
+		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications", "idle_inhibitor"]
+	},
+
+	"group/group-volume": {
+		"orientation": "horizontal",
+		"modules": ["pulseaudio#output", "pulseaudio#input"]
+	},
+
 	"group/laptop": {
 		"orientation": "horizontal",
 		"hide-empty-group": true,
 		"modules": ["backlight", "battery"]
 	},
 
-	// ─── Hyprland modules ─────────────────────────────────────────────────────
-
-	"hyprland/workspaces": {
-		"format": "{icon}",
-		"format-icons": {
-			"active":  "●",
-			"default": "○"
-		},
-		"persistent-workspaces": {
-			"*": 5
-		},
-		"sort-by": "id",
-		"on-scroll-up":   "hyprctl dispatch workspace e-1",
-		"on-scroll-down": "hyprctl dispatch workspace e+1"
-	},
-
-	"hyprland/window": {
-		"format": "{title}",
-		"max-length": 50,
-		"separate-outputs": true,
-		"rewrite": {
-			"(.*) — Mozilla Firefox": "󰈹  $1",
-			"(.*) - nvim":            "  $1",
-			"kitty":                  " "
-		}
+	"group/time": {
+		"orientation": "horizontal",
+		"modules": ["clock"]
 	},
 
 	// ─── Custom modules ───────────────────────────────────────────────────────────
@@ -126,7 +119,7 @@
 
 	"memory": {
 		"interval": 10,
-		"format": "<span color='#e95678'>󰘚</span> {percentage}%",
+		"format": "<span color='#bb9af7'>󰘚</span> {percentage}%",
 		"format-warning": "<span color='#e0af68'>󰀧</span> {percentage}%",
 		"format-critical": "<span color='#f7768e'>󰀧</span> {percentage}%",
 		"states": { "warning": 75, "critical": 90 },
@@ -135,7 +128,7 @@
 
 	"cpu": {
 		"interval": 10,
-		"format": "<span color='#25b0bc'>󰍛</span> {usage}%",
+		"format": "<span color='#7aa2f7'>󰍛</span> {usage}%",
 		"format-warning": "<span color='#e0af68'>󰀨</span> {usage}%",
 		"format-critical": "<span color='#f7768e'>󰀨</span> {usage}%",
 		"states": { "warning": 75, "critical": 90 },
