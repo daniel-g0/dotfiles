@@ -948,6 +948,7 @@ def main():
         preset_name = sys.argv[2]
         palette = dict(PRESETS[preset_name])
         palette.setdefault("wall", "")
+        (CACHE / "last-preset").write_text(preset_name)
         print(f"apply-theme: applying preset '{preset_name}' …", flush=True)
     else:
         wall = sys.argv[1]
@@ -955,6 +956,7 @@ def main():
         colors  = extract_colors(wall)
         palette = map_palette(colors, wall)
         (CACHE / "last-wallpaper").write_text(wall)
+        (CACHE / "last-preset").write_text("")  # wallpaper-driven — no preset name
 
     prev_file.write_text(json.dumps(palette, indent=2))
     steps = [
