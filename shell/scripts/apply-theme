@@ -411,36 +411,9 @@ def apply_hyprland(p):
     HYPRLAND_LUA.write_text(text)
 
 def apply_waybar_border(p):
-    """Update waybar CSS gradient border to match window border (monochromatic accent)."""
-    a = p["accent"]
-    h_a, l_a, s_a = _hls(a)
-    a_bright = _hex(*colorsys.hls_to_rgb(h_a, min(1.0, l_a + 0.18), s_a))
-    ar, ag, ab = rgb_ints(a)
-
-    style = DOTFILES / "wm/wayland/waybar/style.css"
-    text  = style.read_text()
-
-    # Monochromatic gradient — same accent as window borders
-    new_grad = (
-        f"linear-gradient(90deg, {a}, {a_bright}, {a}, {a_bright}, "
-        f"{a}, {a_bright}, {a}, {a})"
-    )
-    text = re.sub(r"linear-gradient\(90deg,[^)]+\)", new_grad, text)
-
-    # Bar background fill — update hardcoded bg colours to palette bg
-    text = re.sub(
-        r"linear-gradient\(#[0-9a-fA-F]{6},\s*#[0-9a-fA-F]{6}\)",
-        f"linear-gradient({p['bg']}, {p['bg']})",
-        text
-    )
-
-    # Glow — use accent for both layers
-    text = re.sub(
-        r"0 0 16px rgba\([^)]+\),\s*\n\s*0 0 32px rgba\([^)]+\)",
-        f"0 0 16px rgba({ar}, {ag}, {ab}, 0.30),\n\t\t0 0 32px rgba({ar}, {ag}, {ab}, 0.12)",
-        text
-    )
-    style.write_text(text)
+    # style.css uses alpha(@accent, ...) and alpha(@main-bg, ...) — CSS variables
+    # updated by apply_waybar(). Nothing to patch here.
+    pass
 
 def apply_fastfetch(p, prev):
     def ansi(c):
