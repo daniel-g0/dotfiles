@@ -117,8 +117,8 @@ hl.config({
 
         col = {
             -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
-            active_border   = { colors = {"rgba(7aa2f7ee)", "rgba(bb9af7ee)", "rgba(2ac3deee)", "rgba(7dcfffee)", "rgba(7aa2f7ee)"}, angle = 0 },
-            inactive_border = { colors = {"rgba(7aa2f7ee)", "rgba(bb9af7ee)", "rgba(2ac3deee)", "rgba(7dcfffee)", "rgba(7aa2f7ee)"}, angle = 0 },
+            active_border   = { colors = {"rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)"}, angle = 0 },
+            inactive_border = { colors = {"rgba(e35e5844)", "rgba(f0a9a644)", "rgba(e35e5844)", "rgba(f0a9a644)", "rgba(e35e5844)"}, angle = 0 },
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
