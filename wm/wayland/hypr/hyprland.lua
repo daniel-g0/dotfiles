@@ -381,10 +381,9 @@ hl.window_rule({
 
 -- Waybar glassmorphism: blur the bar layer
 hl.layer_rule({
-    name       = "blur-waybar",
-    match      = { namespace = "waybar" },
-    blur       = true,
-    blurpopups = true,
+    name  = "blur-waybar",
+    match = { namespace = "waybar" },
+    blur  = true,
 })
 
 -- Layer rules also return a handle.
