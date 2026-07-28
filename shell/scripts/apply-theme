@@ -378,8 +378,26 @@ def apply_hyprland(p):
         capture_output=True
     )
 
-    # Update source file so shadow survives Hyprland restart
+    # Update source file — writing triggers Hyprland auto-reload, so ALL colours
+    # must be written here; hyprctl eval above handles the immediate visual update.
+    def file_colors(alpha):
+        cols = [rgba8(a, alpha), rgba8(a_bright, alpha), rgba8(a, alpha),
+                rgba8(a_bright, alpha), rgba8(a, alpha)]
+        return ", ".join(f'"{x}"' for x in cols)
+
     text = HYPRLAND_LUA.read_text()
+    # Border colours
+    text = re.sub(
+        r'(active_border\s*=\s*\{\s*colors\s*=\s*\{)[^}]+(\},\s*angle\s*=\s*0\s*\})',
+        rf'\g<1>{file_colors("ee")}\g<2>',
+        text
+    )
+    text = re.sub(
+        r'(inactive_border\s*=\s*\{\s*colors\s*=\s*\{)[^}]+(\},\s*angle\s*=\s*0\s*\})',
+        rf'\g<1>{file_colors("44")}\g<2>',
+        text
+    )
+    # Shadow colours
     text = re.sub(
         r'(color\s*=\s*"rgba\()[0-9a-fA-F]{8}(\)")',
         rf'\g<1>{a.lstrip("#")}55\g<2>',
