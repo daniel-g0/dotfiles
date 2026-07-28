@@ -111,6 +111,35 @@ preview() {
 
 export -f swatch swatch_row preview
 
+# Build fzf color string from current dynamic palette
+FZF_PAL_COLORS=""
+_pal="$HOME/.cache/dynamic-theme/palette.json"
+[ -f "$_pal" ] && FZF_PAL_COLORS=$(python3 -c "
+import json, sys
+p = json.load(open('$_pal'))
+h = lambda c: c.lstrip('#')
+keys = ['bg','bg_alt','fg','fg_dim','blue','accent','cyan']
+if not all(k in p for k in keys):
+    sys.exit(0)
+print(','.join([
+    f\"bg:#{h(p['bg'])}\",
+    f\"bg+:#{h(p['bg_alt'])}\",
+    f\"fg:#{h(p['fg'])}\",
+    f\"fg+:#{h(p['fg'])}\",
+    f\"border:#{h(p['blue'])}\",
+    f\"prompt:#{h(p['accent'])}\",
+    f\"pointer:#{h(p['accent'])}\",
+    f\"info:#{h(p['cyan'])}\",
+    f\"hl:#{h(p['accent'])}\",
+    f\"hl+:#{h(p['accent'])}\",
+    f\"separator:#{h(p['bg_alt'])}\",
+    f\"header:#{h(p['blue'])}\",
+]))
+") 2>/dev/null || true
+
+FZF_EXTRA_OPTS=()
+[ -n "$FZF_PAL_COLORS" ] && FZF_EXTRA_OPTS+=(--color="$FZF_PAL_COLORS")
+
 chosen=$(printf '%s\n' "${THEMES[@]}" \
   | fzf \
       --prompt="  Palette: " \
@@ -120,6 +149,7 @@ chosen=$(printf '%s\n' "${THEMES[@]}" \
       --preview='preview {}' \
       --preview-window=down:4:wrap \
       --no-sort \
+      "${FZF_EXTRA_OPTS[@]}" \
   ) || exit 0
 
 [ -z "$chosen" ] && exit 0

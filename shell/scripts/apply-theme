@@ -349,13 +349,18 @@ def apply_starship(p, prev):
     STARSHIP_CFG.write_text(text)
 
 def apply_hyprland(p):
-    a, b, c = p["accent"], p["blue"], p["cyan"]
+    a = p["accent"]
+
+    # Monochromatic gradient: accent ↔ brighter-accent — shadow always matches border
+    h_a, l_a, s_a = _hls(a)
+    a_bright = _hex(*colorsys.hls_to_rgb(h_a, min(1.0, l_a + 0.18), s_a))
 
     def lua_colors(alpha):
-        cols = [rgba8(a, alpha), rgba8(b, alpha), rgba8(c, alpha), rgba8(a, alpha)]
+        cols = [rgba8(a, alpha), rgba8(a_bright, alpha), rgba8(a, alpha),
+                rgba8(a_bright, alpha), rgba8(a, alpha)]
         return "{" + ",".join(f"'{x}'" for x in cols) + "}"
 
-    shadow_col  = rgba8(a, "38")
+    shadow_col  = rgba8(a, "55")
     shadow_inac = rgba8(p["bg"], "20")
 
     active_lua   = "hl.config({{general={{col={{active_border={{colors={c},angle=0}}}}}}}})" .format(c=lua_colors('ee'))
@@ -364,11 +369,20 @@ def apply_hyprland(p):
     for lua in [active_lua, inactive_lua, shadow_lua]:
         subprocess.run(["hyprctl", "eval", lua], capture_output=True)
 
+    # sshs window gets a distinct red-tinted border (SSH = caution indicator)
+    r = p.get("red", a)
+    y = p.get("yellow", a_bright)
+    subprocess.run(
+        ["hyprctl", "keyword", "windowrulev2",
+         f"bordercolor rgba({r.lstrip('#')}ee) rgba({y.lstrip('#')}ee) 45deg, class:^(sshs)$"],
+        capture_output=True
+    )
+
     # Update source file so shadow survives Hyprland restart
     text = HYPRLAND_LUA.read_text()
     text = re.sub(
         r'(color\s*=\s*"rgba\()[0-9a-fA-F]{8}(\)")',
-        rf'\g<1>{a.lstrip("#")}38\g<2>',
+        rf'\g<1>{a.lstrip("#")}55\g<2>',
         text
     )
     text = re.sub(
