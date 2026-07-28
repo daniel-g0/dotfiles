@@ -137,7 +137,19 @@ print(','.join([
 ]))
 ") 2>/dev/null || true
 
-FZF_EXTRA_OPTS=()
+# Find position of current preset so fzf cursor lands on it
+CURRENT_POS=1
+_last="$HOME/.cache/dynamic-theme/last-preset"
+if [ -f "$_last" ]; then
+  _cur=$(cat "$_last")
+  if [ -n "$_cur" ]; then
+    for _i in "${!THEMES[@]}"; do
+      [ "${THEMES[$_i]}" = "$_cur" ] && CURRENT_POS=$((_i + 1)) && break
+    done
+  fi
+fi
+
+FZF_EXTRA_OPTS=(--bind "load:pos:$CURRENT_POS")
 [ -n "$FZF_PAL_COLORS" ] && FZF_EXTRA_OPTS+=(--color="$FZF_PAL_COLORS")
 
 chosen=$(printf '%s\n' "${THEMES[@]}" \
