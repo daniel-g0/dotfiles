@@ -10,14 +10,14 @@ add_newline = false
 
 # -- Username (right prompt) -----------------------------------------------------
 [username]
-style_user  = "fg:#e35e58"
+style_user  = "fg:#cba6f7"
 style_root  = "fg:#f7768e"
 format      = "[$user]($style)"
 show_always = true
 
 # -- Directory -------------------------------------------------------------------
 [directory]
-style             = "fg:#e3a258"
+style             = "fg:#89b4fa"
 format            = "[ $path ]($style)"
 truncation_length = 5
 truncation_symbol = "…/"
@@ -29,7 +29,7 @@ home_symbol       = "~"
 
 # -- Git -------------------------------------------------------------------------
 [git_branch]
-style  = "fg:#9ece6a"
+style  = "fg:#a6e3a1"
 format = "[ $branch ]($style)"
 
 [git_status]
@@ -42,7 +42,7 @@ diverged   = "⇕⇡${ahead_count}⇣${behind_count}"
 behind     = "⇣${count}"
 stashed    = "*"
 modified   = " "
-staged     = '[++\($count\)](fg:#9ece6a)'
+staged     = '[++\($count\)](fg:#a6e3a1)'
 renamed    = " "
 deleted    = " "
 format     = "[$all_status$ahead_behind ]($style)"
@@ -66,7 +66,7 @@ format = "[ $symbol ]($style)"
 
 [nodejs]
 symbol = ""
-style  = "fg:#9ece6a"
+style  = "fg:#a6e3a1"
 format = "[ $symbol ]($style)"
 
 [rust]

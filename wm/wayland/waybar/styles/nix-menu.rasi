@@ -2,12 +2,12 @@
 
 * {
     bg:        #0d0d14f7;
-    fg:        #a9b1d6;
-    fg-dim:    #565f89;
-    blue:      #7aa2f7;
-    purple:    #bb9af7;
-    sel-bg:    #7aa2f726;
-    border-c:  #7aa2f740;
+    fg:        #8e9ccb;
+    fg-dim:    #6c7086;
+    blue:      #89b4fa;
+    purple:    #cba6f7;
+    sel-bg:    #89b4fa26;
+    border-c:  #89b4fa40;
 
     background-color: transparent;
     text-color:       #a9b1d6;
@@ -20,10 +20,10 @@ window {
     x-offset:         8px;
     y-offset:         40px;
     width:            220px;
-    background-color: #0d0d14f7;
+    background-color: #131316f7;
     border-radius:    16px;
     border:           1px;
-    border-color:     #7aa2f740;
+    border-color:     #89b4fa40;
     padding:          6px;
 }
 
@@ -53,7 +53,7 @@ element {
 }
 
 element normal.normal   { background-color: transparent; text-color: #a9b1d6; }
-element selected.normal { background-color: #7aa2f726;   text-color: #7aa2f7; }
+element selected.normal { background-color: #89b4fa26;   text-color: #89b4fa; }
 
 element-text {
     background-color: transparent;
