@@ -117,8 +117,8 @@ hl.config({
 
         col = {
             -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
-            active_border   = { colors = {"rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)"}, angle = 0 },
-            inactive_border = { colors = {"rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)"}, angle = 0 },
+            active_border   = { colors = {"rgba(e95678ee)", "rgba(f3a7b8ee)", "rgba(e95678ee)", "rgba(f3a7b8ee)", "rgba(e95678ee)"}, angle = 0 },
+            inactive_border = { colors = {"rgba(e95678ee)", "rgba(f3a7b8ee)", "rgba(e95678ee)", "rgba(f3a7b8ee)", "rgba(e95678ee)"}, angle = 0 },
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -142,8 +142,8 @@ hl.config({
             enabled        = true,
             range          = 4,
             render_power   = 2,
-            color          = "rgba(e35e5855)",
-            color_inactive = "rgba(1b181700)",
+            color          = "rgba(e9567855)",
+            color_inactive = "rgba(1c1e2600)",
         },
 
         blur = {
@@ -377,6 +377,14 @@ hl.window_rule({
     },
 
     no_focus = true,
+})
+
+-- Waybar glassmorphism: blur the bar layer
+hl.layer_rule({
+    name       = "blur-waybar",
+    match      = { namespace = "waybar" },
+    blur       = true,
+    blurpopups = true,
 })
 
 -- Layer rules also return a handle.

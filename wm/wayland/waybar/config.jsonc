@@ -7,9 +7,9 @@
 	"mode": "dock",
 	"reload_style_on_change": true,
 
-	"modules-left":   ["custom/user", "group/left"],
-	"modules-center": ["group/time"],
-	"modules-right":  ["group/right", "custom/power"],
+	"modules-left":   ["custom/user", "hyprland/workspaces", "hyprland/window"],
+	"modules-center": ["custom/eyecare", "clock"],
+	"modules-right":  ["temperature", "cpu", "memory", "pulseaudio#output", "network", "custom/vpn", "custom/notifications", "group/laptop", "custom/power"],
 
 	"include": ["~/.config/waybar/modules.jsonc"]
 }
