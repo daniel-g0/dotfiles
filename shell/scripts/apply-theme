@@ -361,11 +361,11 @@ def apply_hyprland(p):
         return "{" + ",".join(f"'{x}'" for x in cols) + "}"
 
     shadow_col  = rgba8(a, "55")
-    shadow_inac = rgba8(p["bg"], "20")
+    shadow_inac = rgba8(p["bg"], "00")  # inactive windows: no aura
 
     active_lua   = "hl.config({{general={{col={{active_border={{colors={c},angle=0}}}}}}}})" .format(c=lua_colors('ee'))
-    inactive_lua = "hl.config({{general={{col={{inactive_border={{colors={c},angle=0}}}}}}}})" .format(c=lua_colors('44'))
-    shadow_lua   = f"hl.config({{decoration={{shadow={{color='{shadow_col}',color_inactive='{shadow_inac}'}}}}}})"
+    inactive_lua = "hl.config({{general={{col={{inactive_border={{colors={c},angle=0}}}}}}}})" .format(c=lua_colors('ee'))
+    shadow_lua   = f"hl.config({{decoration={{shadow={{color='{shadow_col}',color_inactive='{shadow_inac}',range=4,render_power=2}}}}}})"
     for lua in [active_lua, inactive_lua, shadow_lua]:
         subprocess.run(["hyprctl", "eval", lua], capture_output=True)
 
@@ -394,7 +394,7 @@ def apply_hyprland(p):
     )
     text = re.sub(
         r'(inactive_border\s*=\s*\{\s*colors\s*=\s*\{)[^}]+(\},\s*angle\s*=\s*0\s*\})',
-        rf'\g<1>{file_colors("44")}\g<2>',
+        rf'\g<1>{file_colors("ee")}\g<2>',
         text
     )
     # Shadow colours
@@ -405,7 +405,7 @@ def apply_hyprland(p):
     )
     text = re.sub(
         r'(color_inactive\s*=\s*"rgba\()[0-9a-fA-F]{8}(\)")',
-        rf'\g<1>{p["bg"].lstrip("#")}20\g<2>',
+        rf'\g<1>{p["bg"].lstrip("#")}00\g<2>',
         text
     )
     HYPRLAND_LUA.write_text(text)
