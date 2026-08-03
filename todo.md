@@ -77,6 +77,7 @@ Also TODO: match waybar width to windows (`margin: "5 20"` = gaps_out) once corn
 
 
 ### Big tasks
+- [ ] make setup fully reproducible: no hardcoded paths (e.g. `/home/user`, plugin cache hashes in statusline), hardware-configuration.nix managed properly, disk mounts declared without sed patches
 - [x] (important) set up VPN ✓ (vpnc + waybar module + fzf menu)
 - [x] set multiple monitor profiles (work: DP-3 left, DP-4 middle, eDP-1 right; home: eDP-1 only) ✓ (hyprmon TUI)
 - [x] add proper screenshots to README and repo graphs ✓

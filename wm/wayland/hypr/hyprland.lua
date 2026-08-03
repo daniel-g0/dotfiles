@@ -52,15 +52,16 @@ local wallpaper   = "kitty --class wallpaper-picker -1 -e $HOME/.config/hypr/wal
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function ()
+  hl.exec_cmd("env QS_THEME=pixel-sakura qylock-lock")  -- default `clockwork` has no Main.qml (only sub-themes) → black surface; specify a variant.
   hl.exec_cmd("bash $HOME/.config/waybar/launch")
   hl.exec_cmd("swaync")
   hl.exec_cmd("hypridle")
   hl.exec_cmd("awww-daemon")
-  hl.exec_cmd("awww img $HOME/.config/wallpapers/nix-tokyo-night.png --transition-type fade --transition-duration 2")
+  hl.exec_cmd("awww img $HOME/.config/wallpapers/classical-still-life.png --transition-type fade --transition-duration 2")
   hl.exec_cmd("hyprctl setcursor capitaine-cursors 24")
   hl.exec_cmd("bash $HOME/.config/waybar/scripts/eyecare-notify")
   -- Re-apply last wallpaper theme so border colours survive reboot
-  hl.exec_cmd("bash -c 'lw=$HOME/.cache/dynamic-theme/last-wallpaper; [ -f \"$lw\" ] && $HOME/Projects/personal/dotfiles/shell/scripts/apply-theme \"$(cat $lw)\" >> $HOME/.cache/dynamic-theme/apply-theme.log 2>&1 &'")
+  hl.exec_cmd("bash -c 'lw=$HOME/.cache/dynamic-theme/last-wallpaper; [ -f \"$lw\" ] && $HOME/Projects/dotfiles/shell/scripts/apply-theme \"$(cat $lw)\" >> $HOME/.cache/dynamic-theme/apply-theme.log 2>&1 &'")
 end)
 
 
@@ -117,8 +118,8 @@ hl.config({
 
         col = {
             -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
-            active_border   = { colors = {"rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)"}, angle = 0 },
-            inactive_border = { colors = {"rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)"}, angle = 0 },
+            active_border   = { colors = {"rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)"}, angle = 0 },
+            inactive_border = { colors = {"rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)", "rgba(f0a9a6ee)", "rgba(e35e58ee)"}, angle = 0 },
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -142,8 +143,8 @@ hl.config({
             enabled        = true,
             range          = 4,
             render_power   = 2,
-            color          = "rgba(cba6f755)",
-            color_inactive = "rgba(1e1e2e00)",
+            color          = "rgba(e35e5855)",
+            color_inactive = "rgba(1b181700)",
         },
 
         blur = {
@@ -287,7 +288,7 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 hl.bind(mainMod .. " + return", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("systemctl suspend"))
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("qylock-lock"))
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("env QS_THEME=pixel-sakura qylock-lock"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("hyprctl reload; pkill waybar; bash $HOME/.config/waybar/launch"))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(menu))

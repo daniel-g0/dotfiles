@@ -72,6 +72,7 @@ ALL_LINK_DEFS=(
     "shell/zoxide/config.nu|$HOME/.config/zoxide/config.nu|all"
     "apps/yazi|$HOME/.config/yazi|all"
     "dev/claude/settings.json|$HOME/.claude/settings.json|all"
+    "dev/claude/statusline-command.sh|$HOME/.claude/statusline-command.sh|all"
     "wm/cursor|$HOME/.config/cursors|linux"
     "apps/rofi|$HOME/.config/rofi|linux"
     "apps/wallrizz|$HOME/.config/WallRizz|linux"

@@ -20,8 +20,21 @@ let
     '';
   };
 
-  # True when the nvidia kernel module is loaded — reliable sysfs check, no file reads.
-  hasNvidia = builtins.pathExists "/sys/module/nvidia";
+  # Launchpad mirror is unreliable — redirect source to GitHub, same hash.
+  veracrypt = pkgs.veracrypt.overrideAttrs (old: {
+    src = pkgs.fetchurl {
+      url  = "https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/VeraCrypt_1.26.24_Source.tar.bz2";
+      hash = "sha256-f1wgr0KTd6tW97UsqGiTa5kj14T0YG2piGw2KXiQPng=";
+    };
+  });
+
+  # True when Nvidia hardware is present. Checks both drivers:
+  #   nouveau — loaded before first rebuild to proprietary driver
+  #   nvidia  — loaded after (avoids the original chicken-and-egg false negative)
+  # Avoids builtins.readFile on /sys: sysfs files can't be mmap'd → "unexpected end-of-file".
+  hasNvidia =
+    builtins.pathExists "/sys/module/nvidia" ||
+    builtins.pathExists "/sys/module/nouveau";
 
   # Detected at eval time — builds on same machine so this is correct.
   iommuParam =
@@ -111,6 +124,7 @@ in
   boot.kernelParams                           = [ "quiet" iommuParam "iommu=pt" ];
   boot.initrd.verbose                         = false;
   boot.kernelModules                          = [ "vfio_pci" "vfio" "vfio_iommu_type1" ];
+  boot.supportedFilesystems                  = [ "ntfs" ];
 
   # -- Networking ----------------------------------------------------------------
   networking.hostName              = "nixos";
@@ -123,8 +137,20 @@ in
   hardware.bluetooth.powerOnBoot = true;
 
   # -- Hardware ------------------------------------------------------------------
-  # Machine-specific GPU config (nvidia, intel, amd) goes in hardware-configuration.nix.
   hardware.graphics.enable = true;
+
+  # Proprietary Nvidia driver — required for suspend/resume on Wayland.
+  # nouveau has no GPU state save/restore; resume = black screen every time.
+  # powerManagement.enable adds systemd pre/post-suspend hooks that save/restore GPU state.
+  hardware.nvidia = lib.mkIf hasNvidia {
+    modesetting.enable          = true;   # required for Wayland/Hyprland
+    powerManagement.enable      = true;   # save GPU state before suspend, restore on wake
+    powerManagement.finegrained = false;
+    open                        = false;  # closed-source module; open unstable on TU104 (RTX 2070 Super)
+    nvidiaSettings              = true;
+    package                     = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+  services.xserver.videoDrivers = lib.mkIf hasNvidia [ "nvidia" ];
 
   zramSwap.enable    = true;
   zramSwap.algorithm = "zstd";
@@ -160,6 +186,19 @@ in
     enable   = true;
     withUWSM = false;
   };
+
+  # Autologin — SDDM skips greeter, Hyprland starts, qylock locks immediately.
+  # qylock acts as the visual login screen. No SDDM theme needed.
+  services.displayManager.sddm = {
+    enable         = true;
+    wayland.enable = true;
+  };
+  services.displayManager.autoLogin = {
+    enable = true;
+    user   = "user";
+  };
+  services.displayManager.defaultSession = "hyprland";
+
   hardware.uinput.enable = true; # for idling
 
   security.polkit.enable = true;
@@ -300,7 +339,7 @@ in
       (pkgs.brave.override { commandLineArgs = "--disk-cache-size=209715200 --aggressive-cache-discard --disable-gpu-memory-buffer-video-frames --disable-features=AcceleratedVideoDecodeLinuxGL,UseChromeOSDirectVideoDecoder"; })
       teams-for-linux
       keepass
-      veracrypt
+      veracrypt  # overridden in let block — GitHub mirror
       drawio
       chezmoi
       kdePackages.okular

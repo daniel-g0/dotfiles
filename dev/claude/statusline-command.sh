@@ -94,7 +94,8 @@ fi
 [ -n "$TOK_WK" ] && OUT="${OUT} ${CYAN}wk:${TOK_WK}%${RESET}"
 
 # --- Caveman badge (append if active) ---
-CAVEMAN_BADGE=$(bash "/home/user/.claude/plugins/cache/caveman/caveman/25d22f864ad6/src/hooks/caveman-statusline.sh" 2>/dev/null)
+CAVEMAN_HOOK=$(ls "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/plugins/cache/caveman/caveman/"*/src/hooks/caveman-statusline.sh 2>/dev/null | head -1)
+[ -n "$CAVEMAN_HOOK" ] && CAVEMAN_BADGE=$(bash "$CAVEMAN_HOOK" 2>/dev/null)
 [ -n "$CAVEMAN_BADGE" ] && OUT="${OUT} ${CAVEMAN_BADGE}"
 
 printf '%b' "$OUT"
