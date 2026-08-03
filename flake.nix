@@ -21,7 +21,7 @@
           programs.qylock = {
             enable      = true;
             theme       = "clockwork";
-            sddm.enable = true;
+            sddm.enable = false;  # broken: qylock SDDM theme hardcodes sddm-greeter path removed in SDDM 0.21.0
           };
 
           services.displayManager.sddm.enable         = true;

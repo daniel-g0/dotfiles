@@ -119,7 +119,7 @@
 
 	"memory": {
 		"interval": 10,
-		"format": "<span color='#bb9af7'>󰘚</span> {percentage}%",
+		"format": "<span color='#e35e58'>󰘚</span> {percentage}%",
 		"format-warning": "<span color='#e0af68'>󰀧</span> {percentage}%",
 		"format-critical": "<span color='#f7768e'>󰀧</span> {percentage}%",
 		"states": { "warning": 75, "critical": 90 },
@@ -128,7 +128,7 @@
 
 	"cpu": {
 		"interval": 10,
-		"format": "<span color='#7aa2f7'>󰍛</span> {usage}%",
+		"format": "<span color='#e3a258'>󰍛</span> {usage}%",
 		"format-warning": "<span color='#e0af68'>󰀨</span> {usage}%",
 		"format-critical": "<span color='#f7768e'>󰀨</span> {usage}%",
 		"states": { "warning": 75, "critical": 90 },
