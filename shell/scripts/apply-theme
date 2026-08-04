@@ -7,7 +7,7 @@ Extracts a colour palette from a wallpaper and applies it to all tools.
 import subprocess, sys, re, json, colorsys
 from pathlib import Path
 
-DOTFILES     = Path.home() / "Projects/dotfiles"
+DOTFILES     = Path.home() / "Projects/personal/dotfiles"
 WAYBAR_DYN   = DOTFILES / "wm/wayland/waybar/themes/dynamic.css"
 KITTY_DYN    = DOTFILES / "apps/kitty/dynamic-colors.conf"
 BTOP_DYN     = DOTFILES / "apps/btop/themes/dynamic.theme"
