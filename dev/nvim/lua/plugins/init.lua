@@ -188,7 +188,7 @@ return {
     end,
     opts = {
       input = {
-        win_options = { modifiable = true },
+        buf_options = { modifiable = true },
       },
     },
   },
