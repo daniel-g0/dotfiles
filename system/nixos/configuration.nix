@@ -356,6 +356,7 @@ in
     tokyonight-gtk-theme
     # TTS backend for services.speechd (browser voice output).
     espeak-ng
+    kdePackages.dolphin
   ];
 
   # -- Virtualisation ------------------------------------------------------------
