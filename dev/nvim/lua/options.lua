@@ -36,4 +36,4 @@ o.undofile = true         -- persist undo history across sessions
 
 -- ── spell ─────────────────────────────────────────────────────────
 o.spell     = true
-o.spelllang = "en_us"
+o.spelllang = "en_us,es"
