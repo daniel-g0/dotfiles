@@ -34,6 +34,3 @@ o.timeoutlen  = 300       -- faster which-key popup
 -- ── undo ──────────────────────────────────────────────────────────
 o.undofile = true         -- persist undo history across sessions
 
--- ── spell ─────────────────────────────────────────────────────────
-o.spell     = true
-o.spelllang = "en_us,es"
