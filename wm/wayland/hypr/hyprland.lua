@@ -52,7 +52,7 @@ local wallpaper   = "kitty --class wallpaper-picker -1 -e $HOME/.config/hypr/wal
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function ()
-  hl.exec_cmd("env QS_THEME=pixel-sakura qylock-lock")  -- default `clockwork` has no Main.qml (only sub-themes) → black surface; specify a variant.
+  hl.exec_cmd("hyprlock")
   hl.exec_cmd("bash $HOME/.config/waybar/launch")
   hl.exec_cmd("swaync")
   hl.exec_cmd("hypridle")
@@ -288,7 +288,7 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 hl.bind(mainMod .. " + return", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("systemctl suspend"))
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("env QS_THEME=pixel-sakura qylock-lock"))
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("hyprctl reload; pkill waybar; bash $HOME/.config/waybar/launch"))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(menu))
