@@ -607,28 +607,42 @@ def apply_hyprlock(p, prev):
     def hl(c):
         return "rgba({}ff)".format(c.lstrip("#"))
     text = HYPRLOCK_CFG.read_text()
-    # Role-based replacements for uniquely-named keys
+    # All replacements use named-key regex — no prev/cache dependency
     subs = [
+        # input-field keys (unique names)
         (r"(outer_color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)",    rf"\g<1>{hl(p['blue'])}"),
         (r"(inner_color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)",    rf"\g<1>{hl(p['bg_alt'])}"),
         (r"(font_color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)",     rf"\g<1>{hl(p['fg'])}"),
         (r"(check_color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)",    rf"\g<1>{hl(p['green'])}"),
         (r"(fail_color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)",     rf"\g<1>{hl(p['red'])}"),
         (r"(capslock_color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)", rf"\g<1>{hl(p['yellow'])}"),
+        # background block: first `color =` line
+        (r"(background\s*\{[^}]*?color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)",
+         rf"\g<1>{hl(p['bg'])}", re.DOTALL),
+        # Clock label (first label block): color = fg
+        (r"(#\s*Clock[^\n]*\nlabel\s*\{[^}]*?color\s*=\s*)rgba\([0-9a-fA-F]{6}ff\)",
+         rf"\g<1>{hl(p['fg'])}", re.DOTALL),
+        # Date + Fortune labels: color = fg_dim (remaining labels after Clock)
     ]
-    for pat, rep in subs:
-        text = re.sub(pat, rep, text)
-    # `color =` appears 3 times: bg, fg, fg_dim — replace prev→new
-    for key in ("bg", "fg", "fg_dim"):
-        old = hl(prev.get(key, ""))
-        new = hl(p[key])
-        if old != "rgba(ff)" and old != new:
-            text = text.replace(old, new)
+    for item in subs:
+        pat, rep = item[0], item[1]
+        flags = item[2] if len(item) > 2 else 0
+        text = re.sub(pat, rep, text, flags=flags)
+    # Date and Fortune labels: all non-Clock labels get fg_dim
+    # Replace color = rgba(...) inside label blocks that follow "# Date" or "# Fortune"
+    for anchor in ("Date", "Fortune"):
+        text = re.sub(
+            rf"(#\s*{anchor}[^\n]*\nlabel\s*\{{[^}}]*?color\s*=\s*)rgba\([0-9a-fA-F]{{6}}ff\)",
+            rf"\g<1>{hl(p['fg_dim'])}",
+            text, flags=re.DOTALL,
+        )
     # Pango placeholder ##rrggbb
     old_dim = prev.get("fg_dim", "").lstrip("#")
     new_dim = p["fg_dim"].lstrip("#")
     if old_dim and old_dim != new_dim:
         text = text.replace(f"##{old_dim}", f"##{new_dim}")
+    # Always update placeholder to current fg_dim (no prev dependency)
+    text = re.sub(r'(foreground=")##[0-9a-fA-F]{6}(")', rf'\g<1>##{p["fg_dim"].lstrip("#")}\2', text)
     HYPRLOCK_CFG.write_text(text)
 
 def apply_cheatsheet(p, prev):
