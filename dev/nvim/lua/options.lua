@@ -37,3 +37,7 @@ o.undofile = true         -- persist undo history across sessions
 -- ── spell ─────────────────────────────────────────────────────────
 o.spell     = true
 o.spelllang = "en_us,es"
+
+vim.api.nvim_create_autocmd("SpellFileMissing", {
+  callback = function(ev) vim.fn["spellfile#LoadFile"](ev.match) end,
+})
