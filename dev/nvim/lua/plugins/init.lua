@@ -344,11 +344,6 @@ return {
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  󰒡  UTILITIES  ━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  -- mistake.nvim: highlights common typos/coding mistakes
-  {
-    "https://github.com/ck-zhang/mistake.nvim",
-    event = "VeryLazy",
-  },
 
   -- vim-illuminate: highlight all occurrences of word under cursor
   -- providers: skip treesitter (nil node bug in locals.lua), use lsp + regex
