@@ -186,6 +186,11 @@ return {
         return vim.ui.input(...)
       end
     end,
+    opts = {
+      input = {
+        win_options = { modifiable = true },
+      },
+    },
   },
 
   -- mini.animate: smooth cursor movement + window open/close/resize animations
