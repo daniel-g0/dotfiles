@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FZF_COLORS="--color=bg+:#282924,bg:#1b1817,spinner:#e35e58,hl:#b48179,fg:#f2e3b1,header:#b48179,info:#e3a258,pointer:#e35e58,marker:#2ac3de,fg+:#f2e3b1,prompt:#e3a258,hl+:#2ac3de"
+FZF_COLORS="--color=bg+:#313244,bg:#1e1e2e,spinner:#cba6f7,hl:#6c7086,fg:#cdd6f4,header:#6c7086,info:#89b4fa,pointer:#cba6f7,marker:#89dceb,fg+:#cdd6f4,prompt:#89b4fa,hl+:#89dceb"
 
 P='\033[38;2;203;166;247m'
 B='\033[38;2;137;180;250m'

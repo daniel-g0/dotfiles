@@ -20,12 +20,15 @@ let
     '';
   };
 
-  # Launchpad mirror is unreliable — redirect source to GitHub, same hash.
+  # Launchpad mirror is unreliable — redirect source to GitHub.
+  # nixpkgs 1.26.29 derivation has wrong sourceRoot (includes .tar.bz2 extension);
+  # the tarball extracts flat (no wrapper dir), so sourceRoot must be "src".
   veracrypt = pkgs.veracrypt.overrideAttrs (old: {
     src = pkgs.fetchurl {
-      url  = "https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/VeraCrypt_1.26.24_Source.tar.bz2";
-      hash = "sha256-f1wgr0KTd6tW97UsqGiTa5kj14T0YG2piGw2KXiQPng=";
+      url  = "https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.29/VeraCrypt_1.26.29_Source.tar.bz2";
+      hash = "sha256-YIJnMeKYK0vSMeOTDoWkQ5EWljhnGhsgDFGPjItGyyo=";
     };
+    sourceRoot = "src";
   });
 
   # True when Nvidia hardware is present. Checks both drivers:
@@ -310,6 +313,7 @@ in
       git
       git-lfs
       github-cli
+      gitflow
       gcc
       uv
       nodejs
