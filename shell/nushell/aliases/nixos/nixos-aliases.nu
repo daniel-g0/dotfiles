@@ -7,11 +7,11 @@ export def nixos-re-sw [] {
     sudo nixos-rebuild switch --flake $"($dotfiles)#nixos" --impure
 }
 
-# Pull latest channel then rebuild
+# Update flake inputs then rebuild
 export def nixos-update [] {
-    sudo nix-channel --update
     let conf_dir = (^readlink -f /etc/nixos/configuration.nix | path dirname | str trim)
     let dotfiles = (^git -C $conf_dir rev-parse --show-toplevel | str trim)
+    nix flake update --flake $dotfiles
     sudo nixos-rebuild switch --flake $"($dotfiles)#nixos" --impure
 }
 

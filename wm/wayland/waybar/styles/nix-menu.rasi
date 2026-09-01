@@ -2,12 +2,12 @@
 
 * {
     bg:        #0d0d14f7;
-    fg:        #d9c88e;
-    fg-dim:    #b48179;
-    blue:      #e3a258;
-    purple:    #e35e58;
-    sel-bg:    #e3a25826;
-    border-c:  #e3a25840;
+    fg:        #8e9ccb;
+    fg-dim:    #6c7086;
+    blue:      #89b4fa;
+    purple:    #cba6f7;
+    sel-bg:    #89b4fa26;
+    border-c:  #89b4fa40;
 
     background-color: transparent;
     text-color:       #a9b1d6;
@@ -20,7 +20,7 @@ window {
     x-offset:         8px;
     y-offset:         40px;
     width:            220px;
-    background-color: #0e0d0df7;
+    background-color: #131316f7;
     border-radius:    16px;
     border:           1px;
     border-color:     #89b4fa40;
