@@ -9,6 +9,9 @@ smw.setup({
     workspace_count = 9,
     link_monitors   = true,
 })
+hl.on("monitor.removed", function()
+    smw.grab_rogue_windows()()
+end)
 
 
 ------------------
@@ -25,9 +28,17 @@ smw.setup({
 -- Auto-detect fallback (use hyprmon to override with saved profiles)
 hl.monitor({
     output   = "",
-    mode     = "preferred",
+    mode     = "2560x1440@74.97",
     position = "auto",
     scale    = "1.33",
+})
+
+-- XWayland sees physical pixels (2560x1440), not logical (1924x1082).
+-- Without this, games via XWayland cap at ~1920x1080 due to 1.33 scale.
+hl.config({
+    xwayland = {
+        force_zero_scaling = true,
+    },
 })
 
 
