@@ -2,12 +2,14 @@ import json, os
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData, as_rgb
 
-# ── Dynamic palette (auto-reloads from palette.json on change) ────────────────
+# ── Dynamic palette (auto-reloads from palette.json + dynamic-colors.conf) ────
 
 _PALETTE_PATH = os.path.expanduser("~/.cache/dynamic-theme/palette.json")
-_mtime        = 0.0
+_COLORS_PATH  = os.path.expanduser("~/.config/kitty/dynamic-colors.conf")
+_mtime_p      = 0.0
+_mtime_c      = 0.0
 
-_BG     = as_rgb(0x1a1b26)
+_BG     = as_rgb(0x1e1e2e)
 _BLUE   = as_rgb(0x7aa2f7)
 _PURPLE = as_rgb(0xbb9af7)
 _CYAN   = as_rgb(0x2ac3de)
@@ -21,24 +23,33 @@ def _h(c: str) -> int:
 
 
 def _reload():
-    global _mtime, _BG, _BLUE, _PURPLE, _CYAN, _GREEN, _FG, _DIM
+    global _mtime_p, _mtime_c, _BG, _CYAN, _GREEN, _FG, _DIM
+
+    # Read tab_bar_background from dynamic-colors.conf
+    try:
+        mt = os.stat(_COLORS_PATH).st_mtime
+        if mt > _mtime_c:
+            _mtime_c = mt
+            with open(_COLORS_PATH) as f:
+                for line in f:
+                    parts = line.split()
+                    if len(parts) == 2 and parts[0] == "tab_bar_background":
+                        _BG = _h(parts[1])
+                        break
+    except Exception:
+        pass
+
+    # Read accent/fg colors from wallpaper palette
     try:
         mt = os.stat(_PALETTE_PATH).st_mtime
-    except OSError:
-        return
-    if mt <= _mtime:
-        return
-    _mtime = mt
-    try:
-        with open(_PALETTE_PATH) as f:
-            p = json.load(f)
-        _BG     = _h(p.get("bg",     "#1a1b26"))
-        _BLUE   = _h(p.get("blue",   "#7aa2f7"))
-        _PURPLE = _h(p.get("accent", "#bb9af7"))
-        _CYAN   = _h(p.get("cyan",   "#2ac3de"))
-        _GREEN  = _h(p.get("green",  "#9ece6a"))
-        _FG     = _h(p.get("fg",     "#c0caf5"))
-        _DIM    = _h(p.get("fg_dim", "#565f89"))
+        if mt > _mtime_p:
+            _mtime_p = mt
+            with open(_PALETTE_PATH) as f:
+                p = json.load(f)
+            _CYAN = _h(p.get("cyan",   "#2ac3de"))
+            _GREEN = _h(p.get("green",  "#9ece6a"))
+            _FG   = _h(p.get("fg",     "#c0caf5"))
+            _DIM  = _h(p.get("fg_dim", "#565f89"))
     except Exception:
         pass
 
