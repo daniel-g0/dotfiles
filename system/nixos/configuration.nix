@@ -153,7 +153,10 @@ in
     nvidiaSettings              = true;
     package                     = config.boot.kernelPackages.nvidiaPackages.stable;
   };
-  services.xserver.videoDrivers = lib.mkIf hasNvidia [ "nvidia" ];
+  services.xserver.videoDrivers  = lib.mkIf hasNvidia [ "nvidia" ];
+  services.xserver.deviceSection = lib.mkIf hasNvidia ''
+    Option "Coolbits" "4"
+  '';
 
   zramSwap.enable    = true;
   zramSwap.algorithm = "zstd";
@@ -249,7 +252,7 @@ in
   users.users."user" = {
     isNormalUser = true;
     description  = "user";
-    extraGroups  = [ "networkmanager" "wheel" "video" "libvirtd" "kvm" "input" "uinput" "docker" ];
+    extraGroups  = [ "networkmanager" "wheel" "video" "libvirtd" "kvm" "input" "uinput" "docker" "corectrl" ];
     packages     = with pkgs; [
       # Wayland / desktop
       swaynotificationcenter
@@ -341,6 +344,7 @@ in
 
       # Apps
       (pkgs.brave.override { commandLineArgs = "--disk-cache-size=209715200 --aggressive-cache-discard --disable-gpu-memory-buffer-video-frames --disable-features=AcceleratedVideoDecodeLinuxGL,UseChromeOSDirectVideoDecoder"; })
+      firefox
       teams-for-linux
       keepass
       veracrypt  # overridden in let block — GitHub mirror
@@ -349,6 +353,7 @@ in
       kdePackages.okular
       libreoffice
       vesktop
+      easyeffects
     ];
   };
 
@@ -379,12 +384,19 @@ in
   # Looking Glass shared memory buffer (Windows VM → Linux framebuffer)
   systemd.tmpfiles.rules = [
     "f /dev/shm/looking-glass 0660 user kvm -"
+    "d /gaming 0775 user users -"
   ];
 
   # GPU passthrough hook — binds/unbinds discrete GPU for VM named "windows"
   environment.etc."libvirt/hooks/qemu" = {
     source = gpuHook;
     mode   = "0755";
+  };
+
+  # -- CoreCtrl (MSI Afterburner equivalent — GPU fan + OC control) --------------
+  programs.corectrl = {
+    enable         = true;
+    gpuOverclock.enable = true;
   };
 
   # -- Steam ---------------------------------------------------------------------
