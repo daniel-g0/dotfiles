@@ -348,6 +348,7 @@ in
       teams-for-linux
       keepass
       veracrypt  # overridden in let block — GitHub mirror
+      tor-browser
       drawio
       chezmoi
       kdePackages.okular
