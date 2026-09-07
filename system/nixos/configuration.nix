@@ -123,7 +123,7 @@ in
   boot.loader.systemd-boot.enable             = true;
   boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables        = true;
-  boot.kernelPackages                         = pkgs.linuxPackages_latest;
+  boot.kernelPackages                         = pkgs.linuxPackages_6_12;
   boot.kernelParams                           = [ "quiet" iommuParam "iommu=pt" ];
   boot.initrd.verbose                         = false;
   boot.kernelModules                          = [ "vfio_pci" "vfio" "vfio_iommu_type1" ];
@@ -395,10 +395,8 @@ in
   };
 
   # -- CoreCtrl (MSI Afterburner equivalent — GPU fan + OC control) --------------
-  programs.corectrl = {
-    enable         = true;
-    gpuOverclock.enable = true;
-  };
+  programs.corectrl.enable        = true;
+  hardware.amdgpu.overdrive.enable = true;
 
   # -- Steam ---------------------------------------------------------------------
   programs.steam.enable = true;
