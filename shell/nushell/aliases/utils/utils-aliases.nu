@@ -27,3 +27,5 @@ export alias matrix = cmatrix -C cyan -b
 export alias reload = exec nu
 
 export alias fg = job unfreeze
+
+export alias mkd = mkdir
