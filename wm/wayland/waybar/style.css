@@ -18,16 +18,16 @@
 
 #waybar {
 	background-image:
-		linear-gradient(#1e1e2e, #1e1e2e),
-		linear-gradient(90deg, #cba6f7, #fcfafe, #cba6f7, #fcfafe, #cba6f7, #fcfafe, #cba6f7, #cba6f7);
+		linear-gradient(#1a1b26, #1a1b26),
+		linear-gradient(90deg, #bb9af7, #f4effd, #bb9af7, #f4effd, #bb9af7, #f4effd, #bb9af7, #bb9af7);
 	background-origin: padding-box, border-box;
 	background-clip:   padding-box, border-box;
 	background-size:   auto, 400% 100%;
 	border: 2px solid transparent;
 	border-radius: 16px;
 	box-shadow:
-		0 0 16px rgba(203, 166, 247, 0.30),
-		0 0 32px rgba(203, 166, 247, 0.12),
+		0 0 16px rgba(187, 154, 247, 0.30),
+		0 0 32px rgba(187, 154, 247, 0.12),
 		inset 0 1px 0 rgba(255, 255, 255, 0.06);
 	animation: border-flow 8s linear infinite;
 	font-size: 15px;
