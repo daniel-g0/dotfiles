@@ -87,6 +87,7 @@ source ~/.config/nushell/themes/tokyo-night.nu
 
 # -- Aliases -------------------------------------------------------------------------
 use ~/.config/nushell/aliases/bat/bat-aliases.nu         *
+use ~/.config/nushell/aliases/claude/claude-aliases.nu   *
 use ~/.config/nushell/aliases/chezmoi/chezmoi-aliases.nu *
 use ~/.config/nushell/aliases/docker/docker-aliases.nu   *
 use ~/.config/nushell/aliases/git/git-aliases.nu         *
