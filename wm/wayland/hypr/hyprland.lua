@@ -28,7 +28,7 @@ end)
 -- Auto-detect fallback (use hyprmon to override with saved profiles)
 hl.monitor({
     output   = "",
-    mode     = "2560x1440@74.97",
+    mode     = "preferred",
     position = "auto",
     scale    = "1.33",
 })
@@ -129,8 +129,8 @@ hl.config({
 
         col = {
             -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
-            active_border   = { colors = {"rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)"}, angle = 0 },
-            inactive_border = { colors = {"rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)", "rgba(fcfafeee)", "rgba(cba6f7ee)"}, angle = 0 },
+            active_border   = { colors = {"rgba(bb9af7ee)", "rgba(f4effdee)", "rgba(bb9af7ee)", "rgba(f4effdee)", "rgba(bb9af7ee)"}, angle = 0 },
+            inactive_border = { colors = {"rgba(bb9af7ee)", "rgba(f4effdee)", "rgba(bb9af7ee)", "rgba(f4effdee)", "rgba(bb9af7ee)"}, angle = 0 },
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -154,8 +154,8 @@ hl.config({
             enabled        = true,
             range          = 4,
             render_power   = 2,
-            color          = "rgba(cba6f755)",
-            color_inactive = "rgba(1e1e2e00)",
+            color          = "rgba(bb9af755)",
+            color_inactive = "rgba(1a1b2600)",
         },
 
         blur = {
