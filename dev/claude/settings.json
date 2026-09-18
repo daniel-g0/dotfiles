@@ -5,13 +5,17 @@
     "DISABLE_TELEMETRY": "1",
     "DISABLE_ERROR_REPORTING": "1",
     "DISABLE_FEEDBACK_COMMAND": "1",
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "DO_NOT_TRACK": "1"
   },
   "attribution": {
     "commit": "",
     "pr": ""
   },
-  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
     "command": "bash \"/home/user/.claude/statusline-command.sh\""
@@ -27,6 +31,8 @@
     "hookify@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
     "fuck-you@fuck-you": true,
+    "uk-driller@uk-driller": true,
+    "pisha@pisha": false,
     "tips@tips": false,
     "eli5@eli5": false
   },
@@ -42,11 +48,23 @@
         "source": "github",
         "repo": "daniel-g0/fuck-you"
       }
+    },
+    "uk-driller": {
+      "source": {
+        "source": "github",
+        "repo": "daniel-g0/wsg-fam"
+      }
+    },
+    "pisha": {
+      "source": {
+        "source": "github",
+        "repo": "daniel-g0/pisha"
+      }
     }
   },
   "skipWebFetchPreflight": true,
   "feedbackSurveyRate": 0,
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "theme": "dark",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true
