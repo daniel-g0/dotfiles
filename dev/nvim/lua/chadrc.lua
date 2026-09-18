@@ -5,7 +5,7 @@
 local M = {}
 
 M.ui = {
-  theme = "catppuccin",
+  theme = "tokyonight",
 
   hl_override = {
     Normal        = { bg = "NONE" },
