@@ -360,6 +360,9 @@ in
 
   # -- System packages -----------------------------------------------------------
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "NetworkManager-vpnc-1.4.0"
+  ];
   environment.systemPackages = with pkgs; [
     nushell
     python3
