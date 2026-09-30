@@ -501,6 +501,16 @@ in
     inode/directory=yazi-kitty.desktop
   '';
 
+  # Locks Firefox's download dir to $HOME so it stops creating ~/Downloads —
+  # Firefox refuses to use $HOME as-is from XDG_DOWNLOAD_DIR and silently
+  # falls back to a hardcoded "Downloads" subfolder unless this is set.
+  environment.etc."firefox/policies/policies.json".text = builtins.toJSON {
+    policies = {
+      DownloadDirectory = "\${home}";
+      PromptForDownloadLocation = false;
+    };
+  };
+
   # This value pins the NixOS release for stateful data defaults.
   # Change only when intentionally migrating state. See: man configuration.nix
   system.stateVersion = "26.05";
