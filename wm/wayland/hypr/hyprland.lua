@@ -25,11 +25,28 @@ end)
 --   Work: DP-3 (left), DP-4 (middle), eDP-1 (right)
 --   Home: eDP-1 only
 
--- Auto-detect fallback (use hyprmon to override with saved profiles)
+-- Explicit left-to-right order matching PHYSICAL desk layout: 1 - 2 - portatil
+-- Fixed pixel positions (not auto/auto-right) because Hyprland resolves those
+-- keywords in output-detection order, not config file order — eDP-1 (internal
+-- panel) is detected before the externals, so auto-right kept putting it first
+-- regardless of where it was declared. Logical width per monitor @ scale 1.33
+-- is 1920/1.3333 = 1440px, so positions step by 1440.
 hl.monitor({
-    output   = "",
+    output   = "DP-3",
     mode     = "preferred",
-    position = "auto",
+    position = "0x0",
+    scale    = "1.33",
+})
+hl.monitor({
+    output   = "DP-4",
+    mode     = "preferred",
+    position = "1440x0",
+    scale    = "1.33",
+})
+hl.monitor({
+    output   = "eDP-1",
+    mode     = "preferred",
+    position = "2880x0",
     scale    = "1.33",
 })
 

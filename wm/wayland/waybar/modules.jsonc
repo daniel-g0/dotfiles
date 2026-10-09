@@ -8,7 +8,7 @@
 
 	"group/right": {
 		"orientation": "horizontal",
-		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications", "idle_inhibitor"]
+		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications", "idle_inhibitor", "custom/ganancias"]
 	},
 
 	"group/group-volume": {
@@ -39,7 +39,7 @@
 		"menu-actions": {
 			"nixopts": "kitty --class nix-options -T 'NixOS Options' -e bash ~/.config/waybar/scripts/nix-options",
 			"rice":    "kitty --directory $HOME -e env NU_BANNER=1 nu",
-			"idler":   "kitty --class idler -T 'Idler' -e bash -c 'cd /home/user/Projects/personal/idler && nix run . 2>&1; read'"
+			"idler":   "kitty --class idler -T 'Idler' -e bash -c 'cd /home/user/Proyectos/personal/scripts/idler && nix run . 2>&1; read'"
 		}
 	},
 
@@ -153,8 +153,7 @@
 	},
 
 	"clock": {
-		"format": "{:%a %H:%M}",
-		"format-alt": "{:%A, %d %B %Y}",
+		"format": "{:%a %d %b %Y, %H:%M}",
 		"tooltip-format": "<tt><small>{calendar}</small></tt>",
 		"calendar": {
 			"mode": "month",
@@ -165,8 +164,7 @@
 				"days":     "<span color='#a9b1d6'>{}</span>",
 				"today":    "<span color='#7dcfff'><b><u>{}</u></b></span>"
 			}
-		},
-		"actions": { "on-click-right": "mode" }
+		}
 	},
 
 	"custom/vpn": {
@@ -183,6 +181,13 @@
 		"return-type": "json",
 		"interval": 1,
 		"on-click": "~/.config/waybar/scripts/eyecare reset",
+		"tooltip": true
+	},
+
+	"custom/ganancias": {
+		"exec": "~/.config/waybar/scripts/ganancias",
+		"return-type": "json",
+		"on-click": "kitty --class ganancias -T 'Ganancias' -e ~/.config/waybar/scripts/ganancias live",
 		"tooltip": true
 	},
 

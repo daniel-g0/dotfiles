@@ -197,6 +197,7 @@ Before sleep → lock. After wake → display on.
 |--------|-------------|
 | `custom/user` (󱄅) | NixOS GTK menu (NixOS logo icon): Edit config, Rebuild Switch/Test, Update Flake, Garbage Collect, Generations, Rice (opens fastfetch+fortune kitty). Each action opens kitty, tees output to `/tmp/nix-<action>.log`, waits Enter to close |
 | `custom/eyecare` (󰛐) | 20-20-20 eye break timer. Lives in `group/time` pill with clock. Fires swaync notification every 20min, auto-resets. Click to reset early. State file: `~/.local/state/eyecare-start`. Script: `wayland/waybar/scripts/eyecare` |
+| `custom/ganancias` | Icon-only (`€`) money-earned-this-month ticker; amount lives in the hover tooltip, not the bar text. Lives in `group/right`, last module (after idle_inhibitor, before the power icon). `group/time` (center) is reserved for the clock alone since center is mathematically centered on the whole bar width, not the visual gap between sides. Wraps external script `/home/user/Proyectos/personal/scripts/ganancias/ganancias.py` (not in this repo), 1s refresh. Click opens detailed live clock in kitty. Script: `wayland/waybar/scripts/ganancias` |
 | Temperature | CPU temp, critical at 90°C |
 | Memory | % usage, tooltip shows used/total GiB |
 | CPU | % usage, updates 10s, warn 75%, critical 90% |
