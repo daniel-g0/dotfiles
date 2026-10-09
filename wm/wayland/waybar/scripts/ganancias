@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Reloj de ganancias en tiempo real — streams ganancias.py continuously for waybar
+# (no interval: this process stays alive, one JSON line per tick)
+# "live" mode opens the full terminal clock (used by on-click)
+#
+# LC_NUMERIC=C on every printf: bash printf is locale-aware and the system
+# locale (es_ES) expects comma decimals, which breaks parsing dot-decimal
+# floats from jq/python. Force C locale so %.2f always works.
+
+GANANCIAS_PY="/home/user/Proyectos/personal/scripts/ganancias/ganancias.py"
+
+if [[ "$1" == "live" ]]; then
+	exec python3 "$GANANCIAS_PY" --refresco 0.1
+fi
+
+GREEN="#9ece6a"
+
+python3 "$GANANCIAS_PY" --formato json --refresco 1 | while IFS= read -r line; do
+	ganado=$(jq -r '.ganado_eur' <<< "$line")
+	salario=$(jq -r '.salario_mensual_eur' <<< "$line")
+	tarifa_hora=$(jq -r '.tarifa_hora_laboral_eur' <<< "$line")
+	tarifa_seg=$(jq -r '.tarifa_por_segundo_eur' <<< "$line")
+
+	ganado_fmt=$(LC_NUMERIC=C printf "%.2f" "$ganado")
+	salario_fmt=$(LC_NUMERIC=C printf "%.2f" "$salario")
+	tarifa_hora_fmt=$(LC_NUMERIC=C printf "%.2f" "$tarifa_hora")
+
+	text="<span color=\"${GREEN}\" rise=\"300\">€</span>"
+	tooltip=$(printf "%s €\\n\\nSalario mensual: %s €\\nTarifa/hora laboral: %s €\\nTarifa/segundo: %s €" \
+		"$ganado_fmt" "$salario_fmt" "$tarifa_hora_fmt" "$tarifa_seg")
+
+	jq -cn --arg text "$text" --arg tooltip "$tooltip" '{text: $text, tooltip: $tooltip}'
+done

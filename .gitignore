@@ -218,10 +218,10 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Nushell history (plain-text and sqlite stay out of the repo)
-nushell/history.txt
-nushell/history.sqlite3
-nushell/history.sqlite3-wal
-nushell/history.sqlite3-shm
+shell/nushell/history.txt
+shell/nushell/history.sqlite3
+shell/nushell/history.sqlite3-wal
+shell/nushell/history.sqlite3-shm
 
 # Claude Code local settings and user-specific configs
 claude/**/*.local.*
