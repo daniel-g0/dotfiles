@@ -132,7 +132,6 @@ in
   # -- Networking ----------------------------------------------------------------
   networking.hostName              = "nixos";
   networking.networkmanager.enable = true;
-  networking.networkmanager.plugins = [ pkgs.networkmanager-vpnc ];
   networking.nameservers            = [ "9.9.9.9" "149.112.112.112 " ];
 
   # -- Bluetooth -----------------------------------------------------------------
@@ -165,10 +164,10 @@ in
   services.fwupd.enable         = true;  # Firmware updates (NVMe, Thunderbolt, etc.)
   services.auto-cpufreq.enable  = true;  # Adaptive CPU frequency scaling
 
-  services.journald.extraConfig = ''
-    SystemMaxUse=200M
-    MaxRetentionSec=2weeks
-  '';
+  services.journald.settings.Journal = {
+    SystemMaxUse = "200M";
+    MaxRetentionSec = "2weeks";
+  };
 
   # -- Locale & timezone ---------------------------------------------------------
   time.timeZone      = "Europe/Madrid";
@@ -323,7 +322,7 @@ in
       claude-code
       lua-language-server
       taskwarrior3
-      gittype
+      (gittype.overrideAttrs (_: { doCheck = false; }))
       nethack
       sshs
 
@@ -360,9 +359,6 @@ in
 
   # -- System packages -----------------------------------------------------------
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "NetworkManager-vpnc-1.4.0"
-  ];
   environment.systemPackages = with pkgs; [
     nushell
     python3

@@ -2,7 +2,7 @@
   description = "NixOS dotfiles — Tokyo Night";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
   outputs = { self, nixpkgs, ... }: {
