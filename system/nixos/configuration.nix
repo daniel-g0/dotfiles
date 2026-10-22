@@ -340,6 +340,7 @@ in
 
       # VPN
       vpnc
+      openvpn
 
       # Apps
       (pkgs.brave.override { commandLineArgs = "--disk-cache-size=209715200 --aggressive-cache-discard --disable-gpu-memory-buffer-video-frames --disable-features=AcceleratedVideoDecodeLinuxGL,UseChromeOSDirectVideoDecoder"; })
