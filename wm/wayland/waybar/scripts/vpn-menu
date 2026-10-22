@@ -1,39 +1,339 @@
 #!/usr/bin/env bash
+# VPN Manager — fzf TUI for vpnc (.conf) and OpenVPN (.ovpn) profiles.
+#
+# Layout: config → ui → tunnel state → backends → providers → screens → main.
+# Menus return a stable key (hidden first field), never a parsed label.
 
 VPN_DIR="$HOME/.config/vpns"
+TUN_IF="tun0"
+SELF=$(readlink -f "$0")
+RUN_DIR="${XDG_RUNTIME_DIR:-/tmp}"
+KS_STATE="$RUN_DIR/vpn-killswitch"        # exists while armed; holds watcher pid
+KS_PROFILE="$RUN_DIR/vpn-active-profile"  # OpenVPN profile currently connected
+KS_PREF="$VPN_DIR/.killswitch"            # "on" (default) / "off"
+
+# ── Config ────────────────────────────────────────────────────────────────────
+# Tokyo Night, as "R;G;B" for \e[38;2;…m
+C_BLUE="122;162;247"
+C_GREEN="158;206;106"
+C_RED="247;118;142"
+C_PURPLE="187;154;247"
+C_CYAN="125;207;255"
 
 FZF_OPTS=(
-    "--border=sharp"
-    "--border-label= VPN Manager "
-    "--cycle"
-    "--height=~100%"
-    "--highlight-line"
-    "--info=inline-right"
-    "--pointer="
-    "--reverse"
-    "--no-sort"
-    "--ansi"
+    --border=sharp
+    --cycle
+    --height='~100%'
+    --highlight-line
+    --info=inline-right
+    --pointer=
+    --reverse
+    --no-sort
+    --ansi
+    --delimiter=$'\t'
+    --with-nth=2..
 )
 
-fzf_pick() {
-    local label="$1"; shift
-    fzf "${FZF_OPTS[@]}" --border-label=" $label " "$@"
+# ── UI ────────────────────────────────────────────────────────────────────────
+# entry KEY COLOR ICON LABEL   → one menu row ("KEY<TAB>coloured text")
+entry() { printf '%s\t\e[38;2;%sm%s  %s\e[0m\n' "$1" "$2" "$3" "$4"; }
+
+# pick TITLE [HEADER]   (rows on stdin)  → selected KEY on stdout
+pick() {
+    fzf "${FZF_OPTS[@]}" --border-label=" $1 " ${2:+--header="$2"} | cut -f1
 }
 
-strip_ansi() { sed 's/\x1b\[[0-9;]*m//g' | tr -s ' ' | sed 's/^ //;s/ $//'; }
+pause() { echo; read -rp "Press Enter to continue..."; clear; }
+ok()    { echo -e "\e[38;2;${C_GREEN}m✔\e[0m $*"; }
+bad()   { echo -e "\e[38;2;${C_RED}m✘\e[0m $*"; }
+info()  { echo -e "\e[2m$*\e[0m"; }
 
-is_connected() { pgrep -x vpnc > /dev/null 2>&1; }
+# ── Tunnel state ──────────────────────────────────────────────────────────────
+vpnc_running()    { pgrep -x vpnc    > /dev/null 2>&1; }
+openvpn_running() { pgrep -x openvpn > /dev/null 2>&1; }
+is_connected()    { vpnc_running || openvpn_running; }
+tunnel_ip()       { ip -4 -br addr show "$TUN_IF" 2>/dev/null | awk '{print $3}'; }
+
+# route_dev ADDR → interface the kernel would use to reach ADDR
+route_dev() {
+    ip route get "$1" 2>/dev/null | awk '{for (i=1; i<=NF; i++) if ($i == "dev") { print $(i+1); exit }}'
+}
 
 status_line() {
     if is_connected; then
-        local ip; ip=$(ip addr show tun0 2>/dev/null | awk '/inet /{print $2}')
-        echo -e "\e[32m● Connected${ip:+  —  $ip}\e[0m"
+        local ip; ip=$(tunnel_ip)
+        echo -e "\e[32m● Connected${ip:+  —  $ip}\e[0m$(ks_armed && echo -e '  \e[2m· kill switch\e[0m')"
+    elif ks_armed; then
+        echo -e "\e[31m● BLOCKED — VPN down, kill switch active\e[0m"
     else
         echo -e "\e[90m○ Disconnected\e[0m"
     fi
 }
 
-# ── Detect VPN config type ────────────────────────────────────────────────────
+# Is traffic really going through the tunnel? Checks routes, IPv6 and every DNS server.
+status_report() {
+    echo -e "\e[1mTunnel\e[0m"
+    if is_connected && [[ -n "$(tunnel_ip)" ]]; then
+        ok "$TUN_IF up  ($(tunnel_ip))"
+    elif is_connected; then
+        bad "VPN process running but $TUN_IF has no address yet"
+    else
+        bad "No VPN process running"
+    fi
+
+    echo -e "\n\e[1mRouting\e[0m"
+    local dev; dev=$(route_dev 1.1.1.1)
+    [[ "$dev" == "$TUN_IF" ]] && ok "IPv4 default traffic → $TUN_IF" || bad "IPv4 default traffic → ${dev:-none}  (not through the tunnel)"
+    dev=$(route_dev 2606:4700:4700::1111)
+    if [[ -z "$dev" ]];            then ok "IPv6 has no route (no leak)"
+    elif [[ "$dev" == "$TUN_IF" ]]; then ok "IPv6 → $TUN_IF"
+    else                                 bad "IPv6 → $dev  (leaks outside the tunnel)"; fi
+
+    echo -e "\n\e[1mDNS\e[0m"
+    local ns
+    while read -r ns; do
+        dev=$(route_dev "$ns")
+        [[ "$dev" == "$TUN_IF" ]] && ok "$ns → $TUN_IF" || bad "$ns → ${dev:-none}  (queries leave outside the tunnel)"
+    done < <(awk '/^nameserver/{print $2}' /etc/resolv.conf)
+
+    echo -e "\n\e[1mKill switch\e[0m"
+    if   ks_armed;   then ok "armed (blocks traffic outside the tunnel)"
+    elif ks_pref_on; then bad "enabled but not armed (only arms on OpenVPN connections)"
+    else                  bad "off"; fi
+
+    echo -e "\n\e[1mPublic IP\e[0m"
+    local pub; pub=$(curl -s -m 5 https://api.ipify.org)
+    [[ -n "$pub" ]] && echo "$pub" || bad "could not reach the internet"
+}
+
+# ── DNS ───────────────────────────────────────────────────────────────────────
+# A profile opts in with a comment line:  # vpn-dns 10.41.0.1 [10.42.0.1 ...]
+# On connect we make those servers the only resolvers (openresolv, exclusive).
+# If that fails or can't be verified, the previous (corporate) DNS is restored.
+DNS_KEY="tun0.openvpn"
+
+dns_restore() { sudo resolvconf -f -d "$DNS_KEY" > /dev/null 2>&1; }
+
+dns_apply() {
+    local conf="$1" servers=() s
+    while read -r s; do servers+=("$s"); done \
+        < <(awk '/^# vpn-dns /{for (i=3; i<=NF && $i ~ /^[0-9a-fA-F:.]+$/; i++) print $i}' "$conf")
+    if [[ ${#servers[@]} -eq 0 ]]; then
+        info "No '# vpn-dns' in this profile — DNS left unchanged (leak check will show it)."
+        return
+    fi
+
+    printf 'nameserver %s\n' "${servers[@]}" | sudo resolvconf -a "$DNS_KEY" -x
+    if [[ "$(awk '/^nameserver/{print $2; exit}' /etc/resolv.conf)" == "${servers[0]}" ]] \
+        && [[ "$(route_dev "${servers[0]}")" == "$TUN_IF" ]] \
+        && timeout 5 getent hosts example.com > /dev/null; then
+        ok "DNS → ${servers[*]} (through the tunnel)"
+    else
+        dns_restore
+        bad "Could not verify tunnel DNS — kept the previous DNS."
+    fi
+}
+
+# Leftover from an OpenVPN that died without the menu: don't leave a dead resolver.
+dns_cleanup_stale() {
+    resolvconf -i "$DNS_KEY" 2>/dev/null | grep -q . && ! openvpn_running && dns_restore
+}
+
+# ── Kill switch ───────────────────────────────────────────────────────────────
+# Armed after an OpenVPN connect (if enabled): firewall rejects all output except
+# loopback, the tunnel, the VPN gateway, LAN and DHCP. If the tunnel drops, traffic
+# stays blocked and a watcher sends a notification. Managed from this menu only.
+ks_pref_on() { [[ "$(cat "$KS_PREF" 2>/dev/null)" != off ]]; }
+ks_armed()   { [[ -e "$KS_STATE" ]]; }
+
+ks_rules_remove() {
+    local t
+    for t in iptables ip6tables; do
+        sudo "$t" -D OUTPUT -j VPN_KS 2>/dev/null
+        sudo "$t" -F VPN_KS           2>/dev/null
+        sudo "$t" -X VPN_KS           2>/dev/null
+    done
+    return 0
+}
+
+# ks_rules_add GATEWAY_IP... → build chain VPN_KS and hook it into OUTPUT (v4 + v6)
+ks_rules_add() {
+    local ip tun="${TUN_IF%%[0-9]*}+"
+    sudo iptables  -N VPN_KS                                  || return 1
+    sudo iptables  -A VPN_KS -o lo -j ACCEPT                  || return 1
+    sudo iptables  -A VPN_KS -o "$tun" -j ACCEPT              || return 1
+    for ip in "$@" 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 169.254.0.0/16; do
+        sudo iptables -A VPN_KS -d "$ip" -j ACCEPT            || return 1
+    done
+    sudo iptables  -A VPN_KS -p udp --dport 67:68 -j ACCEPT   || return 1
+    sudo iptables  -A VPN_KS -o docker0 -j ACCEPT             || return 1
+    sudo iptables  -A VPN_KS -o 'br-+' -j ACCEPT              || return 1
+    sudo iptables  -A VPN_KS -j REJECT                        || return 1
+
+    sudo ip6tables -N VPN_KS                                  || return 1
+    sudo ip6tables -A VPN_KS -o lo -j ACCEPT                  || return 1
+    sudo ip6tables -A VPN_KS -o "$tun" -j ACCEPT              || return 1
+    for ip in fe80::/10 fc00::/7 ff00::/8; do
+        sudo ip6tables -A VPN_KS -d "$ip" -j ACCEPT           || return 1
+    done
+    sudo ip6tables -A VPN_KS -p udp --dport 546:547 -j ACCEPT || return 1
+    sudo ip6tables -A VPN_KS -o docker0 -j ACCEPT             || return 1
+    sudo ip6tables -A VPN_KS -o 'br-+' -j ACCEPT              || return 1
+    sudo ip6tables -A VPN_KS -j REJECT                        || return 1
+
+    # hook last, so a half-built chain never blocks anything
+    sudo iptables  -I OUTPUT 1 -j VPN_KS                      || return 1
+    sudo ip6tables -I OUTPUT 1 -j VPN_KS                      || return 1
+}
+
+ks_arm() {
+    local conf="$1" host ip ips=()
+    while read -r host; do
+        if [[ "$host" =~ ^[0-9.]+$ ]]; then ips+=("$host")
+        else while read -r ip; do ips+=("$ip"); done < <(getent ahostsv4 "$host" | awk '{print $1}' | sort -u)
+        fi
+    done < <(awk '/^remote /{print $2}' "$conf" | sort -u)
+    [[ ${#ips[@]} -eq 0 ]] && { bad "Kill switch: could not find the gateway IP."; return 1; }
+
+    sudo -v || return 1
+    ks_rules_remove
+    if ! ks_rules_add "${ips[@]}"; then
+        ks_rules_remove; bad "Kill switch: could not set firewall rules."; return 1
+    fi
+
+    echo 0 > "$KS_STATE"
+    setsid -f "$SELF" --watch > /dev/null 2>&1
+    ok "Kill switch armed."
+}
+
+ks_disarm() {
+    local pid; pid=$(cat "$KS_STATE" 2>/dev/null)
+    rm -f "$KS_STATE" "$KS_PROFILE"
+    [[ "$pid" =~ ^[0-9]+$ && "$pid" -gt 1 ]] && kill "$pid" 2>/dev/null
+    ks_rules_remove
+}
+
+# Background watcher (started by ks_arm): notify once when the tunnel is lost.
+ks_watch() {
+    echo $$ > "$KS_STATE"
+    local down=0 why
+    while [[ "$(cat "$KS_STATE" 2>/dev/null)" == "$$" ]]; do
+        if [[ -n "$(tunnel_ip)" ]]; then
+            down=0
+        else
+            ((down++))
+            if ((down == 3)); then   # ~6 s grace for OpenVPN's own quick restarts
+                why="tunnel $TUN_IF lost"
+                openvpn_running || why="OpenVPN process exited"
+                notify-send -u critical -a "VPN Manager" "Kill switch activated" \
+                    "VPN dropped ($why). Internet is blocked — manage it in VPN Manager."
+            fi
+        fi
+        sleep 2
+    done
+}
+
+ks_toggle() {
+    if ks_pref_on; then
+        echo off > "$KS_PREF"
+        ks_armed && ks_disarm
+        ok "Kill switch disabled (traffic unblocked)."
+    else
+        echo on > "$KS_PREF"
+        if openvpn_running && [[ -f "$KS_PROFILE" ]]; then
+            ks_arm "$(cat "$KS_PROFILE")"
+        else
+            ok "Kill switch enabled — arms on the next OpenVPN connection."
+        fi
+    fi
+}
+
+ks_label() {
+    if   ks_armed;     then echo "Kill switch: ON (armed)"
+    elif ks_pref_on;   then echo "Kill switch: ON (arms on connect)"
+    else                    echo "Kill switch: OFF"
+    fi
+}
+
+# ── Backends ──────────────────────────────────────────────────────────────────
+vpn_disconnect() {
+    ks_armed && ks_disarm
+    vpnc_running    && sudo vpnc-disconnect
+    openvpn_running && sudo pkill -x openvpn && ok "OpenVPN stopped."
+    dns_restore && info "DNS restored."
+}
+
+vpnc_connect() { sudo vpnc --enable-weak-authentication "$1"; }
+
+openvpn_connect() {
+    local conf="$1" name log
+    name=$(basename "${conf%.*}")
+    log="/tmp/openvpn-$name.log"
+    sudo -v || return
+    ks_armed && ks_disarm   # new connection: re-arm below for this profile's gateway
+    sudo openvpn --config "$conf" --daemon "openvpn-$name" --log "$log"
+    echo "Connecting $name..."
+    for _ in $(seq 1 30); do
+        [[ -n "$(tunnel_ip)" ]] && { ok "Connected ($(tunnel_ip))."; dns_apply "$conf"; echo "$conf" > "$KS_PROFILE"; ks_pref_on && ks_arm "$conf"; return; }
+        openvpn_running || break
+        sleep 1
+    done
+    openvpn_running && bad "Not up after 30s (still trying)." || bad "OpenVPN exited."
+    info "Log ($log):"
+    sudo tail -n 15 "$log" 2>/dev/null   # log is root-owned
+}
+
+# connect FILE → dispatch on profile type
+connect_profile() {
+    if is_connected; then bad "Already connected — disconnect first."; return; fi
+    case "$1" in
+        *.ovpn) openvpn_connect "$1" ;;
+        *)      vpnc_connect "$1" ;;
+    esac
+}
+
+# ── Providers ─────────────────────────────────────────────────────────────────
+# Riseup: anonymous OpenVPN profile built from the public API (no account needed).
+riseup_generate() {
+    local api="https://api.black.riseup.net" eip cert ca pick host ip loc dest key crt
+    echo "Fetching Riseup gateways and certificate..."
+    eip=$(curl -fsS -m 20 "$api/3/config/eip-service.json") || { bad "Failed to fetch gateways.";    return 1; }
+    cert=$(curl -fsS -m 20 "$api/3/cert")                   || { bad "Failed to fetch certificate."; return 1; }
+    ca=$(curl -fsS -m 20 "$api/ca.crt")                     || { bad "Failed to fetch CA.";          return 1; }
+
+    pick=$(jq -r '.gateways[] | select(any(.capabilities.transport[]; .type=="openvpn"))
+                  | "\(.host)\t\(.location)  \(.host)\t\(.ip_address)"' <<<"$eip" | sort -t$'\t' -k2 \
+        | fzf "${FZF_OPTS[@]}" --border-label=" Riseup gateway " --header="Select a gateway" \
+              --with-nth=2 )
+    [[ -z "$pick" ]] && return
+    IFS=$'\t' read -r host loc ip <<<"$pick"
+
+    key=$(sed -n '/BEGIN RSA PRIVATE KEY/,/END RSA PRIVATE KEY/p' <<<"$cert")
+    crt=$(sed -n '/BEGIN CERTIFICATE/,/END CERTIFICATE/p'         <<<"$cert")
+    [[ -z "$key" || -z "$crt" ]] && { bad "Unexpected certificate format."; return 1; }
+
+    mkdir -p "$VPN_DIR"
+    dest="$VPN_DIR/riseup-${host%%.*}.ovpn"
+    {
+        echo "# vpn-dns 10.41.0.1 10.42.0.1   (Riseup resolvers, reachable only through the tunnel)"
+        jq -r '.openvpn_configuration | to_entries[]
+               | if .value == true or .value == "" then .key
+                 else "\(.key) \(.value)" end' <<<"$eip" | grep -v '^key-direction'
+        echo "client"
+        echo "tls-client"
+        echo "remote-cert-tls server"
+        echo "proto udp"
+        echo "remote $ip 1194"
+        echo "<ca>";   echo "$ca";  echo "</ca>"
+        echo "<cert>"; echo "$crt"; echo "</cert>"
+        echo "<key>";  echo "$key"; echo "</key>"
+    } > "$dest"
+    chmod 600 "$dest"
+    ok "Generated (${loc%%  *})  →  $dest"
+    info "Riseup certificates expire after a few weeks — regenerate when it stops connecting."
+}
+
+# ── Profile import ────────────────────────────────────────────────────────────
 detect_type() {
     local file="$1"
     case "${file##*.}" in
@@ -51,120 +351,116 @@ detect_type() {
     fi
 }
 
-# ── Import ────────────────────────────────────────────────────────────────────
-import_menu() {
-    local search_dirs=("$HOME/Downloads" "$HOME/Documents" "$HOME/Desktop" "$HOME")
+import_profile() {
+    local dirs=("$HOME/Downloads" "$HOME/Documents" "$HOME/Desktop" "$HOME")
     local file
-    file=$(find "${search_dirs[@]}" -maxdepth 3 \
-        \( -name "*.pcf" -o -name "*.ovpn" -o -name "*.conf" \) \
-        ! -path "$VPN_DIR/*" 2>/dev/null | sort -u \
-        | fzf_pick "Import" --header="Select a VPN config  (.pcf  .ovpn  .conf)")
+    file=$(find "${dirs[@]}" -maxdepth 3 \( -name "*.pcf" -o -name "*.ovpn" -o -name "*.conf" \) \
+            ! -path "$VPN_DIR/*" 2>/dev/null | sort -u \
+        | awk '{print $0 "\t" $0}' \
+        | pick "Import" "Select a VPN config  (.pcf  .ovpn  .conf)")
     [[ -z "$file" ]] && return
 
-    local type; type=$(detect_type "$file")
-    local name; name=$(basename "${file%.*}")
-    local dest="$VPN_DIR/$name.conf"
+    local type name dest
+    type=$(detect_type "$file")
+    name=$(basename "${file%.*}")
+    echo -e "Type detected: \e[1m$type\e[0m\n"
 
-    echo -e "Type detected: \e[1m$type\e[0m"
-    echo
-
+    mkdir -p "$VPN_DIR"
     case "$type" in
         cisco_pcf)
+            dest="$VPN_DIR/$name.conf"
             grep -q "^Description=$" "$file" && sed -i "s/^Description=$/Description=$name/" "$file"
-            pcf2vpnc "$file" "$dest"
-            chmod 600 "$dest"
-            echo "Imported (Cisco PCF → vpnc)  →  $dest"
+            pcf2vpnc "$file" "$dest" && chmod 600 "$dest" && ok "Imported (Cisco PCF → vpnc)  →  $dest"
             ;;
         vpnc_native)
-            cp "$file" "$dest"
-            chmod 600 "$dest"
-            echo "Imported (vpnc native)  →  $dest"
+            dest="$VPN_DIR/$name.conf"
+            cp "$file" "$dest" && chmod 600 "$dest" && ok "Imported (vpnc native)  →  $dest"
             ;;
         openvpn)
-            echo "OpenVPN config — not supported by vpnc."
-            echo "Use: sudo openvpn \"$file\""
+            dest="$VPN_DIR/$name.ovpn"
+            cp "$file" "$dest" && chmod 600 "$dest" && ok "Imported (OpenVPN)  →  $dest"
             ;;
         *)
-            echo "Unknown format — cannot import."
+            bad "Unknown format — cannot import."
             ;;
     esac
-
-    echo
-    read -rp "Press Enter to continue..."
+    pause
 }
 
-# ── Connections submenu ───────────────────────────────────────────────────────
+# ── Screens ───────────────────────────────────────────────────────────────────
+profile_menu() {
+    local file="$1" name; name=$(basename "${1%.*}")
+    local action
+    action=$({
+        entry connect "$C_GREEN" "󰦝" "Connect"
+        entry edit    "$C_CYAN"  "󰏫"  "Edit"
+        entry remove  "$C_RED"   "󰆴"  "Remove"
+    } | pick "$name")
+
+    case "$action" in
+        connect) clear; connect_profile "$file"; pause ;;
+        edit)    nvim "$file" ;;
+        remove)
+            clear
+            read -rp "Remove $name? [y/N] " confirm
+            [[ "$confirm" == [yY] ]] && rm "$file" && ok "Removed."
+            pause
+            ;;
+    esac
+}
+
 connections_menu() {
     while true; do
-        local confs=()
-        while IFS= read -r f; do confs+=("$f"); done < <(find "$VPN_DIR" -name "*.conf" 2>/dev/null | sort)
+        local files=() f
+        while IFS= read -r f; do files+=("$f"); done \
+            < <(find "$VPN_DIR" \( -name "*.conf" -o -name "*.ovpn" \) 2>/dev/null | sort)
 
-        if [[ ${#confs[@]} -eq 0 ]]; then
-            echo "No configs in $VPN_DIR"; read -rp "Press Enter..."; return
+        if [[ ${#files[@]} -eq 0 ]]; then
+            echo "No profiles in $VPN_DIR"; pause; return
         fi
 
-        local raw
-        raw=$(for f in "${confs[@]}"; do
-            local n; n=$(basename "$f" .conf)
-            local gw; gw=$(awk '/IPSec gateway/{print $3}' "$f" 2>/dev/null)
-            echo -e "\e[1m$n\e[0m  \e[2m${gw}\e[0m"
-        done | fzf_pick "Connections" --header="Select a connection")
-        [[ -z "$raw" ]] && return
+        local sel
+        sel=$(for f in "${files[@]}"; do
+            local n kind host
+            n=$(basename "${f%.*}")
+            if [[ "$f" == *.ovpn ]]; then
+                kind="openvpn"; host=$(awk '/^remote /{print $2; exit}' "$f")
+            else
+                kind="vpnc";    host=$(awk '/IPSec gateway/{print $3}' "$f")
+            fi
+            printf '%s\t\e[1m%s\e[0m  \e[2m%s  %s\e[0m\n' "$f" "$n" "$kind" "$host"
+        done | pick "Connections" "Select a connection")
+        [[ -z "$sel" ]] && return
+        profile_menu "$sel"
+    done
+}
 
-        local name; name=$(echo "$raw" | strip_ansi | awk '{print $1}')
-        local conf="$VPN_DIR/$name.conf"
-        [[ ! -f "$conf" ]] && echo "Config not found: $conf" && read -rp "Press Enter..." && continue
+main_menu() {
+    dns_cleanup_stale
+    while true; do
+        local choice
+        choice=$({
+            is_connected && entry disconnect "$C_RED" "󰖃" "Disconnect"
+            entry connections "$C_BLUE"   "󰦝" "Connections"
+            entry status      "$C_GREEN"  "󰒋" "Status & leak check"
+            entry killswitch  "$C_RED"    "󰌾" "$(ks_label)"
+            entry import      "$C_PURPLE" "󰇚"  "Import"
+            entry riseup      "$C_CYAN"   "󰦝" "Riseup (generate)"
+        } | pick "VPN Manager" "$(status_line)")
+        [[ -z "$choice" ]] && exit 0
 
-        local action
-        action=$(printf '%b\n' \
-            "\e[38;2;158;206;106m󰦝  Connect\e[0m" \
-            "\e[38;2;125;207;255m  Edit\e[0m" \
-            "\e[38;2;247;118;142m  Remove\e[0m" \
-            | fzf_pick "$name")
-        [[ -z "$action" ]] && continue
-
-        local plain; plain=$(echo "$action" | strip_ansi)
-
-        case "$plain" in
-            *"Connect"*)
-                sudo vpnc --enable-weak-authentication "$conf"
-                echo; read -rp "Press Enter to continue..."
-                ;;
-            *"Edit"*)
-                nvim "$conf"
-                ;;
-            *"Remove"*)
-                read -rp "Remove $name? [y/N] " confirm
-                [[ "$confirm" == [yY] ]] && rm "$conf" && echo "Removed."
-                read -rp "Press Enter to continue..."
-                ;;
+        case "$choice" in
+            disconnect)  clear; vpn_disconnect; pause ;;
+            connections) connections_menu ;;
+            status)      clear; status_report; pause ;;
+            killswitch)  clear; ks_toggle; pause ;;
+            import)      import_profile ;;
+            riseup)      clear; riseup_generate; pause ;;
         esac
     done
 }
 
-# ── Main menu ─────────────────────────────────────────────────────────────────
-while true; do
-    CHOICE=$(
-        {
-            is_connected && echo -e "\e[38;2;247;118;142m󰖃  Disconnect\e[0m"
-            echo -e "\e[38;2;122;162;247m󰦝  Connections\e[0m"
-            echo -e "\e[38;2;187;154;247m  Import\e[0m"
-        } | fzf_pick "VPN Manager" --header="$(status_line)"
-    )
-    [[ -z "$CHOICE" ]] && exit 0
-
-    plain=$(echo "$CHOICE" | strip_ansi)
-
-    case "$plain" in
-        *"Disconnect"*)
-            sudo vpnc-disconnect
-            echo; read -rp "Press Enter to continue..."
-            ;;
-        *"Connections"*)
-            connections_menu
-            ;;
-        *"Import"*)
-            import_menu
-            ;;
-    esac
-done
+case "${1:-}" in
+    --watch) ks_watch ;;
+    *)       main_menu ;;
+esac

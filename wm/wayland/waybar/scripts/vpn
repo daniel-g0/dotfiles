@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-if pgrep -x vpnc > /dev/null 2>&1; then
+if pgrep -x vpnc > /dev/null 2>&1 || pgrep -x openvpn > /dev/null 2>&1; then
     IP=$(ip addr show tun0 2>/dev/null | awk '/inet /{print $2}')
     echo "{\"text\":\"󰦝\",\"tooltip\":\"VPN Connected\\n$IP\",\"class\":\"connected\"}"
+elif [[ -e "${XDG_RUNTIME_DIR:-/tmp}/vpn-killswitch" ]]; then
+    echo '{"text":"󰦞","tooltip":"VPN down — kill switch is blocking traffic","class":"disconnected"}'
 else
     echo '{"text":"󰦞","tooltip":"VPN Disconnected","class":"disconnected"}'
 fi
