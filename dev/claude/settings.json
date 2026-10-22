@@ -40,7 +40,9 @@
     "uk-driller@uk-driller": true,
     "pisha@pisha": false,
     "tips@tips": false,
-    "eli5@eli5": false
+    "eli5@eli5": false,
+    "turntype@turntype": true,
+    "clawd-buddy@clawd-buddy": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -66,12 +68,31 @@
         "source": "github",
         "repo": "daniel-g0/pisha"
       }
+    },
+    "turntype": {
+      "source": {
+        "source": "github",
+        "repo": "Danovich/turntype"
+      }
+    },
+    "clawd-buddy": {
+      "source": {
+        "source": "github",
+        "repo": "zhanbodev/clawd-buddy"
+      }
     }
   },
   "skipWebFetchPreflight": true,
   "feedbackSurveyRate": 0,
   "effortLevel": "high",
-  "theme": "dark",
+  "modelSettings": {
+    "claude-sonnet-5-5": {
+      "effortLevel": "medium"
+    }
+  },
+  "awaySummaryEnabled": false,
+  "tui": "fullscreen",
+  "theme": "auto",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true
 }
