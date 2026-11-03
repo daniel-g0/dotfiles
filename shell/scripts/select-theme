@@ -2,7 +2,7 @@
 # Theme picker — fzf over named presets, applies via apply-theme --preset
 set -euo pipefail
 
-APPLY="$HOME/Projects/personal/dotfiles/shell/scripts/apply-theme"
+APPLY="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/apply-theme"
 THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine dracula one-dark monokai solarized-dark everforest ayu-dark kanagawa nightfox palenight horizon night-owl material-ocean crimson claude)
 
 # swatch <#rrggbb> <label>
