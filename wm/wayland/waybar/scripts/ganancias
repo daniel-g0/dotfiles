@@ -7,7 +7,7 @@
 # locale (es_ES) expects comma decimals, which breaks parsing dot-decimal
 # floats from jq/python. Force C locale so %.2f always works.
 
-GANANCIAS_PY="/home/user/Proyectos/personal/scripts/ganancias/ganancias.py"
+GANANCIAS_PY="/home/user/Projects/personal/scripts/ganancias/ganancias.py"
 
 if [[ "$1" == "live" ]]; then
 	exec python3 "$GANANCIAS_PY" --refresco 0.1

@@ -422,10 +422,10 @@ def apply_waybar_border(p):
 
     # Monochromatic gradient — same accent as window borders
     new_grad = (
-        f"linear-gradient(90deg, {a}, {a_bright}, {a}, {a_bright}, "
+        f"linear-gradient(180deg, {a}, {a_bright}, {a}, {a_bright}, "
         f"{a}, {a_bright}, {a}, {a})"
     )
-    text = re.sub(r"linear-gradient\(90deg,[^)]+\)", new_grad, text)
+    text = re.sub(r"linear-gradient\(\d+deg,[^)]+\)", new_grad, text)
 
     # Bar background fill — update hardcoded bg colours to palette bg
     text = re.sub(

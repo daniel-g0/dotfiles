@@ -12,22 +12,22 @@
 
 /* Mirrors Hyprland borderangle loop: gradient slides across the border */
 @keyframes border-flow {
-	0%   { background-position: 0 0, 0% center; }
-	100% { background-position: 0 0, 100% center; }
+	0%   { background-position: 0 0, center 0%; }
+	100% { background-position: 0 0, center 100%; }
 }
 
 #waybar {
 	background-image:
-		linear-gradient(#1a1b26, #1a1b26),
-		linear-gradient(90deg, #bb9af7, #f4effd, #bb9af7, #f4effd, #bb9af7, #f4effd, #bb9af7, #bb9af7);
+		linear-gradient(#2e3440, #2e3440),
+		linear-gradient(180deg, #b48ead, #d8c5d5, #b48ead, #d8c5d5, #b48ead, #d8c5d5, #b48ead, #b48ead);
 	background-origin: padding-box, border-box;
 	background-clip:   padding-box, border-box;
-	background-size:   auto, 400% 100%;
+	background-size:   auto, 100% 400%;
 	border: 2px solid transparent;
 	border-radius: 16px;
 	box-shadow:
-		0 0 16px rgba(187, 154, 247, 0.30),
-		0 0 32px rgba(187, 154, 247, 0.12),
+		0 0 16px rgba(180, 142, 173, 0.30),
+		0 0 32px rgba(180, 142, 173, 0.12),
 		inset 0 1px 0 rgba(255, 255, 255, 0.06);
 	animation: border-flow 8s linear infinite;
 	font-size: 12px;
@@ -39,27 +39,28 @@
 #left,
 #right,
 #time {
-	padding: 2px 10px;
-	margin: 0 4px;
+	padding: 8px 0;
+	margin: 5px 3px;
+	border-radius: 14px;
+	background: alpha(@main-fg, 0.06);
 }
 
 #clock {
-	padding: 0 8px;
-}
-
-/* group/left is heavier than group/right (ganancias adds a wide text module),
-   so true geometric centering looks skewed left. Nudge right to visually
-   balance between the two unequal sides — approximate, tune by eye. */
-#time {
-	margin: 0 4px 0 42px;
+	padding: 2px 0 6px;
+	font-size: 11px;
 }
 
 /* ── NixOS menu ──────────────────────────────────────────────────────────── */
 
+#custom-clock-icon {
+	padding: 6px 0;
+	color: @cyan;
+}
+
 #custom-user {
-	padding: 0 10px;
+	padding: 8px 0;
 	color: @accent;
-	margin: 0 4px;
+	margin: 3px 0;
 }
 
 #custom-user:hover {
@@ -81,9 +82,9 @@
 /* ── Power menu ──────────────────────────────────────────────────────────── */
 
 #custom-power {
-	padding: 0 10px;
+	padding: 8px 0;
 	color: @accent;
-	margin: 0 4px;
+	margin: 3px 0;
 }
 
 #custom-power:hover {
@@ -93,8 +94,8 @@
 /* ── Idle inhibitor ──────────────────────────────────────────────────────── */
 
 #idle_inhibitor {
-	padding: 0 9px;
-	margin: 0 4px;
+	padding: 6px 0;
+	margin: 0;
 }
 
 /* ── Semantic icon colors ────────────────────────────────────────────────── */
@@ -153,11 +154,12 @@
 #pulseaudio,
 #backlight,
 #battery {
-	padding: 0 9px;
+	padding: 8px 0;
+	margin: 0;
 }
 
 #clock {
-	margin: 0 4px;
+	margin: 0;
 }
 
 /* ── Hover ───────────────────────────────────────────────────────────────── */
