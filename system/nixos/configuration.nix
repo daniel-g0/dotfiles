@@ -498,12 +498,11 @@ in
     inode/directory=yazi-kitty.desktop
   '';
 
-  # Locks Firefox's download dir to $HOME so it stops creating ~/Downloads —
-  # Firefox refuses to use $HOME as-is from XDG_DOWNLOAD_DIR and silently
-  # falls back to a hardcoded "Downloads" subfolder unless this is set.
+  # Pin Firefox's download dir to the English ~/Downloads (matches XDG_DOWNLOAD_DIR
+  # in ~/.config/user-dirs.dirs).
   environment.etc."firefox/policies/policies.json".text = builtins.toJSON {
     policies = {
-      DownloadDirectory = "\${home}";
+      DownloadDirectory = "\${home}/Downloads";
       PromptForDownloadLocation = false;
     };
   };
