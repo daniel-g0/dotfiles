@@ -146,7 +146,9 @@
 		"exec": "~/.config/waybar/scripts/gpu",
 		"return-type": "json",
 		"interval": 5,
-		"format": "<span color='#9ece6a'>󰢮</span> {}",
+		"justify": "center",
+		"align": 0.5,
+		"format": "<span color='#9ece6a'>󰢮</span>",
 		"tooltip": true
 	},
 
@@ -164,7 +166,6 @@
 		"justify": "center",
 		"align": 0.5,
 		"format": "󰥔",
-		"format-alt": "{:%H:%M}",
 		"tooltip-format": "<big>{:%H:%M  %a %d %b %Y}</big>\n<tt><small>{calendar}</small></tt>",
 		"calendar": {
 			"mode": "month",
