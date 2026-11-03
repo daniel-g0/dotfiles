@@ -82,6 +82,7 @@ ALL_LINK_DEFS=(
     "shell/scripts/apply-theme|$HOME/.local/bin/apply-theme|linux"
     "shell/scripts/select-theme|$HOME/.local/bin/select-theme|linux"
     "shell/scripts/qylock-warm|$HOME/.local/bin/qylock-warm|linux"
+    "shell/scripts/vcvol|$HOME/.local/bin/vcvol|linux"
     "wm/wayland/hypr|$HOME/.config/hypr|linux"
     "wm/wayland/waybar|$HOME/.config/waybar|linux"
     "wm/wayland/swaync|$HOME/.config/swaync|linux"

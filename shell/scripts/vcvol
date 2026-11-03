@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# vcvol — fzf TUI to mount/dismount VeraCrypt volumes quickly.
+#
+# Volume list: ~/.config/vcvol/volumes (untracked), one per line:
+#   name|/path/to/volume|/path/to/mountpoint
+#
+# Keys:  enter  = toggle (mount rw / dismount)
+#        ctrl-r = mount read-only (ntfs3 ro,force) — safe on a dirty NTFS
+#        ctrl-f = repair dirty NTFS (ntfsfix -d), then mount rw
+#        ctrl-d = dismount all
+#        esc    = quit
+#
+# Two-step mount: veracrypt opens the volume with --filesystem=none, then the
+# filesystem is mounted here with sudo mount. Passwords/PIM are typed into
+# veracrypt's own prompt — never passed on the command line.
+
+set -u
+
+CONF_DIR="$HOME/.config/vcvol"
+CONF="$CONF_DIR/volumes"
+UID_GID="uid=$(id -u),gid=$(id -g)"
+
+for bin in veracrypt fzf ntfsfix; do
+    command -v "$bin" >/dev/null || { echo "$bin not found"; exit 1; }
+done
+
+if [[ ! -f $CONF ]]; then
+    mkdir -p "$CONF_DIR"
+    cat > "$CONF" <<EOF
+# name|volume|mountpoint
+personal|$HOME/Volumenes/personal|$HOME/Volumenes/montado-personal
+EOF
+fi
+
+is_mounted() { mountpoint -q -- "$1"; }
+pause() { read -rp "Enter to continue…" _; }
+
+# mapper device veracrypt opened for a volume ("" if not open)
+mapper_of() { veracrypt --text --list 2>/dev/null | awk -v v="$1" '$2 == v { print $3; exit }'; }
+
+list() {
+    local name vol mp state
+    while IFS='|' read -r name vol mp; do
+        [[ -z $name || $name == \#* ]] && continue
+        if is_mounted "$mp"; then state=$'\e[32m● mounted  \e[0m'
+        elif [[ -n $(mapper_of "$vol") ]]; then state=$'\e[33m◐ opened   \e[0m'
+        else state=$'\e[31m○ unmounted\e[0m'; fi
+        printf '%s\t%s\t%s\t%s\n' "$name" "$state" "$vol" "$mp"
+    done < "$CONF"
+}
+
+# open the volume without mounting its filesystem; echoes the mapper device
+open_vol() { # vol
+    local vol=$1 dev
+    [[ -f $vol || -b $vol ]] || { echo "volume not found: $vol" >&2; return 1; }
+    dev=$(mapper_of "$vol")
+    if [[ -z $dev ]]; then
+        veracrypt --text --filesystem=none -k "" --protect-hidden=no "$vol" >&2 || return 1
+        dev=$(mapper_of "$vol")
+    fi
+    [[ -n $dev ]] || { echo "could not find mapper device" >&2; return 1; }
+    echo "$dev"
+}
+
+close_vol() { veracrypt --text --dismount "$1" || echo "dismount failed"; }
+
+mount_vol() { # vol mp mode(rw|ro|fix)
+    local vol=$1 mp=$2 mode=${3:-rw} dev opts ans
+    dev=$(open_vol "$vol") || { pause; return; }
+
+    if [[ $mode == fix ]]; then
+        echo "ntfsfix -d clears the dirty flag and resets the NTFS journal on $dev."
+        echo "It does NOT check file integrity. Back up first if the data is critical."
+        read -rp "Type 'yes' to continue: " ans
+        [[ $ans == yes ]] || { echo aborted; close_vol "$vol"; pause; return; }
+        sudo ntfsfix -d "$dev" || { echo "ntfsfix failed"; close_vol "$vol"; pause; return; }
+        mode=rw
+    fi
+
+    if [[ $mode == ro ]]; then opts="ro,force,$UID_GID"; else opts="$UID_GID"; fi
+    mkdir -p "$mp"
+    echo "mount -t ntfs3 -o $opts $dev $mp"
+    if ! sudo mount -t ntfs3 -o "$opts" "$dev" "$mp"; then
+        echo "mount failed — kernel says:"
+        journalctl -k --no-pager -n 5 2>/dev/null | grep -i ntfs3
+        echo "(volume left closed; use ctrl-r for read-only or ctrl-f to repair)"
+        close_vol "$vol"
+    fi
+    pause
+}
+
+dismount_vol() { # vol mp
+    echo "Dismounting $2"
+    sudo umount -- "$2" && close_vol "$1"
+    pause
+}
+
+while true; do
+    out=$(list | fzf --ansi --delimiter=$'\t' --with-nth=1,2,3 \
+        --header='enter: toggle · ctrl-r: mount ro · ctrl-f: repair+mount · ctrl-d: dismount all' \
+        --expect=ctrl-r,ctrl-f,ctrl-d --height=40% --reverse --prompt='volume > ') || exit 0
+    key=$(sed -n 1p <<< "$out")
+    sel=$(sed -n 2p <<< "$out")
+
+    if [[ $key == ctrl-d ]]; then
+        while IFS='|' read -r _ _ mp; do
+            [[ -n ${mp:-} ]] && is_mounted "$mp" && sudo umount -- "$mp"
+        done < <(grep -v '^#' "$CONF")
+        veracrypt --text --dismount; pause; continue
+    fi
+    [[ -z $sel ]] && continue
+
+    IFS=$'\t' read -r _ _ vol mp <<< "$sel"
+    if is_mounted "$mp"; then
+        dismount_vol "$vol" "$mp"
+    else
+        case $key in
+            ctrl-r) mount_vol "$vol" "$mp" ro ;;
+            ctrl-f) mount_vol "$vol" "$mp" fix ;;
+            *)      mount_vol "$vol" "$mp" rw ;;
+        esac
+    fi
+done

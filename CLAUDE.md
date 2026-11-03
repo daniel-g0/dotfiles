@@ -28,6 +28,7 @@ Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` 
 | `apps/rofi/` | `~/.config/rofi` |
 | `dev/claude/settings.json` | `~/.claude/settings.json` |
 | `shell/scripts/cava-vibe` | `~/.local/bin/cava-vibe` |
+| `shell/scripts/vcvol` | `~/.local/bin/vcvol` |
 | `system/nixos/configuration.nix` | `/etc/nixos/configuration.nix` (sudo) |
 
 Run `./doller` to (re)create all symlinks. TUI shows status per link, backs up conflicts. `--dry-run` to preview, `--force` to skip prompt. `install.sh` is a shim that calls it.
