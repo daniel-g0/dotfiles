@@ -163,8 +163,9 @@
 	"clock": {
 		"justify": "center",
 		"align": 0.5,
-		"format": "{:%H:%M}",
-		"tooltip-format": "<tt><small>{calendar}</small></tt>",
+		"format": "󰥔",
+		"format-alt": "{:%H:%M}",
+		"tooltip-format": "<big>{:%H:%M  %a %d %b %Y}</big>\n<tt><small>{calendar}</small></tt>",
 		"calendar": {
 			"mode": "month",
 			"mode-mon-col": 6,

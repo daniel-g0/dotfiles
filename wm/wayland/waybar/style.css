@@ -39,28 +39,20 @@
 #left,
 #right,
 #time {
-	padding: 8px 0;
-	margin: 5px 3px;
-	border-radius: 14px;
-	background: alpha(@main-fg, 0.06);
+	padding: 0;
+	margin: 0;
 }
 
 #clock {
-	padding: 2px 0 6px;
-	font-size: 11px;
+	color: @cyan;
 }
 
 /* ── NixOS menu ──────────────────────────────────────────────────────────── */
 
-#custom-clock-icon {
-	padding: 6px 0;
-	color: @cyan;
-}
-
 #custom-user {
-	padding: 8px 0;
+	padding: 4px 0;
 	color: @accent;
-	margin: 3px 0;
+	margin: 0;
 }
 
 #custom-user:hover {
@@ -82,9 +74,9 @@
 /* ── Power menu ──────────────────────────────────────────────────────────── */
 
 #custom-power {
-	padding: 8px 0;
+	padding: 4px 0;
 	color: @accent;
-	margin: 3px 0;
+	margin: 0;
 }
 
 #custom-power:hover {
@@ -94,7 +86,7 @@
 /* ── Idle inhibitor ──────────────────────────────────────────────────────── */
 
 #idle_inhibitor {
-	padding: 6px 0;
+	padding: 4px 0;
 	margin: 0;
 }
 
@@ -154,11 +146,12 @@
 #pulseaudio,
 #backlight,
 #battery {
-	padding: 8px 0;
+	padding: 4px 0;
 	margin: 0;
 }
 
 #clock {
+	padding: 4px 0;
 	margin: 0;
 }
 
@@ -221,3 +214,11 @@ menuitem {
 menuitem:hover {
 	background: @hover-bg;
 }
+
+/* ── Icon size: uniform centre icons, slightly larger nix / power ────────── */
+
+#bluetooth, #backlight, #idle_inhibitor, #memory, #cpu, #network,
+#custom-vpn, #custom-notifications, #pulseaudio.input, #pulseaudio.output,
+#temperature, #disk, #clock, #battery, #custom-ganancias { font-size: 20px; }
+
+#custom-user, #custom-power { font-size: 22px; }
