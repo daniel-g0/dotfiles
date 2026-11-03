@@ -50,6 +50,14 @@ hl.monitor({
     scale    = "1.33",
 })
 
+-- Home monitor (Philips 27" 2560x1440 over HDMI) — was unset, defaulted to 1.0
+hl.monitor({
+    output   = "HDMI-A-1",
+    mode     = "preferred",
+    position = "auto",
+    scale    = "1.33",
+})
+
 -- XWayland sees physical pixels (2560x1440), not logical (1924x1082).
 -- Without this, games via XWayland cap at ~1920x1080 due to 1.33 scale.
 hl.config({
