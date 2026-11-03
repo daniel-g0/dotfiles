@@ -5,7 +5,7 @@
 local M = {}
 
 M.ui = {
-  theme = "tokyonight",
+  theme = "nord",
 
   hl_override = {
     Normal        = { bg = "NONE" },
