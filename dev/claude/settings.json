@@ -6,7 +6,8 @@
     "DISABLE_ERROR_REPORTING": "1",
     "DISABLE_FEEDBACK_COMMAND": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "DO_NOT_TRACK": "1"
+    "DO_NOT_TRACK": "1",
+    "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1"
   },
   "attribution": {
     "commit": "",
@@ -38,11 +39,7 @@
     "lua-lsp@claude-plugins-official": true,
     "fuck-you@fuck-you": true,
     "uk-driller@uk-driller": true,
-    "pisha@pisha": false,
-    "tips@tips": false,
-    "eli5@eli5": false,
-    "turntype@turntype": true,
-    "clawd-buddy@clawd-buddy": true
+    "cc-arcade@cc-arcade": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -63,22 +60,10 @@
         "repo": "daniel-g0/wsg-fam"
       }
     },
-    "pisha": {
+    "cc-arcade": {
       "source": {
         "source": "github",
-        "repo": "daniel-g0/pisha"
-      }
-    },
-    "turntype": {
-      "source": {
-        "source": "github",
-        "repo": "Danovich/turntype"
-      }
-    },
-    "clawd-buddy": {
-      "source": {
-        "source": "github",
-        "repo": "zhanbodev/clawd-buddy"
+        "repo": "sezaakgun/cc-arcade"
       }
     }
   },
@@ -92,7 +77,7 @@
   },
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
-  "theme": "auto",
+  "theme": "dark",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true
 }
