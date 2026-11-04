@@ -18,16 +18,16 @@
 
 #waybar {
 	background-image:
-		linear-gradient(#1a1510, #1a1510),
-		linear-gradient(180deg, #d97757, #e9b3a1, #d97757, #e9b3a1, #d97757, #e9b3a1, #d97757, #d97757);
+		linear-gradient(#0a0a0b, #0a0a0b),
+		linear-gradient(180deg, #ff2a3d, #ff8590, #ff2a3d, #ff8590, #ff2a3d, #ff8590, #ff2a3d, #ff2a3d);
 	background-origin: padding-box, border-box;
 	background-clip:   padding-box, border-box;
 	background-size:   auto, 100% 400%;
 	border: 2px solid transparent;
 	border-radius: 16px;
 	box-shadow:
-		0 0 16px rgba(217, 119, 87, 0.30),
-		0 0 32px rgba(217, 119, 87, 0.12),
+		0 0 16px rgba(255, 42, 61, 0.30),
+		0 0 32px rgba(255, 42, 61, 0.12),
 		inset 0 1px 0 rgba(255, 255, 255, 0.06);
 	animation: border-flow 8s linear infinite;
 	font-size: 12px;
@@ -49,10 +49,14 @@
 
 /* ── NixOS menu ──────────────────────────────────────────────────────────── */
 
+/* Bar layout, top to bottom: nix · gap · stats + clock · gap · desktop number (true centre) · gap ·
+   icons · gap · power, all four gaps equal. The gap under nix and the one above power are margins:
+   the values here are a fallback, `launch` writes the real ones (from the monitor height) to
+   waybar-layout.css, imported at the end of this file. The gaps beside the number are the free space. */
 #custom-user {
-	padding: 4px 0;
+	padding: 3px 0;
 	color: @accent;
-	margin: 0;
+	margin: 0 0 117px;
 }
 
 #custom-user:hover {
@@ -74,9 +78,9 @@
 /* ── Power menu ──────────────────────────────────────────────────────────── */
 
 #custom-power {
-	padding: 4px 0;
+	padding: 3px 0;
 	color: @accent;
-	margin: 0;
+	margin: 118px 0 0;
 }
 
 #custom-power:hover {
@@ -90,16 +94,24 @@
 	margin: 0;
 }
 
-/* ── Semantic icon colors ────────────────────────────────────────────────── */
+/* ── Icon colours ────────────────────────────────────────────────────────── */
+/* Accent family only (accent / blue / cyan) so every theme stays on-palette, including the
+   monochrome ones. green / yellow / red are reserved for states (warning, critical, ...). */
 
+#temperature          { color: @accent; }
+#memory               { color: @accent; }
+#cpu                  { color: @blue; }
+#custom-gpu           { color: @cyan; }
+#disk                 { color: @blue; }
+#mpris                { color: @accent; }
 #bluetooth            { color: @blue; }
 #network              { color: @cyan; }
-#custom-vpn           { color: @green; }
-#pulseaudio.output    { color: @green; }
-#pulseaudio.input     { color: @purple; }
-#custom-notifications { color: @yellow; }
-#backlight            { color: @orange; }
-#battery              { color: @green; }
+#pulseaudio.output    { color: @accent; }
+#pulseaudio.input     { color: @blue; }
+#custom-notifications { color: @cyan; }
+#backlight            { color: @cyan; }
+#battery              { color: @blue; }
+#idle_inhibitor       { color: @inactive; }
 
 
 /* ── Workspaces ──────────────────────────────────────────────────────────── */
@@ -157,24 +169,12 @@
 
 /* ── Desktop number ──────────────────────────────────────────────────────── */
 
-#workspaces {
-	padding: 0;
+#custom-desktop {
+	padding: 6px 0;
 	margin: 0;
-}
-
-#workspaces button {
-	padding: 4px 0;
-	margin: 0;
-	border: none;
-	background: transparent;
 	color: @accent;
-	font-size: 20px;
+	font-size: 16.5px;
 	font-weight: 700;
-}
-
-#workspaces button:hover {
-	background: transparent;
-	color: @hover-fg;
 }
 
 /* ── Hover ───────────────────────────────────────────────────────────────── */
@@ -237,10 +237,41 @@ menuitem:hover {
 	background: @hover-bg;
 }
 
-/* ── Icon size: uniform centre icons, slightly larger nix / power ────────── */
+/* ── Icon slots ──────────────────────────────────────────────────────────── */
+/* Equal gaps between nix · stats · number · icons · power need stack heights that are KNOWN, so every
+   module has a fixed slot height:   slot = 2 × padding + 1.335 × font-size
+   (1.335 = JetBrainsMono Nerd line height, from the 34.7px pitch measured at 20px font / 4px padding).
 
-#bluetooth, #backlight, #idle_inhibitor, #memory, #cpu, #network,
-#custom-vpn, #custom-notifications, #pulseaudio.input, #pulseaudio.output,
-#temperature, #disk, #clock, #battery, #custom-ganancias { font-size: 20px; }
+   Glyphs fill their em box differently, so font-size is per icon (each glyph's LONGEST side ≈ 17.5px at
+   1.33 scale, measured on a screenshot: at 20px temperature 25h×13w, mic 23×16, number 21×13, disk 21×16,
+   bell 19×16, bluetooth/vpn 18×16, clock 17×16, the rest 14–16 square, gpu 7×14 at 12px) and padding is
+   what makes the slot constant:
+     nix, power, number and every bottom icon .......... 34.7px slots
+     top icons (6, incl. the clock) .................... 40.8px slots
+   The top stack has one slot less than the bottom one, so its icons are spaced a bit wider to make
+   nix + top stack (280.3px) == bottom stack + power (278.3px). `launch` relies on those two numbers. */
 
-#custom-user, #custom-power { font-size: 22px; }
+#custom-user, #custom-power { font-size: 22px; }                     /* slot 35.4 */
+#custom-desktop             { font-size: 16.5px; padding: 6px 0; }   /* slot 34.0 */
+
+/* top stack */
+#mpris                { font-size: 20px;   padding: 4px 0; }
+#temperature          { font-size: 14px;   padding: 11px 0; }        /* 40.7 */
+#memory               { font-size: 22px;   padding: 6px 0; }         /* 41.4 */
+#cpu                  { font-size: 22px;   padding: 6px 0; }         /* 41.4 */
+#custom-gpu           { font-size: 15px;   padding: 10px 0; }        /* 40.0 */
+#disk                 { font-size: 16.5px; padding: 9px 0; }         /* 40.0 */
+#clock                { font-size: 20.5px; padding: 7px 0; }         /* 41.4 */
+
+/* bottom stack */
+#bluetooth            { font-size: 19.5px; padding: 4px 0; }         /* 34.0 */
+#pulseaudio.output    { font-size: 22px;   padding: 3px 0; }         /* 35.4 */
+#pulseaudio.input     { font-size: 15px;   padding: 7px 0; }         /* 34.0 */
+#network              { font-size: 22px;   padding: 3px 0; }         /* 35.4 */
+#custom-vpn           { font-size: 19.5px; padding: 4px 0; }         /* 34.0 */
+#custom-notifications { font-size: 18.5px; padding: 5px 0; }         /* 34.7 */
+#idle_inhibitor       { font-size: 22px;   padding: 3px 0; }         /* 35.4 */
+#backlight, #battery, #custom-ganancias { font-size: 20px; padding: 4px 0; }
+
+/* Gaps under nix / above power for this monitor, generated by `launch`. Must stay last. */
+@import "/run/user/1000/waybar-layout.css";
