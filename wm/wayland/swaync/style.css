@@ -4,34 +4,34 @@
 
 :root {
   /* Core palette */
-  --tn-bg:        #2e3440;
-  --tn-bg-alt:    #3b4252;
-  --tn-surface:   #3b4252;
-  --tn-surface2:  #4c566a;
-  --tn-surface3:  #4c566a;
-  --tn-fg:        #eceff4;
-  --tn-fg-dim:    rgba(236, 239, 244, 0.55);
-  --tn-accent:    #b48ead;
-  --tn-blue:      #5e81ac;
-  --tn-cyan:      #88c0d0;
-  --tn-green:     #a3be8c;
+  --tn-bg:        #1a1510;
+  --tn-bg-alt:    #252017;
+  --tn-surface:   #252017;
+  --tn-surface2:  #7a6e5e;
+  --tn-surface3:  #7a6e5e;
+  --tn-fg:        #e8dcc8;
+  --tn-fg-dim:    rgba(232, 220, 200, 0.55);
+  --tn-accent:    #d97757;
+  --tn-blue:      #c4885f;
+  --tn-cyan:      #8faa90;
+  --tn-green:     #8fa876;
   --tn-yellow:    #e0af68;
-  --tn-red:       #bf616a;
+  --tn-red:       #c44b4b;
 
   /* Swaync semantic vars */
-  --cc-bg:                    rgba(46, 52, 64, 0.97);
-  --noti-border-color:        rgba(59, 66, 82, 0.9);
-  --noti-bg:                  46, 52, 64;     /* #1a1b26 as r,g,b for rgba() */
+  --cc-bg:                    rgba(26, 21, 16, 0.97);
+  --noti-border-color:        rgba(37, 32, 23, 0.9);
+  --noti-bg:                  26, 21, 16;     /* #1a1b26 as r,g,b for rgba() */
   --noti-bg-alpha:            0.97;
-  --noti-bg-opaque:           rgb(46, 52, 64);
-  --noti-bg-darker:           rgb(39, 44, 54);
-  --noti-bg-hover:            rgb(59, 66, 82);
-  --noti-bg-focus:            rgba(59, 66, 82, 0.7);
+  --noti-bg-opaque:           rgb(26, 21, 16);
+  --noti-bg-darker:           rgb(22, 17, 13);
+  --noti-bg-hover:            rgb(37, 32, 23);
+  --noti-bg-focus:            rgba(37, 32, 23, 0.7);
   --noti-close-bg:            rgba(65, 72, 104, 0.5);
   --noti-close-bg-hover:      rgba(247, 118, 142, 0.25);
-  --text-color:               #eceff4;
+  --text-color:               #e8dcc8;
   --text-color-disabled:      rgba(192, 202, 245, 0.4);
-  --bg-selected:              #5e81ac;
+  --bg-selected:              #c4885f;
 
   --notification-icon-size:   56px;
   --notification-app-icon-size: calc(var(--notification-icon-size) / 3);
