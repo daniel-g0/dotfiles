@@ -35,6 +35,21 @@ Run `./doller` to (re)create all symlinks. TUI shows status per link, backs up c
 
 ---
 
+## Theming
+
+`Super+Shift+P` (`select-theme`, fzf over presets) or WallRizz (wallpaper) → `shell/scripts/apply-theme`, which writes a palette (`~/.cache/dynamic-theme/palette.json`: bg, bg_alt, fg, fg_dim, accent, blue, cyan, green, red, yellow) and regenerates every app's colours. Presets live in `PRESETS` in `apply-theme` and are listed in `select-theme` (name + swatch preview) — add both. Current extras: `redline` (black/red), `monochrome` (black/white).
+
+Applied to: waybar (CSS + icon spans), kitty (+ tab bar), swaync, rofi, cava, btop, starship, Hyprland borders/shadow, fastfetch, yazi, hyprlock, cheatsheet, nix-menu, nushell + fzf (`themes/dynamic.nu`, generated from `tokyo-night.nu`), nvim, Claude Code statusline, whosthere and the rofi/waybar scripts (`RECOLOR_FILES`). Brave is skipped (extension theming isn't reliable).
+
+Gotchas:
+- **nvim:** `chadrc.lua` needs `theme` under `M.base46`, not `M.ui` (otherwise NvChad ignores it and shows onedark). The colours actually shown come from tokyonight fed by `dev/nvim/lua/palette.lua`; `plugins/init.lua` forces that colorscheme over base46. `apply-theme` also recompiles base46's cache and calls `require("palette").reload()` in every running nvim (`$XDG_RUNTIME_DIR/nvim.*.0`).
+- **kitty:** `listen_on` appends the PID, so sockets are `/tmp/kitty-<pid>`; `apply-theme` globs them. Plain `/tmp/kitty` never exists.
+- **Recolouring is hex-to-hex** (`_role_map`): old = original Tokyo Night value + previous palette. Two roles sharing one hex inside a preset (rose-pine, dracula, monokai, everforest, horizon, crimson do) collide when switching away from it. Keep new presets' roles distinct.
+- Waybar icon colours are CSS (`@accent`/`@blue`/`@cyan` in `style.css`), not hex spans, so they follow any theme; green/yellow/red are reserved for warning/critical/connected states. Icon sizes are per-icon (`style.css`, measured so every glyph fits the same ~17.5px box).
+- nushell reads its theme at shell start; already-open shells keep the old colours.
+
+---
+
 ## Nushell
 
 **Config:** `nushell/config.nu` | **Aliases:** `nushell/aliases/<tool>/<tool>-aliases.nu`
@@ -96,13 +111,13 @@ Bat, Docker, GitHub CLI, Git, Less, Make, Man, Nix, SSH, Tar, tldr, uv, Zoxide
 - Tokyo Night colors, 75% opacity, frosted blur (via Hyprland window rule)
 - Scrollback: 10,000 lines; padding 8px; block cursor, no blink
 - Repaint 10ms, input delay 3ms, sync to monitor
-- Remote control via Unix socket `/tmp/kitty`
+- Remote control via per-instance Unix sockets `/tmp/kitty-<pid>` (kitty appends the PID to `listen_on`, so `/tmp/kitty` itself never exists — `apply-theme` globs `/tmp/kitty-*` to recolor every running window)
 
 ### Custom tab bar (`tab_bar.py`)
 Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 - **Single tab:** Title centered full-width
 - **Multi-tab:** Segments — directory (blue), branch (purple), file counts (cyan), time (green)
-- Bar sits at the **top** (`tab_bar_edge top`) and is background-less: `tab_bar_background none` + default-bg cells (`cursor.bg = 0`), so `background_opacity`/blur apply to it and it blends seamlessly with the window. Never give it an explicit RGB background — that renders opaque and shows as a band.
+- Bar sits at the **top** (`tab_bar_edge top`). Title text is underlined, not on a different background. It must be exactly as translucent as the body, which took measuring screenshots: cells `tab_bar.py` draws with the default bg render darker than the body (sharp step), and fully transparent cells (`@0`) show clear glass. So the bar is filled with the palette bg **+1 blue** (visually identical, but not "the default bg"), listed in `transparent_background_colors` at the **same opacity as `background_opacity`** (read from `kitty.conf` by `kitty_bar_alpha()` in apply-theme; written to `dynamic-colors.conf`, colour derived identically in `tab_bar.py` `_bar_fill`). Measured, that gives step 0. Any remaining difference is wallpaper showing through the blur, not kitty.
 - Segment colors come from the active palette (`~/.cache/dynamic-theme/palette.json`): blue, accent, cyan, green
 
 ---
@@ -143,8 +158,8 @@ Configure monitor arrangement, resolution, refresh rate graphically.
 | `Super+Shift+S` | Region screenshot → clipboard |
 | `Print` | Full screenshot → `~/Pictures/` |
 | `Super+H/L/K/J` | Focus left/right/up/down |
-| `Super+[0-9]` | Switch workspace |
-| `Super+Shift+[0-9]` | Move window to workspace |
+| `Super+[1-9,0]` | Switch workspace (`0` = workspace 10; 10 per monitor via split-monitor-workspaces) |
+| `Super+Shift+[1-9,0]` | Move window to workspace |
 | `Super+Mouse Scroll` | Cycle workspaces |
 | `Super+LMB drag` | Move window |
 | `Super+RMB drag` | Resize window |
@@ -203,7 +218,7 @@ Before sleep → lock. After wake → display on.
 | Temperature | CPU temp, critical at 90°C |
 | Memory | % usage, tooltip shows used/total GiB |
 | CPU | % usage, updates 10s, warn 75%, critical 90% |
-| `hyprland/workspaces` | Current desktop number only (`active-only`, `{id}`), accent color. Sits above the clock in `group/time`, the middle of the bar |
+| `custom/desktop` | Current desktop number only, accent color. **Alone in `modules-center`** so it sits at the true vertical centre of the bar (a centre box is centred as a whole, so with icons around it the number could never be centred). Layout top→bottom, all four gaps equal: nix · gap · stats + clock (`group/left`) · gap · number · gap · icons (`group/right`) · gap · power. The top stack hangs from the top, the bottom one from the bottom; the gaps beside the number are the free space between the three boxes, the ones under nix / above power are margins on `#custom-user` / `#custom-power`. For all four to be equal the stacks must have known heights, so **every icon has a fixed slot** (`2×padding + 1.335×font-size`, see "Icon slots" in `style.css`): font-size is per icon (glyph fit), padding makes the slot constant, and the 6 top icons use wider slots (40.8px vs 34.7px) so nix + top stack (280.3px) equals bottom stack + power (278.3px). `launch` then computes the two margins from the monitor's logical height and writes them to `$XDG_RUNTIME_DIR/waybar-layout.css`, which `style.css` imports last (waybar resolves `@import` itself: use a plain absolute path, `url("file://…")` is treated as relative and silently fails). Changing an icon's font-size or padding means re-deriving its slot, or the gaps drift. A visible `mpris` adds one top slot and unbalances the gaps while it shows. Event-driven python script (`wayland/waybar/scripts/desktop`, no socat/jq — neither is installed) on Hyprland's socket2; folds per-monitor ids back to 1–10. `hyprland/workspaces` can't be used: it lists every persistent workspace even with `active-only` |
 | Clock time | HH:MM, tooltip 12h AM/PM |
 | Clock date | DD-MM + calendar popup on click |
 | Network | WiFi signal bars, SSID/IP/freq tooltip; click → network menu; right-click → toggle WiFi |
@@ -243,6 +258,21 @@ Tokyo Night palette; buttons with 20px border-radius; layer top, dock mode.
 - Kitty window, class `wallrizz`, 90% opacity, lists `~/.config/wallpapers`
 - `awww@daniel.js`: random transitions (fade/wipe/wave/grow/center/outer), 1s duration, 60fps, random position
 - `color-backend.sh`: ImageMagick kmeans extraction of 16 hex colors per image for theme sync
+
+### Animated wallpapers (researched, NOT applied)
+
+Wanted eventually; deliberately not implemented yet. Findings so you don't redo the research:
+
+- **GIF works today, nothing to install.** `awww` 0.12.1 (the daemon already running) animates GIFs natively: `awww img file.gif`. Limits: 256 colours, CPU cost while it plays, big GIFs use a lot of RAM (awww keeps the frames).
+- **Video (mp4/webm) needs `mpvpaper`** — 1.9 in nixpkgs, not installed; `mpv` already is. Full colour, GPU decode, loops. It is its own background-layer surface, so it would run next to `awww-daemon` (start it after awww; kill it to get the static wallpaper back). It has options to pause/stop when the wallpaper is hidden — check `mpvpaper --help` before relying on them. Not tried here.
+- **Conversion helpers, not installed:** `ffmpeg` 9.0.1 and `gifsicle` 1.96 are in nixpkgs.
+- **Things to touch when applying it:**
+  1. `apps/wallrizz/awww@daniel.js` runs `awww img <path>` — fine for GIFs if WallRizz lists `.gif` (not checked); video needs a branch that starts mpvpaper instead.
+  2. `apps/wallrizz/color-backend.sh` extracts colours with ImageMagick — for a GIF read the first frame (`file.gif[0]`); for video grab a frame with ffmpeg first. Theme sync needs a still.
+  3. `hyprland.lua` autostart sets the static wallpaper with `awww img` (≈ line 96); a video wallpaper needs an mpvpaper exec there to survive login.
+  4. hyprlock paints the *current wallpaper* blurred, so it would show a single frame.
+  5. Animated = constant CPU/GPU use: pause it on battery / when idle (a hypridle hook).
+- **Repo size:** wallpapers live in `wm/wallpapers/` (19 MB, currently all stills) — videos/GIFs would bloat git quickly; consider git-lfs (already in the system packages) or keeping them out of the repo.
 
 ---
 
