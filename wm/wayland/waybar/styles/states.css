@@ -26,12 +26,12 @@
 	color: @inactive;
 }
 
-/* VPN */
+/* VPN: bright accent when connected, dimmed when not — works in any palette, including mono */
 #custom-vpn.connected {
-	color: @green;
+	color: @accent;
 }
 #custom-vpn.disconnected {
-	color: @red;
+	color: @inactive;
 }
 
 /* Notifications DND */

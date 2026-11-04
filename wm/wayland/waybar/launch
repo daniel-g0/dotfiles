@@ -2,6 +2,18 @@
 PRIMARY=$(hyprctl monitors -j 2>/dev/null | jq -r 'sort_by(.id) | .[0].name // empty')
 [[ -z "$PRIMARY" ]] && PRIMARY="eDP-1"
 
+# Equal gaps between nix · stats · desktop number · icons · power (see "Icon slots" in style.css).
+# The stack heights are constants of the slot system (top: nix + stats = 280.3px, bottom: icons + power
+# = 278.3px, number slot 34px); only the screen height varies. The bar is the monitor's logical height
+# minus 8+8 margin and 2+2 border; the number sits at its centre, so each half is (inner - 34) / 2 and
+# the gap under nix / above power is what is left after the stack, split in two.
+LAYOUT="${XDG_RUNTIME_DIR:-/tmp}/waybar-layout.css"
+MH=$(hyprctl monitors -j 2>/dev/null | jq -r --arg n "$PRIMARY" '.[] | select(.name == $n) | ((.height / .scale) | floor)')
+awk -v mh="${MH:-1080}" 'BEGIN {
+    half = (mh - 20 - 34) / 2
+    printf "#custom-user  { margin: 0 0 %.0fpx; }\n#custom-power { margin: %.0fpx 0 0; }\n", (half - 280.3) / 2, (half - 278.3) / 2
+}' > "$LAYOUT"
+
 TMP=$(mktemp --suffix=.jsonc)
 trap "rm -f $TMP" EXIT
 

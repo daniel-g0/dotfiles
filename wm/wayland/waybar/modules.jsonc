@@ -1,9 +1,11 @@
 {
 	// ─── Groups ──────────────────────────────────────────────────────────────────
 
+	// Top stack. The clock lives here (not below the number) so that nix + this stack is as tall as
+	// the bottom stack + power — see "Icon slots" in style.css.
 	"group/left": {
 		"orientation": "vertical",
-		"modules": ["mpris", "temperature", "memory", "cpu", "custom/gpu", "disk"]
+		"modules": ["mpris", "temperature", "memory", "cpu", "custom/gpu", "disk", "clock"]
 	},
 
 	"group/right": {
@@ -20,11 +22,6 @@
 		"orientation": "vertical",
 		"hide-empty-group": true,
 		"modules": ["backlight", "battery"]
-	},
-
-	"group/time": {
-		"orientation": "vertical",
-		"modules": ["hyprland/workspaces", "clock"]
 	},
 
 	// ─── Custom modules ───────────────────────────────────────────────────────────
@@ -100,8 +97,8 @@
 	// ─── System modules ───────────────────────────────────────────────────────────
 
 	"mpris": {
-		"format": "<span color='#f7a8d8'>{player_icon}</span>",
-		"format-paused": "<span color='#414868'>{status_icon}</span>",
+		"format": "{player_icon}",
+		"format-paused": "{status_icon}",
 		"tooltip-format": "{title} - {artist}\n{album}",
 		"player-icons": { "default": "󰐊" },
 		"status-icons": { "paused": "󰏤" },
@@ -113,8 +110,8 @@
 		"align": 0.5,
 		"critical-threshold": 90,
 		"interval": 10,
-		"format": "<span color='#c44b4b'>{icon}</span>",
-		"format-critical": "<span color='#c44b4b'>󰀦</span>",
+		"format": "{icon}",
+		"format-critical": "<span color='#ff5566'>󰀦</span>",
 		"format-icons": ["󱃃", "󰔏", "󱃂"],
 		"tooltip-format": "{temperatureC}°C / {temperatureF}°F"
 	},
@@ -123,9 +120,9 @@
 		"justify": "center",
 		"align": 0.5,
 		"interval": 10,
-		"format": "<span color='#c44b4b'>󰘚</span>",
-		"format-warning": "<span color='#d4a843'>󰀧</span>",
-		"format-critical": "<span color='#c44b4b'>󰀧</span>",
+		"format": "󰘚",
+		"format-warning": "<span color='#e8a04c'>󰀧</span>",
+		"format-critical": "<span color='#ff5566'>󰀧</span>",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip-format": "{percentage}%  {used:0.1f}/{total:0.1f} GiB"
 	},
@@ -134,9 +131,9 @@
 		"justify": "center",
 		"align": 0.5,
 		"interval": 10,
-		"format": "<span color='#c4885f'>󰍛</span>",
-		"format-warning": "<span color='#d4a843'>󰀨</span>",
-		"format-critical": "<span color='#c44b4b'>󰀨</span>",
+		"format": "󰍛",
+		"format-warning": "<span color='#e8a04c'>󰀨</span>",
+		"format-critical": "<span color='#ff5566'>󰀨</span>",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip-format": "{usage}%"
 	},
@@ -148,7 +145,7 @@
 		"interval": 5,
 		"justify": "center",
 		"align": 0.5,
-		"format": "<span color='#8fa876'>󰢮</span>",
+		"format": "󰢮",
 		"tooltip": true
 	},
 
@@ -157,17 +154,17 @@
 		"align": 0.5,
 		"interval": 30,
 		"path": "/",
-		"format": "<span color='#d4a843'>󰋊</span>",
+		"format": "󰋊",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip-format": "{percentage_used}%  {used} / {total} ({free} free)"
 	},
 
-	// Current desktop number: active-only shows a single button holding the focused workspace's id.
-	"hyprland/workspaces": {
-		"format": "{id}",
-		"active-only": true,
-		"all-outputs": false,
-		"disable-scroll": true,
+	// Current desktop number only. hyprland/workspaces can't do this: the persistent
+	// workspaces from split-monitor-workspaces all show up even with "active-only".
+	"custom/desktop": {
+		"exec": "~/.config/waybar/scripts/desktop",
+		"return-type": "json",
+		"format": "{}",
 		"tooltip": false
 	},
 
@@ -181,7 +178,7 @@
 			"mode-mon-col": 6,
 			"format": {
 				"months":   "<span color='#c0caf5'><b>{}</b></span>",
-				"weekdays": "<span color='#d4a843'><b>{}</b></span>",
+				"weekdays": "<span color='#e8a04c'><b>{}</b></span>",
 				"days":     "<span color='#a9b1d6'>{}</span>",
 				"today":    "<span color='#7dcfff'><b><u>{}</u></b></span>"
 			}
