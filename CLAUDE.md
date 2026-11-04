@@ -237,6 +237,9 @@ Before sleep → lock. After wake → display on.
 ### Styling
 Tokyo Night palette; buttons with 20px border-radius; layer top, dock mode.
 
+- **Bar edges line up with the windows:** the bar's top/bottom margin is Hyprland's `general:gaps_out` (20), read by `launch` and written into the temp config (`config.jsonc` has the same default). Verified with `hyprctl layers` / `hyprctl clients`: bar y=20…1060, windows 20…1060 (incl. 3px border). If you change `gaps_out`, restart the bar.
+- **Restart it with `pkill waybar` (not `-x`)** — the real process name is `.waybar-wrapped`, so `pkill -x waybar` matches nothing and a second bar stacks next to the first one (they showed up as two `waybar` layers in `hyprctl layers`). Always check there is one: `pgrep -af '^waybar --config'`.
+
 ---
 
 ## Swaync
