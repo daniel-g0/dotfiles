@@ -2,12 +2,12 @@
 
 * {
     bg:        #0d0d14f7;
-    fg:        #bba888;
-    fg-dim:    #7a6e5e;
-    blue:      #c4885f;
-    purple:    #d97757;
-    sel-bg:    #c4885f26;
-    border-c:  #c4885f40;
+    fg:        #b49292;
+    fg-dim:    #7a5256;
+    blue:      #c4303f;
+    purple:    #ff2a3d;
+    sel-bg:    #c4303f26;
+    border-c:  #c4303f40;
 
     background-color: transparent;
     text-color:       #a9b1d6;
@@ -20,10 +20,10 @@ window {
     x-offset:         8px;
     y-offset:         40px;
     width:            220px;
-    background-color: #0c0b0af7;
+    background-color: #060606f7;
     border-radius:    16px;
     border:           1px;
-    border-color:     #c4885f40;
+    border-color:     #c4303f40;
     padding:          6px;
 }
 
@@ -53,7 +53,7 @@ element {
 }
 
 element normal.normal   { background-color: transparent; text-color: #a9b1d6; }
-element selected.normal { background-color: #c4885f26;   text-color: #c4885f; }
+element selected.normal { background-color: #c4303f26;   text-color: #c4303f; }
 
 element-text {
     background-color: transparent;

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-FZF_COLORS="--color=bg+:#252017,bg:#1a1510,spinner:#d97757,hl:#7a6e5e,fg:#e8dcc8,header:#7a6e5e,info:#c4885f,pointer:#d97757,marker:#8faa90,fg+:#e8dcc8,prompt:#c4885f,hl+:#8faa90"
+FZF_COLORS="--color=bg+:#1a1011,bg:#0a0a0b,spinner:#ff2a3d,hl:#7a5256,fg:#e6dcdc,header:#7a5256,info:#c4303f,pointer:#ff2a3d,marker:#ff7a7a,fg+:#e6dcdc,prompt:#c4303f,hl+:#ff7a7a"
 
-P='\033[38;2;217;119;87m'
-B='\033[38;2;196;136;95m'
-Y='\033[38;2;212;168;67m'
-D='\033[38;2;196;136;95m'
+P='\033[38;2;255;42;61m'
+B='\033[38;2;196;48;63m'
+Y='\033[38;2;232;160;76m'
+D='\033[38;2;196;48;63m'
 R='\033[0m'
 
 section() {

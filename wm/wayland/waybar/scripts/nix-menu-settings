@@ -2,14 +2,14 @@
 THEME="$HOME/.config/waybar/styles/nix-menu.rasi"
 
 choice=$(printf \
-"<span color='#7aa2f7'>󰤨</span>  <span color='#7aa2f7'>Network</span>
-<span color='#7dcfff'>󰂯</span>  <span color='#7dcfff'>Bluetooth</span>
-<span color='#9ece6a'>󰕾</span>  <span color='#9ece6a'>Volume</span>
-<span color='#bb9af7'>󰍬</span>  <span color='#bb9af7'>Mic</span>
-<span color='#e0af68'>󰦝</span>  <span color='#e0af68'>VPN</span>
-<span color='#ff9e64'>󰃠</span>  <span color='#ff9e64'>Brightness</span>
-<span color='#9ece6a'>󰁹</span>  <span color='#9ece6a'>Battery</span>" \
-| rofi -dmenu -i -p "<span color='#7dcfff'>  Settings</span>" -no-custom -markup-rows -theme "$THEME")
+"<span color='#c4303f'>󰤨</span>  <span color='#c4303f'>Network</span>
+<span color='#ff7a7a'>󰂯</span>  <span color='#ff7a7a'>Bluetooth</span>
+<span color='#8aa37b'>󰕾</span>  <span color='#8aa37b'>Volume</span>
+<span color='#ff2a3d'>󰍬</span>  <span color='#ff2a3d'>Mic</span>
+<span color='#e8a04c'>󰦝</span>  <span color='#e8a04c'>VPN</span>
+<span color='#e8a04c'>󰃠</span>  <span color='#e8a04c'>Brightness</span>
+<span color='#8aa37b'>󰁹</span>  <span color='#8aa37b'>Battery</span>" \
+| rofi -dmenu -i -p "<span color='#ff7a7a'>  Settings</span>" -no-custom -markup-rows -theme "$THEME")
 
 case "$choice" in
     *Network*)    kitty --class settings -T "Network" -e nmtui ;;
