@@ -24,7 +24,7 @@
 
 	"group/time": {
 		"orientation": "vertical",
-		"modules": ["clock"]
+		"modules": ["hyprland/workspaces", "clock"]
 	},
 
 	// ─── Custom modules ───────────────────────────────────────────────────────────
@@ -113,8 +113,8 @@
 		"align": 0.5,
 		"critical-threshold": 90,
 		"interval": 10,
-		"format": "<span color='#f7768e'>{icon}</span>",
-		"format-critical": "<span color='#f7768e'>󰀦</span>",
+		"format": "<span color='#c44b4b'>{icon}</span>",
+		"format-critical": "<span color='#c44b4b'>󰀦</span>",
 		"format-icons": ["󱃃", "󰔏", "󱃂"],
 		"tooltip-format": "{temperatureC}°C / {temperatureF}°F"
 	},
@@ -123,9 +123,9 @@
 		"justify": "center",
 		"align": 0.5,
 		"interval": 10,
-		"format": "<span color='#b48ead'>󰘚</span>",
-		"format-warning": "<span color='#e0af68'>󰀧</span>",
-		"format-critical": "<span color='#f7768e'>󰀧</span>",
+		"format": "<span color='#c44b4b'>󰘚</span>",
+		"format-warning": "<span color='#d4a843'>󰀧</span>",
+		"format-critical": "<span color='#c44b4b'>󰀧</span>",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip-format": "{percentage}%  {used:0.1f}/{total:0.1f} GiB"
 	},
@@ -134,9 +134,9 @@
 		"justify": "center",
 		"align": 0.5,
 		"interval": 10,
-		"format": "<span color='#5e81ac'>󰍛</span>",
-		"format-warning": "<span color='#e0af68'>󰀨</span>",
-		"format-critical": "<span color='#f7768e'>󰀨</span>",
+		"format": "<span color='#c4885f'>󰍛</span>",
+		"format-warning": "<span color='#d4a843'>󰀨</span>",
+		"format-critical": "<span color='#c44b4b'>󰀨</span>",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip-format": "{usage}%"
 	},
@@ -148,7 +148,7 @@
 		"interval": 5,
 		"justify": "center",
 		"align": 0.5,
-		"format": "<span color='#9ece6a'>󰢮</span>",
+		"format": "<span color='#8fa876'>󰢮</span>",
 		"tooltip": true
 	},
 
@@ -157,9 +157,18 @@
 		"align": 0.5,
 		"interval": 30,
 		"path": "/",
-		"format": "<span color='#e0af68'>󰋊</span>",
+		"format": "<span color='#d4a843'>󰋊</span>",
 		"states": { "warning": 75, "critical": 90 },
 		"tooltip-format": "{percentage_used}%  {used} / {total} ({free} free)"
+	},
+
+	// Current desktop number: active-only shows a single button holding the focused workspace's id.
+	"hyprland/workspaces": {
+		"format": "{id}",
+		"active-only": true,
+		"all-outputs": false,
+		"disable-scroll": true,
+		"tooltip": false
 	},
 
 	"clock": {
@@ -172,7 +181,7 @@
 			"mode-mon-col": 6,
 			"format": {
 				"months":   "<span color='#c0caf5'><b>{}</b></span>",
-				"weekdays": "<span color='#e0af68'><b>{}</b></span>",
+				"weekdays": "<span color='#d4a843'><b>{}</b></span>",
 				"days":     "<span color='#a9b1d6'>{}</span>",
 				"today":    "<span color='#7dcfff'><b><u>{}</u></b></span>"
 			}
