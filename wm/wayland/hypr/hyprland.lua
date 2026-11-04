@@ -6,7 +6,7 @@
 package.path = package.path .. ";" .. os.getenv("HOME") .. "/.config/hypr/plugins/split-monitor-workspaces/lua/?.lua"
 local smw = require("split-monitor-workspaces")
 smw.setup({
-    workspace_count = 9,
+    workspace_count = 10, -- keep in sync with COUNT in waybar/scripts/desktop
     link_monitors   = true,
 })
 hl.on("monitor.removed", function()
@@ -154,8 +154,8 @@ hl.config({
 
         col = {
             -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
-            active_border   = { colors = {"rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)"}, angle = 0 },
-            inactive_border = { colors = {"rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)"}, angle = 0 },
+            active_border   = { colors = {"rgba(ff2a3dee)", "rgba(ff8590ee)", "rgba(ff2a3dee)", "rgba(ff8590ee)", "rgba(ff2a3dee)"}, angle = 0 },
+            inactive_border = { colors = {"rgba(ff2a3dee)", "rgba(ff8590ee)", "rgba(ff2a3dee)", "rgba(ff8590ee)", "rgba(ff2a3dee)"}, angle = 0 },
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -179,8 +179,8 @@ hl.config({
             enabled        = true,
             range          = 4,
             render_power   = 2,
-            color          = "rgba(d9775755)",
-            color_inactive = "rgba(1a151000)",
+            color          = "rgba(ff2a3d55)",
+            color_inactive = "rgba(0a0a0b00)",
         },
 
         blur = {
@@ -343,12 +343,13 @@ hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + J",  hl.dsp.focus({ direction = "down" }))
 
--- Switch workspaces with mainMod + [1-9] — all monitors switch simultaneously (link_monitors)
--- Move active window to a workspace with mainMod + SHIFT + [1-9]
+-- Switch workspaces with mainMod + [1-9,0] (0 = workspace 10) — all monitors switch simultaneously (link_monitors)
+-- Move active window to a workspace with mainMod + SHIFT + [1-9,0]
 for i = 1, smw.get_amount_of_workspaces() do
-    local key = tostring(i)
-    hl.bind(mainMod .. " + " .. key,         smw.workspace(key))
-    hl.bind(mainMod .. " + SHIFT + " .. key, smw.move_to_workspace_silent(key))
+    local key = tostring(i % 10)
+    local ws  = tostring(i)
+    hl.bind(mainMod .. " + " .. key,         smw.workspace(ws))
+    hl.bind(mainMod .. " + SHIFT + " .. key, smw.move_to_workspace_silent(ws))
 end
 
 -- Example special workspace (scratchpad)
