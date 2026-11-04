@@ -2,13 +2,13 @@
 THEME="$HOME/.config/waybar/styles/nix-menu.rasi"
 
 choice=$(printf \
-"<span color='#7aa2f7'>󰌾</span>  <span color='#7aa2f7'>Lock</span>
-<span color='#e0af68'>󰤄</span>  <span color='#e0af68'>Suspend</span>
-<span color='#bb9af7'>󰒲</span>  <span color='#bb9af7'>Hibernate</span>
-<span color='#ff9e64'>󰑓</span>  <span color='#ff9e64'>Reboot</span>
-<span color='#f7768e'>󰐥</span>  <span color='#f7768e'>Shutdown</span>
-<span color='#a9b1d6'>󰍃</span>  <span color='#a9b1d6'>Logout</span>" \
-| rofi -dmenu -i -p "<span color='#f7768e'>󰤄  Power</span>" -no-custom -markup-rows -theme "$THEME")
+"<span color='#c4303f'>󰌾</span>  <span color='#c4303f'>Lock</span>
+<span color='#e8a04c'>󰤄</span>  <span color='#e8a04c'>Suspend</span>
+<span color='#ff2a3d'>󰒲</span>  <span color='#ff2a3d'>Hibernate</span>
+<span color='#e8a04c'>󰑓</span>  <span color='#e8a04c'>Reboot</span>
+<span color='#ff5566'>󰐥</span>  <span color='#ff5566'>Shutdown</span>
+<span color='#e6dcdc'>󰍃</span>  <span color='#e6dcdc'>Logout</span>" \
+| rofi -dmenu -i -p "<span color='#ff5566'>󰤄  Power</span>" -no-custom -markup-rows -theme "$THEME")
 
 case "$choice" in
     *Lock*)      loginctl lock-session ;;

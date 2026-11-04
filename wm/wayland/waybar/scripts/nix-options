@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # NixOS options fzf menu — runs inside kitty
 
-FZF_COLORS="--color=bg+:#292e42,bg:#1a1b26,spinner:#bb9af7,hl:#565f89,fg:#c0caf5,header:#565f89,info:#7aa2f7,pointer:#bb9af7,marker:#7dcfff,fg+:#c0caf5,prompt:#7aa2f7,hl+:#7dcfff"
+FZF_COLORS="--color=bg+:#1a1011,bg:#0a0a0b,spinner:#ff2a3d,hl:#7a5256,fg:#e6dcdc,header:#7a5256,info:#c4303f,pointer:#ff2a3d,marker:#ff7a7a,fg+:#e6dcdc,prompt:#c4303f,hl+:#ff7a7a"
 
 CHOICE=$(printf '%s\n' \
     "󰏫  Edit Config" \

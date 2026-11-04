@@ -2,11 +2,11 @@
 THEME="$HOME/.config/waybar/styles/nix-menu.rasi"
 
 choice=$(printf \
-"<span color='#e0af68'>󰠮</span>  <span color='#e0af68'>Todo</span>
-<span color='#7aa2f7'>󰓅</span>  <span color='#7aa2f7'>Statistics</span>
-<span color='#bb9af7'>󰂚</span>  <span color='#bb9af7'>Notifications</span>
-<span color='#7dcfff'>󰒓</span>  <span color='#7dcfff'>Settings</span>
-<span color='#f7768e'>󰤄</span>  <span color='#f7768e'>Power</span>" \
+"<span color='#e8a04c'>󰠮</span>  <span color='#e8a04c'>Todo</span>
+<span color='#c4303f'>󰓅</span>  <span color='#c4303f'>Statistics</span>
+<span color='#ff2a3d'>󰂚</span>  <span color='#ff2a3d'>Notifications</span>
+<span color='#ff7a7a'>󰒓</span>  <span color='#ff7a7a'>Settings</span>
+<span color='#ff5566'>󰤄</span>  <span color='#ff5566'>Power</span>" \
 | rofi -dmenu -i -p "" -no-custom -markup-rows -theme "$THEME")
 
 case "$choice" in

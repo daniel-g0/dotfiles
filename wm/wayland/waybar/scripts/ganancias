@@ -13,7 +13,7 @@ if [[ "$1" == "live" ]]; then
 	exec python3 "$GANANCIAS_PY" --refresco 0.1
 fi
 
-GREEN="#9ece6a"
+GREEN="#8aa37b"
 
 python3 "$GANANCIAS_PY" --formato json --refresco 1 | while IFS= read -r line; do
 	ganado=$(jq -r '.ganado_eur' <<< "$line")
