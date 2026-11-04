@@ -102,7 +102,8 @@ Bat, Docker, GitHub CLI, Git, Less, Make, Man, Nix, SSH, Tar, tldr, uv, Zoxide
 Parses nushell pre-prompt title (`~/path 󰊢 branch [+1 ~2] | 5f 2d | 14:23`):
 - **Single tab:** Title centered full-width
 - **Multi-tab:** Segments — directory (blue), branch (purple), file counts (cyan), time (green)
-- Colors: bg `#1a1b26`, blue `#7aa2f7`, purple `#bb9af7`, cyan `#7dcfff`, green `#9ece6a`
+- Bar sits at the **top** (`tab_bar_edge top`) and is background-less: `tab_bar_background none` + default-bg cells (`cursor.bg = 0`), so `background_opacity`/blur apply to it and it blends seamlessly with the window. Never give it an explicit RGB background — that renders opaque and shows as a band.
+- Segment colors come from the active palette (`~/.cache/dynamic-theme/palette.json`): blue, accent, cyan, green
 
 ---
 
@@ -202,6 +203,7 @@ Before sleep → lock. After wake → display on.
 | Temperature | CPU temp, critical at 90°C |
 | Memory | % usage, tooltip shows used/total GiB |
 | CPU | % usage, updates 10s, warn 75%, critical 90% |
+| `hyprland/workspaces` | Current desktop number only (`active-only`, `{id}`), accent color. Sits above the clock in `group/time`, the middle of the bar |
 | Clock time | HH:MM, tooltip 12h AM/PM |
 | Clock date | DD-MM + calendar popup on click |
 | Network | WiFi signal bars, SSID/IP/freq tooltip; click → network menu; right-click → toggle WiFi |
@@ -255,7 +257,7 @@ Tokyo Night palette; buttons with 20px border-radius; layer top, dock mode.
 - Docker: rootless mode
 - Printing: CUPS
 - Network: NetworkManager, hostname `nixos`
-- Locale: `en_US` / `es_ES` regional / Europe/Madrid timezone
+- Locale: `en_US.UTF-8` everywhere (no `es_ES` regional overrides) / Europe/Madrid timezone / Spanish (es) keyboard layout
 - Shell: bash auto-launches nushell for interactive sessions
 - Fonts: JetBrains Mono Nerd Font + Material Icons
 
