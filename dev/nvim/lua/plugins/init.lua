@@ -16,23 +16,15 @@ return {
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  󰏘  COLORSCHEME  ━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  -- Tokyo Night: canonical dark colorscheme — consistent with system-wide theme
-  -- NOTE: overrides NvChad base46 (chadrc.lua theme is cosmetic only when this is active)
+  -- Tokyo Night structure, recoloured from the active apply-theme palette (lua/palette.lua), so nvim
+  -- follows the system-wide theme. Overrides NvChad base46 highlights for everything it styles.
   {
     "folke/tokyonight.nvim",
     lazy     = false,
     priority = 1000,
-    opts = {
-      style           = "night",
-      transparent     = true,
-      terminal_colors = true,
-      styles = {
-        comments = { italic = true },
-        keywords = { italic = true },
-        sidebars = "dark",
-        floats   = "dark",
-      },
-    },
+    opts = function()
+      return require("palette").opts
+    end,
     config = function(_, opts)
       require("tokyonight").setup(opts)
       vim.cmd("colorscheme tokyonight")
@@ -102,7 +94,7 @@ return {
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  󰙀  UI  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  -- Lualine: statusline with Tokyo Night theme + powerline separators
+  -- Lualine: statusline with the tokyonight theme (follows the palette via lua/palette.lua) + powerline separators
   {
     "nvim-lualine/lualine.nvim",
     event        = "VeryLazy",

@@ -7,9 +7,19 @@ from kitty.tab_bar import DrawData, ExtraData, TabBarData, as_rgb
 _PALETTE_PATH = os.path.expanduser("~/.cache/dynamic-theme/palette.json")
 _mtime_p      = 0.0
 
-# 0 = default background: inherits kitty's background_opacity so the bar blends with the window.
-# An explicit as_rgb() colour is drawn opaque, which shows as a band on a translucent terminal.
-_BG     = 0
+def _bar_fill(bg: str) -> int:
+    # Palette bg with blue +1: visually identical, but not "the default bg", so kitty applies the
+    # opacity listed in transparent_background_colors instead of background_opacity.
+    # Must produce the same colour as kitty_bar_fill() in shell/scripts/apply-theme.
+    r, g, b = (int(bg.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+    return as_rgb((r << 16) | (g << 8) | (b + 1 if b < 255 else b - 1))
+
+
+# Cells drawn here with the default bg render darker than the body (sharp step, measured on
+# screenshots) and fully transparent cells render as clear glass, so the bar is filled with an explicit
+# colour that dynamic-colors.conf lists in `transparent_background_colors` at the same opacity as
+# background_opacity — measured, that composites identically to the body.
+_BG     = _bar_fill("#1a1b26")
 _BLUE  = as_rgb(0x7aa2f7)
 _PURPLE = as_rgb(0xbb9af7)
 _CYAN   = as_rgb(0x2ac3de)
@@ -23,7 +33,7 @@ def _h(c: str) -> int:
 
 
 def _reload():
-    global _mtime_p, _BLUE, _PURPLE, _CYAN, _GREEN, _FG, _DIM
+    global _mtime_p, _BG, _BLUE, _PURPLE, _CYAN, _GREEN, _FG, _DIM
 
     # Read accent/fg colors from the active palette
     try:
@@ -32,6 +42,7 @@ def _reload():
             _mtime_p = mt
             with open(_PALETTE_PATH) as f:
                 p = json.load(f)
+            _BG     = _bar_fill(p.get("bg", "#1a1b26"))
             _BLUE   = _h(p.get("blue",   "#7aa2f7"))
             _PURPLE = _h(p.get("accent", "#bb9af7"))
             _CYAN   = _h(p.get("cyan",   "#2ac3de"))
@@ -106,12 +117,16 @@ def draw_tab(
         screen.cursor.fg = _FG
         screen.cursor.bg = _BG
 
+    # The title is told apart from the body by an underline, not by a different background.
     for i, (text, color) in enumerate(segs):
         if i > 0:
             screen.cursor.fg = _DIM
+            screen.cursor.decoration = 0
             screen.draw(SEP)
         screen.cursor.fg = color
+        screen.cursor.decoration = 1  # single underline
         screen.draw(text)
+    screen.cursor.decoration = 0
 
     if not single:
         end = before + max_title_length

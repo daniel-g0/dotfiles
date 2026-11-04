@@ -3,7 +3,7 @@
 set -euo pipefail
 
 APPLY="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/apply-theme"
-THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine dracula one-dark monokai solarized-dark everforest ayu-dark kanagawa nightfox palenight horizon night-owl material-ocean crimson claude)
+THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine dracula one-dark monokai solarized-dark everforest ayu-dark kanagawa nightfox palenight horizon night-owl material-ocean crimson claude redline monochrome)
 
 # swatch <#rrggbb> <label>
 swatch() {
@@ -101,6 +101,14 @@ preview() {
     crimson)
       swatch_row "bg / text" "#1a0f10" "#f0d5d8" "#8a5f66" "#261518"
       swatch_row "accents"   "#e05560" "#9b7fc9" "#7fbfb5" "#7db87d" "#d4965a" "#e05560"
+      ;;
+    redline)
+      swatch_row "bg / text" "#0a0a0b" "#e6dcdc" "#7a5256" "#1a1011"
+      swatch_row "accents"   "#ff2a3d" "#c4303f" "#ff7a7a" "#8aa37b" "#e8a04c" "#ff5566"
+      ;;
+    monochrome)
+      swatch_row "bg / text" "#000000" "#f2f2f2" "#6b6b6b" "#111111"
+      swatch_row "accents"   "#ffffff" "#b5b5b5" "#d2d2d2" "#828282" "#9c9c9c" "#ebebeb"
       ;;
     claude)
       swatch_row "bg / text" "#1a1510" "#e8dcc8" "#7a6e5e" "#252017"
