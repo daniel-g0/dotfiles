@@ -217,7 +217,7 @@ color14               {p["cyan"]}
 color15               {p["fg"]}
 cursor                {p["fg"]}
 cursor_text_color     {p["bg"]}
-tab_bar_background    {p["bg"]}
+tab_bar_background    none
 """
     KITTY_DYN.write_text(content)
 
@@ -707,13 +707,27 @@ def apply_nix_menu(p, prev):
     NIX_MENU_RASI.write_text(text)
 
 def apply_modules(p, prev):
+    """Recolour the hard-coded icon colours in modules.jsonc.
+
+    Every palette role is remapped, and both the previous palette and the original
+    Tokyo Night values count as "old" (the file ships with Tokyo Night colours that
+    were never touched for roles other than accent/blue). One regex pass, so a colour
+    shared by two roles can't be replaced twice in a chain.
+    """
     text = MODULES_JSON.read_text()
-    for key, role in [("accent", "accent"), ("blue", "blue")]:
-        old = prev.get(key, "").lstrip("#").lower()
-        new = p[key].lstrip("#").lower()
-        if old and old != new:
-            text = text.replace(f"#{old}", f"#{new}")
-            text = text.replace(f"#{old.upper()}", f"#{new}")
+    base = PRESETS["tokyo-night"]
+    mapping = {}
+    for role in ("accent", "blue", "cyan", "green", "red", "yellow"):
+        new = p[role].lstrip("#").lower()
+        for old in (base.get(role, ""), prev.get(role, "")):  # prev last, so it wins
+            old = old.lstrip("#").lower()
+            if old:
+                mapping[old] = new
+    text = re.sub(
+        r"#([0-9a-fA-F]{6})\b",
+        lambda m: "#" + mapping.get(m.group(1).lower(), m.group(1)),
+        text,
+    )
     MODULES_JSON.write_text(text)
 
 NVCHAD_THEME_MAP = {

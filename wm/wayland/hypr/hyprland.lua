@@ -96,8 +96,8 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("awww img $HOME/.config/wallpapers/classical-still-life.png --transition-type fade --transition-duration 2")
   hl.exec_cmd("hyprctl setcursor capitaine-cursors 24")
   hl.exec_cmd("bash $HOME/.config/waybar/scripts/eyecare-notify")
-  -- Re-apply last wallpaper theme so border colours survive reboot
-  hl.exec_cmd("bash -c 'dotfiles=$(dirname $(readlink -f /etc/nixos/configuration.nix)); lw=$HOME/.cache/dynamic-theme/last-wallpaper; [ -f \"$lw\" ] && $dotfiles/shell/scripts/apply-theme \"$(cat $lw)\" >> $HOME/.cache/dynamic-theme/apply-theme.log 2>&1 &'")
+  -- Re-apply the last theme (the preset if one was picked, else the last wallpaper) so colours survive reboot
+  hl.exec_cmd("bash -c 'c=$HOME/.cache/dynamic-theme; a=$HOME/.local/bin/apply-theme; p=$(cat $c/last-preset 2>/dev/null); lw=$(cat $c/last-wallpaper 2>/dev/null); if [ -n \"$p\" ]; then $a --preset \"$p\"; elif [ -f \"$lw\" ]; then $a \"$lw\"; fi >> $c/apply-theme.log 2>&1 &'")
 end)
 
 
@@ -154,8 +154,8 @@ hl.config({
 
         col = {
             -- Tokyo Night liquid gradient — loops seamlessly (first == last color)
-            active_border   = { colors = {"rgba(b48eadee)", "rgba(d8c5d5ee)", "rgba(b48eadee)", "rgba(d8c5d5ee)", "rgba(b48eadee)"}, angle = 0 },
-            inactive_border = { colors = {"rgba(b48eadee)", "rgba(d8c5d5ee)", "rgba(b48eadee)", "rgba(d8c5d5ee)", "rgba(b48eadee)"}, angle = 0 },
+            active_border   = { colors = {"rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)"}, angle = 0 },
+            inactive_border = { colors = {"rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)", "rgba(e9b3a1ee)", "rgba(d97757ee)"}, angle = 0 },
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -179,8 +179,8 @@ hl.config({
             enabled        = true,
             range          = 4,
             render_power   = 2,
-            color          = "rgba(b48ead55)",
-            color_inactive = "rgba(2e344000)",
+            color          = "rgba(d9775755)",
+            color_inactive = "rgba(1a151000)",
         },
 
         blur = {
