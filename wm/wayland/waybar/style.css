@@ -18,16 +18,16 @@
 
 #waybar {
 	background-image:
-		linear-gradient(#2e3440, #2e3440),
-		linear-gradient(180deg, #b48ead, #d8c5d5, #b48ead, #d8c5d5, #b48ead, #d8c5d5, #b48ead, #b48ead);
+		linear-gradient(#1a1510, #1a1510),
+		linear-gradient(180deg, #d97757, #e9b3a1, #d97757, #e9b3a1, #d97757, #e9b3a1, #d97757, #d97757);
 	background-origin: padding-box, border-box;
 	background-clip:   padding-box, border-box;
 	background-size:   auto, 100% 400%;
 	border: 2px solid transparent;
 	border-radius: 16px;
 	box-shadow:
-		0 0 16px rgba(180, 142, 173, 0.30),
-		0 0 32px rgba(180, 142, 173, 0.12),
+		0 0 16px rgba(217, 119, 87, 0.30),
+		0 0 32px rgba(217, 119, 87, 0.12),
 		inset 0 1px 0 rgba(255, 255, 255, 0.06);
 	animation: border-flow 8s linear infinite;
 	font-size: 12px;
@@ -153,6 +153,28 @@
 #clock {
 	padding: 4px 0;
 	margin: 0;
+}
+
+/* ── Desktop number ──────────────────────────────────────────────────────── */
+
+#workspaces {
+	padding: 0;
+	margin: 0;
+}
+
+#workspaces button {
+	padding: 4px 0;
+	margin: 0;
+	border: none;
+	background: transparent;
+	color: @accent;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+#workspaces button:hover {
+	background: transparent;
+	color: @hover-fg;
 }
 
 /* ── Hover ───────────────────────────────────────────────────────────────── */
