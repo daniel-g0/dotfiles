@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+STATE="/tmp/waybar-mode"
+[[ -f "$STATE" ]] && rm "$STATE" || touch "$STATE"
+pkill waybar
+sleep 0.15
+bash ~/.config/waybar/launch &

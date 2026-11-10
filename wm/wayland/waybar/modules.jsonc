@@ -1,8 +1,23 @@
 {
 	// ─── Groups ──────────────────────────────────────────────────────────────────
 
-	// Top stack. The clock lives here (not below the number) so that nix + this stack is as tall as
-	// the bottom stack + power — see "Icon slots" in style.css.
+	// Minimal bar: desktop number is always visible in the center, hover to reveal all icons.
+	"group/main-drawer": {
+		"orientation": "vertical",
+		"drawer": {
+			"transition-duration": 300,
+			"transition-left-to-right": false
+		},
+		"modules": [
+			"custom/desktop",
+			"temperature", "memory", "cpu", "disk", "clock",
+			"bluetooth", "pulseaudio#output", "pulseaudio#input",
+			"network", "custom/vpn", "custom/notifications",
+			"custom/ganancias", "custom/power"
+		]
+	},
+
+	// Legacy full layout groups (kept for reference / switching back).
 	"group/left": {
 		"orientation": "vertical",
 		"modules": ["mpris", "temperature", "memory", "cpu", "custom/gpu", "disk", "clock"]
@@ -165,7 +180,8 @@
 		"exec": "~/.config/waybar/scripts/desktop",
 		"return-type": "json",
 		"format": "{}",
-		"tooltip": false
+		"tooltip": false,
+		"on-click": "bash ~/.config/waybar/scripts/toggle-layout"
 	},
 
 	"clock": {
@@ -246,8 +262,8 @@
 	"idle_inhibitor": {
 		"format": "{icon}",
 		"format-icons": {
-			"activated": "󰈈",
-			"deactivated": "󰈉"
+			"activated": "󰛊",
+			"deactivated": "󰒲"
 		},
 		"tooltip-format-activated": "Idle inhibited",
 		"tooltip-format-deactivated": "Idle allowed"

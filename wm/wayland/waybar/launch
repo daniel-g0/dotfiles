@@ -9,25 +9,38 @@ PRIMARY=$(hyprctl monitors -j 2>/dev/null | jq -r 'sort_by(.id) | .[0].name // e
 GAP=$(hyprctl getoption general:gaps_out -j 2>/dev/null | jq -r '.css // empty' | awk '{print $1}')
 GAP=${GAP:-20}
 
-# Equal gaps between nix · stats · desktop number · icons · power (see "Icon slots" in style.css).
-# The stack heights are constants of the slot system (bottom: icons + power = 278.3px, number slot 34px).
-# Top stack: nix (35.4) + temp (40.7) + memory (41.4) + cpu (41.4) + gpu (40.0) + disk (40.0) + clock (41.4) = 280.3px.
-# gpu is hidden when nvidia-smi is absent (exec-if fails) → subtract its slot (40.0px) from the top constant.
-GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 0 || echo 40.0)
-TOP_H=$(awk -v g="$GPU_SLOT" 'BEGIN { printf "%.1f", 280.3 - g }')
-
 LAYOUT="${XDG_RUNTIME_DIR:-/tmp}/waybar-layout.css"
 MH=$(hyprctl monitors -j 2>/dev/null | jq -r --arg n "$PRIMARY" '.[] | select(.name == $n) | ((.height / .scale) | floor)')
-awk -v mh="${MH:-1080}" -v gap="$GAP" -v top_h="$TOP_H" 'BEGIN {
-    half = (mh - 2 * gap - 4 - 34) / 2
-    printf "#custom-user  { margin: 0 0 %.0fpx; }\n#custom-power { margin: %.0fpx 0 0; }\n", (half - top_h) / 2, (half - 278.3) / 2
-}' > "$LAYOUT"
+STATE="/tmp/waybar-mode"
+
+if [[ -f "$STATE" ]]; then
+    # Full layout: compute margins so the desktop number is centered.
+    # gap_above = gap_below → margin_user - margin_power = top_total - bot_total
+    # Setting G = bot_free/2 as the gap on each side of the number achieves this.
+    CONFIG="$HOME/.config/waybar/config-full.jsonc"
+    GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 0 || echo 40.0)
+    CLOCK_SLOT=$(locale -a 2>/dev/null | grep -qi 'en_US.utf' && echo 0 || echo 41.4)
+    TOP_H=$(awk -v g="$GPU_SLOT" -v c="$CLOCK_SLOT" 'BEGIN { printf "%.1f", 280.3 - g - c }')
+    awk -v mh="${MH:-1080}" -v gap="$GAP" -v top_h="$TOP_H" 'BEGIN {
+        half     = (mh - 2*gap - 4 - 34) / 2
+        top_free = half - 35.4 - top_h
+        bot_free = half - 278.3 - 35.4
+        G        = bot_free / 2
+        mu       = top_free - G;  if (mu < 0) mu = 0
+        mp       = G;             if (mp < 0) mp = 0
+        printf "#custom-user  { margin: 0 0 %.0fpx; }\n#custom-power { margin: %.0fpx 0 0; }\n", mu, mp
+    }' > "$LAYOUT"
+else
+    # Minimal layout: nix (top) · desktop number (center) · sleep icon (bottom).
+    CONFIG="$HOME/.config/waybar/config.jsonc"
+    printf '#custom-user { margin: 0; }\n' > "$LAYOUT"
+fi
 
 TMP=$(mktemp --suffix=.jsonc)
 trap "rm -f $TMP" EXIT
 
 sed -e "s|\"reload_style_on_change\": true|\"output\": \"$PRIMARY\", \"reload_style_on_change\": true|" \
     -e "s|\"margin\": \"[^\"]*\"|\"margin\": \"$GAP 4\"|" \
-    "$HOME/.config/waybar/config.jsonc" > "$TMP"
+    "$CONFIG" > "$TMP"
 
 exec waybar --config "$TMP"
