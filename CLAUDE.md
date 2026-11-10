@@ -1,5 +1,10 @@
 # CLAUDE.md
 
+## TODO (urgent)
+
+- **Waybar minimal bar: add clock** — in minimal mode (nix · 1 · moon), the clock should also be visible without expanding. Currently everything in group/left collapses. Fix: move clock out of group/left into a separate always-visible position, OR add a CSS exception so `#clock` is not collapsed by `#left *`. Probably easiest to add clock as its own entry in modules-left (outside the group) and exclude it from the collapse CSS.
+- **Waybar centering after expansion** — the formula `mu = top_free/2; mp = bot_free/2` (toggle-layout) is correct geometrically but the user still perceives the "1" as off-center when expanded. Root cause: top stack has 5 icons (240.3px) vs bottom stack 7 icons (277.6px) — inherent asymmetry, no GPU on this machine. May need a visual tweak or a dummy invisible spacer in group/left to compensate.
+
 ## Repo
 
 Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` are symlinks pointing here. Theme: Tokyo Night across all tools.
