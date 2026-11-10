@@ -3,7 +3,6 @@
 * {
 	all: initial;
 	color: @main-fg;
-	text-align: center;
 }
 
 @import "styles/fonts.css";
