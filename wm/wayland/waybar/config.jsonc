@@ -15,7 +15,7 @@
 	// (waybar-layout.css), which makes the two free gaps beside the number equal to them.
 	// All modules always loaded. Minimal/full appearance is toggled via CSS (layout.css, see launch).
 	"modules-left":   ["custom/user", "group/left"],
-	"modules-center": ["custom/desktop"],
+	"modules-center": ["clock"], // clock (HH/MM text) alone in the centre box = true vertical centre; click toggles minimal/full
 	"modules-right":  ["group/right", "custom/power"],
 
 	"include": ["~/.config/waybar/modules.jsonc"]

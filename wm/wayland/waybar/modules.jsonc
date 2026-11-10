@@ -13,30 +13,24 @@
 			"temperature", "memory", "cpu", "disk", "clock",
 			"bluetooth", "pulseaudio#output", "pulseaudio#input",
 			"network", "custom/vpn", "custom/notifications",
-			"custom/ganancias", "custom/power"
+			"custom/power"
 		]
 	},
 
 	// Legacy full layout groups (kept for reference / switching back).
 	"group/left": {
 		"orientation": "vertical",
-		"modules": ["mpris", "temperature", "memory", "cpu", "custom/gpu", "disk", "clock"]
+		"modules": ["mpris", "temperature", "memory", "cpu", "custom/gpu", "disk", "backlight", "battery"]
 	},
 
 	"group/right": {
 		"orientation": "vertical",
-		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications", "custom/ganancias"]
+		"modules": ["bluetooth", "group/group-volume", "network", "custom/vpn", "custom/notifications"]
 	},
 
 	"group/group-volume": {
 		"orientation": "vertical",
 		"modules": ["pulseaudio#output", "pulseaudio#input"]
-	},
-
-	"group/laptop": {
-		"orientation": "vertical",
-		"hide-empty-group": true,
-		"modules": ["backlight", "battery"]
 	},
 
 	// ─── Custom modules ───────────────────────────────────────────────────────────
@@ -187,7 +181,8 @@
 	"clock": {
 		"justify": "center",
 		"align": 0.5,
-		"format": "󰥔",
+		"format": "{:%H\n%M}",
+		"on-click": "bash ~/.config/waybar/scripts/toggle-layout",
 		"tooltip-format": "<big>{:%H:%M  %a %d %b %Y}</big>\n<tt><small>{calendar}</small></tt>",
 		"calendar": {
 			"mode": "month",
@@ -218,12 +213,6 @@
 		"tooltip": true
 	},
 
-	"custom/ganancias": {
-		"exec": "~/.config/waybar/scripts/ganancias",
-		"return-type": "json",
-		"on-click": "kitty --class ganancias -T 'Ganancias' -e ~/.config/waybar/scripts/ganancias live",
-		"tooltip": true
-	},
 
 	"network": {
 		"interval": 10,
