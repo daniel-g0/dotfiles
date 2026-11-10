@@ -5,26 +5,34 @@ export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 STATE="/tmp/waybar-mode"
 LAYOUT="${XDG_RUNTIME_DIR:-/tmp}/waybar-layout.css"
 
+# Minimal CSS: collapse #left and #right groups to zero height.
+# #right #pulseaudio uses double-ID (specificity 0-2-0-0) to beat #pulseaudio.output/.input (0-1-1-0).
+MINIMAL='#left, #left * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }
+#right, #right * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }
+#right #pulseaudio { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }
+#custom-user { margin: 0; }
+#custom-power { margin: 0; }'
+
 if [[ -f "$STATE" ]]; then
     rm "$STATE"
-    printf '#left, #left * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#right, #right * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#custom-user { margin: 0; }\n#custom-power { margin: 0; }\n' > "$LAYOUT"
+    printf '%s\n' "$MINIMAL" > "$LAYOUT"
 else
     touch "$STATE"
-    MH=$(hyprctl monitors -j 2>/dev/null | jq -r 'sort_by(.id) | .[0] | ((.height / .scale) | floor)' 2>/dev/null || echo 1080)
-    GAP=$(hyprctl getoption general:gaps_out -j 2>/dev/null | jq -r '.css // empty' | awk '{print $1}')
-    GAP=${GAP:-20}
+    # Read MH and GAP cached by launch (avoids hyprctl dep in on-click env).
+    read -r MH GAP < /tmp/waybar-screen 2>/dev/null || { MH=1080; GAP=20; }
+    [[ -z "$MH" || "$MH" -lt 400 ]] && MH=1080
+    [[ -z "$GAP" ]] && GAP=20
     GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 0 || echo 40.0)
     CLOCK_SLOT=$(locale -a 2>/dev/null | grep -qi 'en_US.utf' && echo 0 || echo 41.4)
-    # TOP_H = nix(35.4) + group/left slots (temp+mem+cpu+gpu+disk+clock = 244.9 total, minus absent modules)
-    # 280.3 = nix + all top slots; subtract absent gpu/clock slots.
+    # TOP_H = nix(35.4) + group/left (temp+mem+cpu+disk+clock=204.9, minus absent gpu/clock)
+    # 280.3 = full nix + all top slots combined; subtract absent slots.
     TOP_H=$(awk -v g="$GPU_SLOT" -v c="$CLOCK_SLOT" 'BEGIN { printf "%.1f", 280.3 - g - c }')
-    # BOT_H = group/right without idle_inhibitor, desktop (no laptop backlight/battery)
-    # bluetooth(34.0)+output(35.4)+input(34.0)+network(35.4)+vpn(34.0)+notifications(34.7)+ganancias(34.7) = 242.2
+    # BOT_H = group/right (bluetooth+output+input+network+vpn+notifications+ganancias = 242.2, desktop no laptop)
     BOT_H=242.2
     awk -v mh="$MH" -v gap="$GAP" -v top_h="$TOP_H" -v bot_h="$BOT_H" 'BEGIN {
         half     = (mh - 2*gap - 4 - 34) / 2
-        top_free = half - top_h          # space above center, left side
-        bot_free = half - bot_h - 35.4  # space above center, right side (35.4 = power slot)
+        top_free = half - top_h          # free space on left side of center
+        bot_free = half - bot_h - 35.4  # free space on right side (35.4 = power slot)
         G        = bot_free / 2
         mu       = top_free - G;  if (mu < 0) mu = 0
         mp       = G;             if (mp < 0) mp = 0

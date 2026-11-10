@@ -95,7 +95,7 @@
 	},
 
 	"custom/power": {
-		"format": "󰔛",
+		"format": "󰒲",
 		"tooltip-format": "Sleep / Power Menu",
 		"menu": "on-click",
 		"menu-file": "~/.config/waybar/menus/power.xml",

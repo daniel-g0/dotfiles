@@ -9,9 +9,13 @@ GAP=${GAP:-20}
 
 # Always start minimal: nix (top) · desktop number (center) · moon/power (bottom).
 # User clicks the number to expand (toggle-layout writes new CSS; reload_style_on_change picks it up).
+MH=$(hyprctl monitors -j 2>/dev/null | jq -r --arg n "$PRIMARY" '.[] | select(.name == $n) | ((.height / .scale) | floor)')
+MH=${MH:-1080}
+printf '%s\n%s\n' "$MH" "$GAP" > /tmp/waybar-screen  # cached for toggle-layout
+
 LAYOUT="${XDG_RUNTIME_DIR:-/tmp}/waybar-layout.css"
 rm -f /tmp/waybar-mode
-printf '#left, #left * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#right, #right * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#custom-user { margin: 0; }\n#custom-power { margin: 0; }\n' > "$LAYOUT"
+printf '#left, #left * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#right, #right * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#right #pulseaudio { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#custom-user { margin: 0; }\n#custom-power { margin: 0; }\n' > "$LAYOUT"
 
 TMP=$(mktemp --suffix=.jsonc)
 trap "rm -f $TMP" EXIT
