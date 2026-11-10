@@ -1109,7 +1109,7 @@ PRESETS = {
     },
     "redline": {
         "bg": "#0a0a0b", "bg_alt": "#1a1011", "fg": "#e6dcdc", "fg_dim": "#7a5256",
-        "accent": "#ff2a3d", "blue": "#c4303f", "cyan": "#ff7a7a", "green": "#8aa37b",
+        "accent": "#ff2a3d", "blue": "#e05070", "cyan": "#ff7a7a", "green": "#8aa37b",
         "red": "#ff5566", "yellow": "#e8a04c",
     },
     # Pure black and white. Every role is a different grey on purpose: apply-theme recolours files by
