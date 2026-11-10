@@ -3,6 +3,7 @@
 * {
 	all: initial;
 	color: @main-fg;
+	text-align: center;
 }
 
 @import "styles/fonts.css";
@@ -111,7 +112,8 @@
 #custom-notifications { color: @cyan; }
 #backlight            { color: @cyan; }
 #battery              { color: @blue; }
-#idle_inhibitor       { color: @inactive; }
+#idle_inhibitor       { color: @cyan; }
+#custom-ganancias     { color: @green; }
 
 
 /* ── Workspaces ──────────────────────────────────────────────────────────── */
@@ -265,7 +267,7 @@ menuitem:hover {
 
 /* bottom stack */
 #bluetooth            { font-size: 19.5px; padding: 4px 0; }         /* 34.0 */
-#pulseaudio.output    { font-size: 22px;   padding: 3px 0; }         /* 35.4 */
+#pulseaudio.output    { font-size: 16px;   padding: 7px 0; }         /* 35.4 */
 #pulseaudio.input     { font-size: 15px;   padding: 7px 0; }         /* 34.0 */
 #network              { font-size: 22px;   padding: 3px 0; }         /* 35.4 */
 #custom-vpn           { font-size: 19.5px; padding: 4px 0; }         /* 34.0 */
