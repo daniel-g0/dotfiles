@@ -84,7 +84,7 @@
 }
 
 #custom-power:hover {
-	background: @hover-bg;
+	color: @hover-fg;
 }
 
 /* ── Idle inhibitor ──────────────────────────────────────────────────────── */
