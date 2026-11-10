@@ -1,6 +1,33 @@
 #!/usr/bin/env bash
+# Toggle waybar between minimal (nix+number+moon) and full (all icons).
+# Writes to layout.css; reload_style_on_change:true picks it up — no waybar restart.
+export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 STATE="/tmp/waybar-mode"
-[[ -f "$STATE" ]] && rm "$STATE" || touch "$STATE"
-pkill waybar
-sleep 0.15
-bash ~/.config/waybar/launch &
+LAYOUT="${XDG_RUNTIME_DIR:-/tmp}/waybar-layout.css"
+
+if [[ -f "$STATE" ]]; then
+    rm "$STATE"
+    printf '#left, #left * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#right, #right * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#custom-user { margin: 0; }\n#custom-power { margin: 0; }\n' > "$LAYOUT"
+else
+    touch "$STATE"
+    MH=$(hyprctl monitors -j 2>/dev/null | jq -r 'sort_by(.id) | .[0] | ((.height / .scale) | floor)' 2>/dev/null || echo 1080)
+    GAP=$(hyprctl getoption general:gaps_out -j 2>/dev/null | jq -r '.css // empty' | awk '{print $1}')
+    GAP=${GAP:-20}
+    GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 0 || echo 40.0)
+    CLOCK_SLOT=$(locale -a 2>/dev/null | grep -qi 'en_US.utf' && echo 0 || echo 41.4)
+    # TOP_H = nix(35.4) + group/left slots (temp+mem+cpu+gpu+disk+clock = 244.9 total, minus absent modules)
+    # 280.3 = nix + all top slots; subtract absent gpu/clock slots.
+    TOP_H=$(awk -v g="$GPU_SLOT" -v c="$CLOCK_SLOT" 'BEGIN { printf "%.1f", 280.3 - g - c }')
+    # BOT_H = group/right without idle_inhibitor, desktop (no laptop backlight/battery)
+    # bluetooth(34.0)+output(35.4)+input(34.0)+network(35.4)+vpn(34.0)+notifications(34.7)+ganancias(34.7) = 242.2
+    BOT_H=242.2
+    awk -v mh="$MH" -v gap="$GAP" -v top_h="$TOP_H" -v bot_h="$BOT_H" 'BEGIN {
+        half     = (mh - 2*gap - 4 - 34) / 2
+        top_free = half - top_h          # space above center, left side
+        bot_free = half - bot_h - 35.4  # space above center, right side (35.4 = power slot)
+        G        = bot_free / 2
+        mu       = top_free - G;  if (mu < 0) mu = 0
+        mp       = G;             if (mp < 0) mp = 0
+        printf "#custom-user  { margin: 0 0 %.0fpx; }\n#custom-power { margin: %.0fpx 0 0; }\n", mu, mp
+    }' > "$LAYOUT"
+fi

@@ -25,7 +25,7 @@
 
 	"group/right": {
 		"orientation": "vertical",
-		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications", "idle_inhibitor", "custom/ganancias"]
+		"modules": ["bluetooth", "group/group-volume", "group/laptop", "network", "custom/vpn", "custom/notifications", "custom/ganancias"]
 	},
 
 	"group/group-volume": {
@@ -95,8 +95,8 @@
 	},
 
 	"custom/power": {
-		"format": "󰤄",
-		"tooltip-format": "Power Menu",
+		"format": "󰔛",
+		"tooltip-format": "Sleep / Power Menu",
 		"menu": "on-click",
 		"menu-file": "~/.config/waybar/menus/power.xml",
 		"menu-actions": {
