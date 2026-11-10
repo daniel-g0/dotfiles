@@ -862,7 +862,6 @@ RECOLOR_FILES = [
     DOTFILES / "wm/wayland/waybar/scripts/nix-menu-settings",
     DOTFILES / "wm/wayland/waybar/scripts/nix-menu-power",
     DOTFILES / "wm/wayland/waybar/scripts/nix-options",
-    DOTFILES / "wm/wayland/waybar/scripts/ganancias",
 ]
 
 def apply_recolor(p, prev):

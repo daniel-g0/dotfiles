@@ -22,19 +22,20 @@ else
     read -r MH GAP < /tmp/waybar-screen 2>/dev/null || { MH=1080; GAP=20; }
     [[ -z "$MH" || "$MH" -lt 400 ]] && MH=1080
     [[ -z "$GAP" ]] && GAP=20
-    GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 0 || echo 40.0)
-    CLOCK_SLOT=$(locale -a 2>/dev/null | grep -qi 'en_US.utf' && echo 0 || echo 41.4)
-    # TOP_H = nix(35.4) + group/left (temp+mem+cpu+disk+clock=204.9, minus absent gpu/clock)
-    # 280.3 = full nix + all top slots combined; subtract absent slots.
-    TOP_H=$(awk -v g="$GPU_SLOT" -v c="$CLOCK_SLOT" 'BEGIN { printf "%.1f", 280.3 - g - c }')
-    # BOT_H = group/right (bluetooth+output+input+network+vpn+notifications+ganancias = 242.2, desktop no laptop)
-    BOT_H=242.2
-    awk -v mh="$MH" -v gap="$GAP" -v top_h="$TOP_H" -v bot_h="$BOT_H" 'BEGIN {
-        half     = (mh - 2*gap - 4 - 34) / 2
-        top_free = half - top_h          # space between top stack and center
-        bot_free = half - bot_h - 35.4  # space between center and bottom stack (excl. power)
-        mu       = top_free / 2;  if (mu < 0) mu = 0   # equal gaps: nix→stats = stats→"1"
-        mp       = bot_free / 2;  if (mp < 0) mp = 0   # equal gaps: "1"→icons = icons→power
+    # Top stack: nix (35.4) + 6 icons (temp 34.7, mem 35.4, cpu 35.4, disk 34.0, backlight 34.7, battery 34.7)
+    # = 244.4. A gpu slot (34.0) only counts when nvidia-smi exists.
+    GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 34.0 || echo 0)
+    TOP_H=$(awk -v g="$GPU_SLOT" 'BEGIN { printf "%.1f", 244.4 + g }')
+    # Bottom stack: 6 icons (bluetooth 34.0, out 35.4, in 34.0, network 35.4, vpn 34.0, bell 34.7) + power (35.4)
+    # = 242.9. Same count of slots as the top one, so both sides get the same spacing.
+    BOT_H=242.9
+    CLOCK_H=42.7  # centre box: two text lines (13px) + 2×4px padding
+    awk -v mh="$MH" -v gap="$GAP" -v top_h="$TOP_H" -v bot_h="$BOT_H" -v clock_h="$CLOCK_H" 'BEGIN {
+        half     = (mh - 2*gap - 4 - clock_h) / 2
+        top_free = half - top_h          # space between top stack and clock
+        bot_free = half - bot_h          # space between clock and bottom stack
+        mu       = top_free / 2;  if (mu < 0) mu = 0   # equal gaps: nix→stats = stats→clock
+        mp       = bot_free / 2;  if (mp < 0) mp = 0   # equal gaps: clock→icons = icons→power
         printf "#custom-user  { margin: 0 0 %.0fpx; }\n#custom-power { margin: %.0fpx 0 0; }\n", mu, mp
     }' > "$LAYOUT"
 fi
