@@ -112,6 +112,7 @@ hl.env("XCURSOR_SIZE",     "24")
 hl.env("HYPRCURSOR_THEME", "capitaine-cursors")
 hl.env("HYPRCURSOR_SIZE",  "24")
 hl.env("GTK_THEME",       "Adwaita:dark")
+hl.env("LC_ALL",          "en_US.UTF-8")
 
 hl.config({
     cursor = {
