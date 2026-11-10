@@ -31,11 +31,10 @@ else
     BOT_H=242.2
     awk -v mh="$MH" -v gap="$GAP" -v top_h="$TOP_H" -v bot_h="$BOT_H" 'BEGIN {
         half     = (mh - 2*gap - 4 - 34) / 2
-        top_free = half - top_h          # free space on left side of center
-        bot_free = half - bot_h - 35.4  # free space on right side (35.4 = power slot)
-        G        = bot_free / 2
-        mu       = top_free - G;  if (mu < 0) mu = 0
-        mp       = G;             if (mp < 0) mp = 0
+        top_free = half - top_h          # space between top stack and center
+        bot_free = half - bot_h - 35.4  # space between center and bottom stack (excl. power)
+        mu       = top_free / 2;  if (mu < 0) mu = 0   # equal gaps: nix→stats = stats→"1"
+        mp       = bot_free / 2;  if (mp < 0) mp = 0   # equal gaps: "1"→icons = icons→power
         printf "#custom-user  { margin: 0 0 %.0fpx; }\n#custom-power { margin: %.0fpx 0 0; }\n", mu, mp
     }' > "$LAYOUT"
 fi
