@@ -11,7 +11,7 @@ GAP=${GAP:-20}
 # The stack heights are constants of the slot system (bottom: icons + power = 278.3px, number slot 34px).
 # Top stack: nix (35.4) + temp (40.7) + memory (41.4) + cpu (41.4) + gpu (40.0) + disk (40.0) + clock (41.4) = 280.3px.
 # gpu is hidden when nvidia-smi is absent (exec-if fails) → subtract its slot (40.0px) from the top constant.
-GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 40.0 || echo 0)
+GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 0 || echo 40.0)
 TOP_H=$(awk -v g="$GPU_SLOT" 'BEGIN { printf "%.1f", 280.3 - g }')
 
 LAYOUT="${XDG_RUNTIME_DIR:-/tmp}/waybar-layout.css"
