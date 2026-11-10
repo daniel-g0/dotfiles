@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 PRIMARY=$(hyprctl monitors -j 2>/dev/null | jq -r 'sort_by(.id) | .[0].name // empty')
 [[ -z "$PRIMARY" ]] && PRIMARY="eDP-1"
 
