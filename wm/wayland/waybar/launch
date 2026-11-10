@@ -4,43 +4,20 @@ export LC_ALL=en_US.UTF-8
 PRIMARY=$(hyprctl monitors -j 2>/dev/null | jq -r 'sort_by(.id) | .[0].name // empty')
 [[ -z "$PRIMARY" ]] && PRIMARY="eDP-1"
 
-# The bar's top and bottom edges must line up with the windows', which sit gaps_out from the screen
-# edge (Hyprland's general:gaps_out, first value = top) — so that is the bar's top/bottom margin.
 GAP=$(hyprctl getoption general:gaps_out -j 2>/dev/null | jq -r '.css // empty' | awk '{print $1}')
 GAP=${GAP:-20}
 
+# Always start minimal: nix (top) · desktop number (center) · moon/power (bottom).
+# User clicks the number to expand (toggle-layout writes new CSS; reload_style_on_change picks it up).
 LAYOUT="${XDG_RUNTIME_DIR:-/tmp}/waybar-layout.css"
-MH=$(hyprctl monitors -j 2>/dev/null | jq -r --arg n "$PRIMARY" '.[] | select(.name == $n) | ((.height / .scale) | floor)')
-STATE="/tmp/waybar-mode"
-
-if [[ -f "$STATE" ]]; then
-    # Full layout: compute margins so the desktop number is centered.
-    # gap_above = gap_below → margin_user - margin_power = top_total - bot_total
-    # Setting G = bot_free/2 as the gap on each side of the number achieves this.
-    CONFIG="$HOME/.config/waybar/config-full.jsonc"
-    GPU_SLOT=$(which nvidia-smi &>/dev/null && echo 0 || echo 40.0)
-    CLOCK_SLOT=$(locale -a 2>/dev/null | grep -qi 'en_US.utf' && echo 0 || echo 41.4)
-    TOP_H=$(awk -v g="$GPU_SLOT" -v c="$CLOCK_SLOT" 'BEGIN { printf "%.1f", 280.3 - g - c }')
-    awk -v mh="${MH:-1080}" -v gap="$GAP" -v top_h="$TOP_H" 'BEGIN {
-        half     = (mh - 2*gap - 4 - 34) / 2
-        top_free = half - 35.4 - top_h
-        bot_free = half - 278.3 - 35.4
-        G        = bot_free / 2
-        mu       = top_free - G;  if (mu < 0) mu = 0
-        mp       = G;             if (mp < 0) mp = 0
-        printf "#custom-user  { margin: 0 0 %.0fpx; }\n#custom-power { margin: %.0fpx 0 0; }\n", mu, mp
-    }' > "$LAYOUT"
-else
-    # Minimal layout: nix (top) · desktop number (center) · sleep icon (bottom).
-    CONFIG="$HOME/.config/waybar/config.jsonc"
-    printf '#custom-user { margin: 0; }\n' > "$LAYOUT"
-fi
+rm -f /tmp/waybar-mode
+printf '#left, #left * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#right, #right * { font-size: 0; padding: 0; margin: 0; min-height: 0; min-width: 0; color: transparent; border: none; }\n#custom-user { margin: 0; }\n#custom-power { margin: 0; }\n' > "$LAYOUT"
 
 TMP=$(mktemp --suffix=.jsonc)
 trap "rm -f $TMP" EXIT
 
 sed -e "s|\"reload_style_on_change\": true|\"output\": \"$PRIMARY\", \"reload_style_on_change\": true|" \
     -e "s|\"margin\": \"[^\"]*\"|\"margin\": \"$GAP 4\"|" \
-    "$CONFIG" > "$TMP"
+    "$HOME/.config/waybar/config.jsonc" > "$TMP"
 
 exec waybar --config "$TMP"

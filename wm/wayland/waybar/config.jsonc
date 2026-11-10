@@ -13,9 +13,10 @@
 	// is centred as a whole). The top stack hangs from the top, the bottom one from the bottom; the
 	// gaps under nix / above power are margins that `launch` computes from the monitor height
 	// (waybar-layout.css), which makes the two free gaps beside the number equal to them.
-	"modules-left":   ["custom/user"],
+	// All modules always loaded. Minimal/full appearance is toggled via CSS (layout.css, see launch).
+	"modules-left":   ["custom/user", "group/left"],
 	"modules-center": ["custom/desktop"],
-	"modules-right":  ["idle_inhibitor"],
+	"modules-right":  ["group/right", "custom/power"],
 
 	"include": ["~/.config/waybar/modules.jsonc"]
 }
