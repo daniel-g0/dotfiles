@@ -10,6 +10,15 @@
 
 Personal dotfiles. Files in this repo are the source of truth — `~/.config/*` are symlinks pointing here. Theme: Tokyo Night across all tools.
 
+### Git LFS
+All raster images are LFS: `.gitattributes` has `*.jpg`, `*.jpeg`, `*.png`, `*.webp`. Hooks (`pre-push`, `post-checkout`, …) are installed per clone via `git lfs install`; a fresh clone needs `git lfs` available (it is in the system packages) or the images come out as 132-byte pointer files.
+- **Check before committing a new image/binary type** — add its pattern to `.gitattributes` *first*. A pattern added afterwards does not touch what is already committed, and fixing it means rewriting history.
+- Verify a file really went through LFS: `git lfs ls-files | grep <file>` (or `git cat-file -p HEAD:<file>` shows `version https://git-lfs.github.com/spec/v1`).
+- 2026-11-16: history was rewritten with `git lfs migrate import --everything --include="*.png,*.jpeg"` and force-pushed, because PNG/JPEG wallpapers had gone in as plain blobs. All commit hashes changed; old clones must be re-cloned. `refs/pull/1/head` on GitHub still points at the pre-rewrite history.
+- After a migrate/rewrite the working tree holds pointer files until `git lfs checkout` — run it, or wallpapers, hyprlock and the Brave icons break.
+- SVGs are text and stay plain.
+- `shell/nushell/history.txt` is gitignored and no longer tracked (it was committed once, in the repo-reorganisation commit, before the ignore rule; still present in old history, reviewed 2026-11-16: only `keepass`/`ssh-keygen` commands, no secrets).
+
 ## Symlink map
 
 | Repo path | Symlinked to |
@@ -310,7 +319,7 @@ Wanted eventually; deliberately not implemented yet. Findings so you don't redo 
   3. `hyprland.lua` autostart sets the static wallpaper with `awww img` (≈ line 96); a video wallpaper needs an mpvpaper exec there to survive login.
   4. hyprlock paints the *current wallpaper* blurred, so it would show a single frame.
   5. Animated = constant CPU/GPU use: pause it on battery / when idle (a hypridle hook).
-- **Repo size:** wallpapers live in `wm/wallpapers/` (19 MB, currently all stills) — videos/GIFs would bloat git quickly; consider git-lfs (already in the system packages) or keeping them out of the repo.
+- **Repo size:** wallpapers live in `wm/wallpapers/` (~47 MB, all stills, stored in git-lfs — see "Git LFS" under Repo). Videos/GIFs would bloat the repo quickly: add `*.gif`/`*.mp4`/`*.webm` to `.gitattributes` *before* the first commit of one, or keep them out of the repo.
 
 ---
 
