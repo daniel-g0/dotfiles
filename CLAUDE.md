@@ -2,6 +2,8 @@
 
 ## TODO (urgent)
 
+- **Teams screen share unverified** — switched Hyprland to UWSM (`configuration.nix`) to get `graphical-session.target` → `xdg-desktop-portal` up. Needs `nixos-re-sw`, re-login, then the `systemctl --user is-active …` check and a share test in Teams (see NixOS → System).
+
 - **Waybar layout unverified** — clock-in-centre + 6/6 icon split was done without a screenshot. Check the expanded bar: gaps equal? clock centred? If not, measure the real clock height and adjust `CLOCK_H` in `scripts/toggle-layout`.
 
 ## Repo
@@ -242,6 +244,37 @@ Tokyo Night palette; buttons with 20px border-radius; layer top, dock mode.
 - **Bar edges line up with the windows:** the bar's top/bottom margin is Hyprland's `general:gaps_out` (20), read by `launch` and written into the temp config (`config.jsonc` has the same default). Verified with `hyprctl layers` / `hyprctl clients`: bar y=20…1060, windows 20…1060 (incl. 3px border). If you change `gaps_out`, restart the bar.
 - **Restart it with `pkill waybar` (not `-x`)** — the real process name is `.waybar-wrapped`, so `pkill -x waybar` matches nothing and a second bar stacks next to the first one (they showed up as two `waybar` layers in `hyprctl layers`). Always check there is one: `pgrep -af '^waybar --config'`.
 
+### Performance / thermals (investigated 2026-11-16, laptop hit 94 °C)
+
+**Root cause: the animated waybar border.** `#waybar` in `style.css` had `animation: border-flow 8s linear infinite` (a 400 %-tall gradient sliding through a 2 px border) on top of two blurred `box-shadow` glows. Waybar is GTK3 and paints with Cairo **on the CPU**, so it restyled and repainted the whole bar every frame, forever: ~60 % of one core, 151 CPU-minutes in 4 h 17 min uptime, all on the main thread (the other 22 threads idle, no child process busy).
+
+Measured A/B on a quiet system (waybar CPU, 15 s windows):
+
+| Variant | Waybar CPU |
+|---|---|
+| animation + glow shadows (old) | ~60 % |
+| animation, glow shadows removed | ~17 % |
+| **static glow, animation off (current)** | **0 %** |
+
+- `animation-timing-function: steps(N)` and a 60 s duration did **not** help (~60 %): GTK ticks the frame clock every frame regardless. Static glow alone is free; the *animation* is what costs.
+- The animation line is commented out in `style.css` with a note; the `@keyframes` block is kept so re-enabling is one line. Don't turn it back on blindly.
+- **Hyprland's own animated border is fine.** It is a GL shader on the GPU (only an angle uniform changes). Hyprland CPU with `borderangle` loop on vs off: 0 % vs 0–2 %. GPU (Iris Xe, `i915`): GPU "busy" (= 100 % − RC6 residency) ~12 % on vs ~5 % off, so ~7 points of extra wake time, small. Keep it. Turn it off only if battery/heat matters: `hyprctl eval 'hl.animation({ leaf = "borderangle", enabled = false })'` (runtime only; `Super+R` restores the config).
+- **Waybar cannot do a GPU border.** GTK3/Cairo has no GPU path and Hyprland draws borders only on windows, not layer surfaces (not seen in 0.56.2; checked via binary strings only). Options if ever wanted: (A) a small GTK4 layer-shell overlay drawing the glow ring behind a transparent waybar (must track the bar size/margins that `toggle-layout` changes, and recolour with `apply-theme`), or (B) replace waybar with Quickshell (Qt Quick, GPU). Neither is installed or built. Static glow was accepted instead.
+
+Other contributors seen (not changed):
+- A render job (`remotion` + headless chromium + ffmpeg, `--concurrency=4`) was running and pushed load to ~6.8; it was legitimate work, not a leak. It used 4.2 GB RSS; swap sat at ~4 GB.
+- CPU governor `performance` on AC, `intel_pstate`, `auto-cpufreq` enabled with no `/etc/auto-cpufreq.conf` (defaults: performance on AC). Not touched.
+- `custom/eyecare` forks bash every 1 s; `custom/vpn` every 5 s. Small.
+- Waybar once died on its own with no journal/`dmesg` trace (cause unknown); restart with `bash ~/.config/waybar/launch`.
+
+**Measuring gotchas (they bit this investigation):**
+- NixOS process names are wrapped: `.waybar-wrapped`, `.Hyprland-wrapp`. `pgrep -x waybar` / `pgrep -x Hyprland` return nothing, and `pgrep -f` matches your own shell command line. With an empty PID, `/proc/$pid/stat` collapses to `/proc/stat` and gives garbage. Use `pgrep -x .waybar-wrapped`, or the PID from `ps`.
+- CPU % = delta of utime+stime (`/proc/PID/stat` fields 14+15) / `getconf CLK_TCK` / seconds. `strace` is blocked (`kernel.yama.ptrace_scope=1`).
+- `hyprctl keyword` does not work with the Lua config ("Use eval"); use `hyprctl eval 'hl.animation({...})'`.
+- `apply-theme` rewrites `style.css` colours at any time. Never restore a backup copy of the file over it (that reverts the theme); patch single lines only. `reload_style_on_change` applies edits live.
+- When scripting sed edits to test CSS variants, assert the replacement applied. A silently failed sed once made three "variants" all identical.
+- GPU busy without `intel_gpu_top`: read `/sys/class/drm/card1/gt/gt0/rc6_residency_ms` over a window; `rps_act_freq_mhz` reads ~0 whenever the GPU is asleep, so don't trust it as an average clock.
+
 ---
 
 ## Swaync
@@ -289,6 +322,7 @@ Wanted eventually; deliberately not implemented yet. Findings so you don't redo 
 - Boot: systemd-boot, quiet, latest kernel, max 3 generations
 - Audio: PipeWire + PulseAudio compat layer + ALSA 32-bit + RTKit
 - Display: Hyprland enabled, X server + dconf + polkit
+- **Hyprland via UWSM** (`programs.hyprland.withUWSM = true`, SDDM autologin `defaultSession = "hyprland-uwsm"`). Raw Hyprland left `graphical-session.target` inactive, so `xdg-desktop-portal.service` failed with `Dependency failed for Portal service.` and Teams screen share (ScreenCast via PipeWire) never got a portal/picker. Changed 2026-11-16 — **not yet rebuilt/verified** (see TODO). Check: `systemctl --user is-active graphical-session.target xdg-desktop-portal` → both `active`. If login breaks, boot the previous generation and revert those two lines.
 - Docker: rootless mode
 - Printing: CUPS
 - Network: NetworkManager, hostname `nixos`
@@ -354,4 +388,5 @@ To upgrade: `cswap upgrade` or `uv tool upgrade claude-swap`.
 - Don't remove `nofail` from the SHARED-PART mount — it must not block boot if missing.
 - Don't set `NU_BANNER=1` in a normal kitty launch — it triggers fastfetch/fortune on every new shell in that window.
 - Don't add styles to `wayland/waybar/styles/modules-*.css` — those files are **not imported** anywhere and have zero effect. All waybar CSS goes in `wayland/waybar/style.css`.
+- Don't re-enable the waybar `border-flow` animation (or an animated `box-shadow`) — GTK3 repaints the bar on the CPU every frame (~60 % of a core, 94 °C). See "Performance / thermals" under Waybar.
 - Don't symlink cursor dirs to `~/.config/cursors` expecting X fallback — standard path is `~/.icons/`. `~/.icons/default/index.theme` controls the X11 default cursor (was `Inherits=NixCursor`, fixed to `Inherits=Layan-cursors`).

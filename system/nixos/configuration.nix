@@ -177,7 +177,7 @@ in
   services.xserver.enable = true;
   programs.hyprland = {
     enable   = true;
-    withUWSM = false;
+    withUWSM = true;   # systemd session -> graphical-session.target -> xdg-desktop-portal (Teams screen share)
   };
 
   # Autologin — SDDM skips greeter, Hyprland starts, qylock locks immediately.
@@ -190,7 +190,7 @@ in
     enable = true;
     user   = "user";
   };
-  services.displayManager.defaultSession = "hyprland";
+  services.displayManager.defaultSession = "hyprland-uwsm";
 
   hardware.uinput.enable = true; # for idling
 
