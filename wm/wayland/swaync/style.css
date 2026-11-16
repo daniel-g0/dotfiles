@@ -4,34 +4,34 @@
 
 :root {
   /* Core palette */
-  --tn-bg:        #0a0a0b;
-  --tn-bg-alt:    #1a1011;
-  --tn-surface:   #1a1011;
-  --tn-surface2:  #7a5256;
-  --tn-surface3:  #7a5256;
-  --tn-fg:        #e6dcdc;
-  --tn-fg-dim:    rgba(230, 220, 220, 0.55);
-  --tn-accent:    #ff2a3d;
-  --tn-blue:      #c4303f;
-  --tn-cyan:      #ff7a7a;
-  --tn-green:     #8aa37b;
-  --tn-yellow:    #e8a04c;
-  --tn-red:       #ff5566;
+  --tn-bg:        #08141f;
+  --tn-bg-alt:    #0f2233;
+  --tn-surface:   #0f2233;
+  --tn-surface2:  #4f7088;
+  --tn-surface3:  #4f7088;
+  --tn-fg:        #d3e6f2;
+  --tn-fg-dim:    rgba(211, 230, 242, 0.55);
+  --tn-accent:    #7aa5ff;
+  --tn-blue:      #3d9bd9;
+  --tn-cyan:      #4fd6e0;
+  --tn-green:     #58d6a0;
+  --tn-yellow:    #f2c76e;
+  --tn-red:       #f0647a;
 
   /* Swaync semantic vars */
-  --cc-bg:                    rgba(10, 10, 11, 0.97);
-  --noti-border-color:        rgba(26, 16, 17, 0.9);
-  --noti-bg:                  10, 10, 11;     /* #0a0a0b as r,g,b for rgba() */
+  --cc-bg:                    rgba(8, 20, 31, 0.97);
+  --noti-border-color:        rgba(15, 34, 51, 0.9);
+  --noti-bg:                  8, 20, 31;     /* #08141f as r,g,b for rgba() */
   --noti-bg-alpha:            0.97;
-  --noti-bg-opaque:           rgb(10, 10, 11);
-  --noti-bg-darker:           rgb(8, 8, 9);
-  --noti-bg-hover:            rgb(26, 16, 17);
-  --noti-bg-focus:            rgba(26, 16, 17, 0.7);
+  --noti-bg-opaque:           rgb(8, 20, 31);
+  --noti-bg-darker:           rgb(6, 17, 26);
+  --noti-bg-hover:            rgb(15, 34, 51);
+  --noti-bg-focus:            rgba(15, 34, 51, 0.7);
   --noti-close-bg:            rgba(65, 72, 104, 0.5);
   --noti-close-bg-hover:      rgba(247, 118, 142, 0.25);
-  --text-color:               #e6dcdc;
+  --text-color:               #d3e6f2;
   --text-color-disabled:      rgba(192, 202, 245, 0.4);
-  --bg-selected:              #c4303f;
+  --bg-selected:              #3d9bd9;
 
   --notification-icon-size:   56px;
   --notification-app-icon-size: calc(var(--notification-icon-size) / 3);
@@ -68,9 +68,9 @@
 @define-color noti-bg-focus    rgba(36, 40, 59, 0.7);
 @define-color noti-close-bg    rgba(65, 72, 104, 0.5);
 @define-color noti-close-bg-hover rgba(247, 118, 142, 0.25);
-@define-color text-color       #e6dcdc;
+@define-color text-color       #d3e6f2;
 @define-color text-color-disabled rgba(192, 202, 245, 0.4);
-@define-color bg-selected      #c4303f;
+@define-color bg-selected      #3d9bd9;
 
 /* ── Globals ── */
 

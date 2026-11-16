@@ -2,12 +2,12 @@
 
 * {
     bg:        #0d0d14f7;
-    fg:        #b49292;
-    fg-dim:    #7a5256;
-    blue:      #c4303f;
-    purple:    #ff2a3d;
-    sel-bg:    #c4303f26;
-    border-c:  #c4303f40;
+    fg:        #83afca;
+    fg-dim:    #4f7088;
+    blue:      #3d9bd9;
+    purple:    #7aa5ff;
+    sel-bg:    #3d9bd926;
+    border-c:  #3d9bd940;
 
     background-color: transparent;
     text-color:       #a9b1d6;
@@ -20,10 +20,10 @@ window {
     x-offset:         8px;
     y-offset:         40px;
     width:            220px;
-    background-color: #060606f7;
+    background-color: #080a0df7;
     border-radius:    16px;
     border:           1px;
-    border-color:     #c4303f40;
+    border-color:     #3d9bd940;
     padding:          6px;
 }
 
@@ -53,7 +53,7 @@ element {
 }
 
 element normal.normal   { background-color: transparent; text-color: #a9b1d6; }
-element selected.normal { background-color: #c4303f26;   text-color: #c4303f; }
+element selected.normal { background-color: #3d9bd926;   text-color: #3d9bd9; }
 
 element-text {
     background-color: transparent;

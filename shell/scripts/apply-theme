@@ -1118,6 +1118,66 @@ PRESETS = {
         "accent": "#ffffff", "blue": "#b5b5b5", "cyan": "#d2d2d2", "green": "#828282",
         "red": "#ebebeb", "yellow": "#9c9c9c",
     },
+    "github-dark": {
+        "bg": "#0d1117", "bg_alt": "#161b22", "fg": "#c9d1d9", "fg_dim": "#6e7681",
+        "accent": "#d2a8ff", "blue": "#58a6ff", "cyan": "#79c0ff", "green": "#7ee787",
+        "red": "#ff7b72", "yellow": "#e3b341",
+    },
+    "synthwave": {
+        "bg": "#262335", "bg_alt": "#2e2a42", "fg": "#f4eeff", "fg_dim": "#848bbd",
+        "accent": "#ff7edb", "blue": "#36f9f6", "cyan": "#72f1b8", "green": "#72f1b9",
+        "red": "#fe4450", "yellow": "#fede5d",
+    },
+    "oxocarbon": {
+        "bg": "#161616", "bg_alt": "#262626", "fg": "#f2f4f8", "fg_dim": "#6f6f6f",
+        "accent": "#be95ff", "blue": "#78a9ff", "cyan": "#33b1ff", "green": "#42be65",
+        "red": "#ee5396", "yellow": "#ffe97b",
+    },
+    "poimandres": {
+        "bg": "#1b1e28", "bg_alt": "#252b37", "fg": "#e4f0fb", "fg_dim": "#767c9d",
+        "accent": "#a6accd", "blue": "#89ddff", "cyan": "#5de4c7", "green": "#5fb3a1",
+        "red": "#d0679d", "yellow": "#fffac2",
+    },
+    "vesper": {
+        "bg": "#101010", "bg_alt": "#1c1c1c", "fg": "#d4d4d4", "fg_dim": "#7c7c7c",
+        "accent": "#ffc799", "blue": "#99ffe4", "cyan": "#a5e3d0", "green": "#99c7a8",
+        "red": "#ff8080", "yellow": "#e9d17f",
+    },
+    "iceberg": {
+        "bg": "#161821", "bg_alt": "#1e2132", "fg": "#c6c8d1", "fg_dim": "#6b7089",
+        "accent": "#a093c7", "blue": "#84a0c6", "cyan": "#89b8c2", "green": "#b4be82",
+        "red": "#e27878", "yellow": "#e2a478",
+    },
+    "zenburn": {
+        "bg": "#3f3f3f", "bg_alt": "#4f4f4f", "fg": "#dcdccc", "fg_dim": "#7f9f7f",
+        "accent": "#dc8cc3", "blue": "#8cd0d3", "cyan": "#93e0e3", "green": "#7f9f7e",
+        "red": "#cc9393", "yellow": "#f0dfaf",
+    },
+    "cyberpunk": {
+        "bg": "#0b0b14", "bg_alt": "#161626", "fg": "#e0f7ff", "fg_dim": "#5a6a8a",
+        "accent": "#ff2e97", "blue": "#00e5ff", "cyan": "#00ffd5", "green": "#39ff14",
+        "red": "#ff3860", "yellow": "#fcee0a",
+    },
+    "sunset": {
+        "bg": "#1c1420", "bg_alt": "#2a1d2e", "fg": "#f6e6e0", "fg_dim": "#8f7482",
+        "accent": "#ff7eb6", "blue": "#ff9e64", "cyan": "#ffc2a1", "green": "#b5d99c",
+        "red": "#ff5c7a", "yellow": "#ffd166",
+    },
+    "deep-ocean": {
+        "bg": "#08141f", "bg_alt": "#0f2233", "fg": "#d3e6f2", "fg_dim": "#4f7088",
+        "accent": "#7aa5ff", "blue": "#3d9bd9", "cyan": "#4fd6e0", "green": "#58d6a0",
+        "red": "#f0647a", "yellow": "#f2c76e",
+    },
+    "sakura": {
+        "bg": "#1f1a1e", "bg_alt": "#2b2429", "fg": "#f3e4ea", "fg_dim": "#8c7480",
+        "accent": "#f4a6c0", "blue": "#c9a0dc", "cyan": "#9fd8d0", "green": "#b5d6a7",
+        "red": "#e8607a", "yellow": "#f2cf9a",
+    },
+    "matrix": {
+        "bg": "#050a06", "bg_alt": "#0c1710", "fg": "#c8f7d0", "fg_dim": "#3e6b4a",
+        "accent": "#20e070", "blue": "#33ff99", "cyan": "#80ffcf", "green": "#00ff41",
+        "red": "#ff4d4d", "yellow": "#d6e86a",
+    },
 }
 
 def main():

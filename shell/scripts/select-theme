@@ -3,7 +3,7 @@
 set -euo pipefail
 
 APPLY="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/apply-theme"
-THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine dracula one-dark monokai solarized-dark everforest ayu-dark kanagawa nightfox palenight horizon night-owl material-ocean crimson claude redline monochrome)
+THEMES=(tokyo-night warm-earth catppuccin nord gruvbox rose-pine dracula one-dark monokai solarized-dark everforest ayu-dark kanagawa nightfox palenight horizon night-owl material-ocean crimson claude redline monochrome github-dark synthwave oxocarbon poimandres vesper iceberg zenburn cyberpunk sunset deep-ocean sakura matrix)
 
 # swatch <#rrggbb> <label>
 swatch() {
@@ -113,6 +113,54 @@ preview() {
     claude)
       swatch_row "bg / text" "#1a1510" "#e8dcc8" "#7a6e5e" "#252017"
       swatch_row "accents"   "#d97757" "#c4885f" "#8faa90" "#8fa876" "#d4a843" "#c44b4b"
+      ;;
+    github-dark)
+      swatch_row "bg / text" "#0d1117" "#c9d1d9" "#6e7681" "#161b22"
+      swatch_row "accents"   "#d2a8ff" "#58a6ff" "#79c0ff" "#7ee787" "#e3b341" "#ff7b72"
+      ;;
+    synthwave)
+      swatch_row "bg / text" "#262335" "#f4eeff" "#848bbd" "#2e2a42"
+      swatch_row "accents"   "#ff7edb" "#36f9f6" "#72f1b8" "#72f1b9" "#fede5d" "#fe4450"
+      ;;
+    oxocarbon)
+      swatch_row "bg / text" "#161616" "#f2f4f8" "#6f6f6f" "#262626"
+      swatch_row "accents"   "#be95ff" "#78a9ff" "#33b1ff" "#42be65" "#ffe97b" "#ee5396"
+      ;;
+    poimandres)
+      swatch_row "bg / text" "#1b1e28" "#e4f0fb" "#767c9d" "#252b37"
+      swatch_row "accents"   "#a6accd" "#89ddff" "#5de4c7" "#5fb3a1" "#fffac2" "#d0679d"
+      ;;
+    vesper)
+      swatch_row "bg / text" "#101010" "#d4d4d4" "#7c7c7c" "#1c1c1c"
+      swatch_row "accents"   "#ffc799" "#99ffe4" "#a5e3d0" "#99c7a8" "#e9d17f" "#ff8080"
+      ;;
+    iceberg)
+      swatch_row "bg / text" "#161821" "#c6c8d1" "#6b7089" "#1e2132"
+      swatch_row "accents"   "#a093c7" "#84a0c6" "#89b8c2" "#b4be82" "#e2a478" "#e27878"
+      ;;
+    zenburn)
+      swatch_row "bg / text" "#3f3f3f" "#dcdccc" "#7f9f7f" "#4f4f4f"
+      swatch_row "accents"   "#dc8cc3" "#8cd0d3" "#93e0e3" "#7f9f7e" "#f0dfaf" "#cc9393"
+      ;;
+    cyberpunk)
+      swatch_row "bg / text" "#0b0b14" "#e0f7ff" "#5a6a8a" "#161626"
+      swatch_row "accents"   "#ff2e97" "#00e5ff" "#00ffd5" "#39ff14" "#fcee0a" "#ff3860"
+      ;;
+    sunset)
+      swatch_row "bg / text" "#1c1420" "#f6e6e0" "#8f7482" "#2a1d2e"
+      swatch_row "accents"   "#ff7eb6" "#ff9e64" "#ffc2a1" "#b5d99c" "#ffd166" "#ff5c7a"
+      ;;
+    deep-ocean)
+      swatch_row "bg / text" "#08141f" "#d3e6f2" "#4f7088" "#0f2233"
+      swatch_row "accents"   "#7aa5ff" "#3d9bd9" "#4fd6e0" "#58d6a0" "#f2c76e" "#f0647a"
+      ;;
+    sakura)
+      swatch_row "bg / text" "#1f1a1e" "#f3e4ea" "#8c7480" "#2b2429"
+      swatch_row "accents"   "#f4a6c0" "#c9a0dc" "#9fd8d0" "#b5d6a7" "#f2cf9a" "#e8607a"
+      ;;
+    matrix)
+      swatch_row "bg / text" "#050a06" "#c8f7d0" "#3e6b4a" "#0c1710"
+      swatch_row "accents"   "#20e070" "#33ff99" "#80ffcf" "#00ff41" "#d6e86a" "#ff4d4d"
       ;;
   esac
 }

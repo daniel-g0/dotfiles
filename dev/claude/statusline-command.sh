@@ -4,11 +4,11 @@
 # Also forwards to caveman-statusline if active.
 
 # --- Colours (Tokyo Night palette) ---
-BLUE='\033[38;2;196;48;63m'  # #c4303f
-GREEN='\033[38;2;138;163;123m'  # #8aa37b
-YELLOW='\033[38;2;232;160;76m'  # #e8a04c
-PURPLE='\033[38;2;255;42;61m'  # #ff2a3d
-CYAN='\033[38;2;255;122;122m'  # #ff7a7a
+BLUE='\033[38;2;61;155;217m'  # #3d9bd9
+GREEN='\033[38;2;88;214;160m'  # #58d6a0
+YELLOW='\033[38;2;242;199;110m'  # #f2c76e
+PURPLE='\033[38;2;122;165;255m'  # #7aa5ff
+CYAN='\033[38;2;79;214;224m'  # #4fd6e0
 RESET='\033[0m'
 
 # --- Read JSON from stdin ---
