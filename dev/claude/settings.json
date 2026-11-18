@@ -20,7 +20,8 @@
       "Bash(scrot*)",
       "Bash(spectacle*)"
     ],
-    "defaultMode": "auto"
+    "defaultMode": "auto",
+    "blockReadsOutsideWorkingDirectories": true
   },
   "model": "sonnet",
   "statusLine": {
