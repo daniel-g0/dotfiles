@@ -230,7 +230,7 @@ in
     pulse.enable      = true;
   };
 
-  # Speech synthesis daemon — browsers (chromium/firefox) call this for TTS.
+  # Speech synthesis daemon — browsers (chromium) call this for TTS.
   # Without it, window.speechSynthesis.getVoices() returns []. Backends the
   # Inteli app's Voice card by default (see app/src/core/voice/speak.ts).
   services.speechd.enable = true;
@@ -332,7 +332,6 @@ in
 
       # Apps
       (pkgs.brave.override { commandLineArgs = "--disk-cache-size=209715200 --aggressive-cache-discard --disable-gpu-memory-buffer-video-frames --disable-features=AcceleratedVideoDecodeLinuxGL,UseChromeOSDirectVideoDecoder"; })
-      firefox
       teams-for-linux
       keepass
       veracrypt  # overridden in let block — GitHub mirror
@@ -485,15 +484,6 @@ in
     [Default Applications]
     inode/directory=yazi-kitty.desktop
   '';
-
-  # Pin Firefox's download dir to the English ~/Downloads (matches XDG_DOWNLOAD_DIR
-  # in ~/.config/user-dirs.dirs).
-  environment.etc."firefox/policies/policies.json".text = builtins.toJSON {
-    policies = {
-      DownloadDirectory = "\${home}/Downloads";
-      PromptForDownloadLocation = false;
-    };
-  };
 
   # This value pins the NixOS release for stateful data defaults.
   # Change only when intentionally migrating state. See: man configuration.nix
