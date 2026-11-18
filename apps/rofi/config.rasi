@@ -8,15 +8,15 @@ configuration {
 
 * {
     /* palette */
-    bg:       #08141f;
-    bg-alt:   #0f2233;
-    fg:       #d3e6f2;
-    fg-dim:   #4f7088;
-    blue:     #3d9bd9;
-    purple:   #7aa5ff;
-    cyan:     #4fd6e0;
-    green:    #58d6a0;
-    red:      #f0647a;
+    bg:       #0a0a0b;
+    bg-alt:   #1a1011;
+    fg:       #e6dcdc;
+    fg-dim:   #7a5256;
+    blue:     #e05070;
+    purple:   #ff2a3d;
+    cyan:     #ff7a7a;
+    green:    #8aa37b;
+    red:      #ff5566;
 
     /* override built-in solarized state variables */
     background:                  @bg;

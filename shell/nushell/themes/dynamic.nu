@@ -3,99 +3,99 @@
 # Palette: https://github.com/enkia/tokyo-night-vscode-theme
 export def main [] {
     return {
-        binary: '#7aa5ff'
-        block: '#3d9bd9'
-        cell-path: '#d3e6f2'
-        closure: '#4fd6e0'
-        custom: '#d3e6f2'
-        duration: '#f2c76e'
-        float: '#f2c76e'
-        glob: '#d3e6f2'
-        int: '#7aa5ff'
-        list: '#4fd6e0'
-        nothing: '#f0647a'
-        range: '#f2c76e'
-        record: '#3d9bd9'
-        string: '#58d6a0'
+        binary: '#ff2a3d'
+        block: '#e05070'
+        cell-path: '#e6dcdc'
+        closure: '#ff7a7a'
+        custom: '#e6dcdc'
+        duration: '#e8a04c'
+        float: '#e8a04c'
+        glob: '#e6dcdc'
+        int: '#ff2a3d'
+        list: '#ff7a7a'
+        nothing: '#ff5566'
+        range: '#e8a04c'
+        record: '#e05070'
+        string: '#8aa37b'
 
-        bool: {|| if $in { '#58d6a0' } else { '#f0647a' } }
+        bool: {|| if $in { '#8aa37b' } else { '#ff5566' } }
 
         datetime: {|| (date now) - $in |
             if $in < 1hr {
-                { fg: '#f0647a' attr: 'b' }
+                { fg: '#ff5566' attr: 'b' }
             } else if $in < 6hr {
-                '#f2c76e'
+                '#e8a04c'
             } else if $in < 1day {
-                '#f2c76e'
+                '#e8a04c'
             } else if $in < 3day {
-                '#58d6a0'
+                '#8aa37b'
             } else if $in < 1wk {
-                { fg: '#4fd6e0' attr: 'b' }
+                { fg: '#ff7a7a' attr: 'b' }
             } else if $in < 6wk {
-                '#3d9bd9'
+                '#e05070'
             } else if $in < 52wk {
-                '#7aa5ff'
+                '#ff2a3d'
             } else { 'dark_gray' }
         }
 
         filesize: {|e|
             if $e == 0b {
-                '#4f7088'
+                '#7a5256'
             } else if $e < 1mb {
-                '#4fd6e0'
-            } else {{ fg: '#3d9bd9' attr: 'b' }}
+                '#ff7a7a'
+            } else {{ fg: '#e05070' attr: 'b' }}
         }
 
-        shape_and: { fg: '#7aa5ff' attr: 'b' }
-        shape_binary: { fg: '#7aa5ff' attr: 'b' }
-        shape_block: { fg: '#3d9bd9' attr: 'b' }
-        shape_bool: '#58d6a0'
-        shape_closure: { fg: '#4fd6e0' attr: 'b' }
-        shape_custom: '#d3e6f2'
-        shape_datetime: { fg: '#4fd6e0' attr: 'b' }
-        shape_directory: '#3d9bd9'
-        shape_external: '#d3e6f2'
-        shape_external_resolved: '#58d6a0'
-        shape_externalarg: { fg: '#d3e6f2' attr: 'b' }
-        shape_filepath: '#3d9bd9'
-        shape_flag: { fg: '#7aa5ff' attr: 'b' }
-        shape_float: { fg: '#f2c76e' attr: 'b' }
-        shape_garbage: { fg: '#08141f' bg: '#f0647a' attr: 'b' }
-        shape_glob_interpolation: { fg: '#4fd6e0' attr: 'b' }
-        shape_globpattern: { fg: '#4fd6e0' attr: 'b' }
-        shape_int: { fg: '#7aa5ff' attr: 'b' }
-        shape_internalcall: { fg: '#3d9bd9' attr: 'b' }
-        shape_keyword: { fg: '#7aa5ff' attr: 'b' }
-        shape_list: { fg: '#4fd6e0' attr: 'b' }
-        shape_literal: '#d3e6f2'
-        shape_match_pattern: '#58d6a0'
+        shape_and: { fg: '#ff2a3d' attr: 'b' }
+        shape_binary: { fg: '#ff2a3d' attr: 'b' }
+        shape_block: { fg: '#e05070' attr: 'b' }
+        shape_bool: '#8aa37b'
+        shape_closure: { fg: '#ff7a7a' attr: 'b' }
+        shape_custom: '#e6dcdc'
+        shape_datetime: { fg: '#ff7a7a' attr: 'b' }
+        shape_directory: '#e05070'
+        shape_external: '#e6dcdc'
+        shape_external_resolved: '#8aa37b'
+        shape_externalarg: { fg: '#e6dcdc' attr: 'b' }
+        shape_filepath: '#e05070'
+        shape_flag: { fg: '#ff2a3d' attr: 'b' }
+        shape_float: { fg: '#e8a04c' attr: 'b' }
+        shape_garbage: { fg: '#0a0a0b' bg: '#ff5566' attr: 'b' }
+        shape_glob_interpolation: { fg: '#ff7a7a' attr: 'b' }
+        shape_globpattern: { fg: '#ff7a7a' attr: 'b' }
+        shape_int: { fg: '#ff2a3d' attr: 'b' }
+        shape_internalcall: { fg: '#e05070' attr: 'b' }
+        shape_keyword: { fg: '#ff2a3d' attr: 'b' }
+        shape_list: { fg: '#ff7a7a' attr: 'b' }
+        shape_literal: '#e6dcdc'
+        shape_match_pattern: '#8aa37b'
         shape_matching_brackets: { attr: 'u' }
-        shape_nothing: '#f0647a'
-        shape_operator: '#f2c76e'
-        shape_or: { fg: '#7aa5ff' attr: 'b' }
-        shape_pipe: { fg: '#7aa5ff' attr: 'b' }
-        shape_range: { fg: '#f2c76e' attr: 'b' }
-        shape_raw_string: { fg: '#58d6a0' attr: 'b' }
-        shape_record: { fg: '#3d9bd9' attr: 'b' }
-        shape_redirection: { fg: '#7aa5ff' attr: 'b' }
-        shape_signature: { fg: '#3d9bd9' attr: 'b' }
-        shape_string: '#58d6a0'
-        shape_string_interpolation: { fg: '#4fd6e0' attr: 'b' }
-        shape_table: { fg: '#3d9bd9' attr: 'b' }
-        shape_vardecl: { fg: '#3d9bd9' attr: 'u' }
-        shape_variable: '#7aa5ff'
+        shape_nothing: '#ff5566'
+        shape_operator: '#e8a04c'
+        shape_or: { fg: '#ff2a3d' attr: 'b' }
+        shape_pipe: { fg: '#ff2a3d' attr: 'b' }
+        shape_range: { fg: '#e8a04c' attr: 'b' }
+        shape_raw_string: { fg: '#8aa37b' attr: 'b' }
+        shape_record: { fg: '#e05070' attr: 'b' }
+        shape_redirection: { fg: '#ff2a3d' attr: 'b' }
+        shape_signature: { fg: '#e05070' attr: 'b' }
+        shape_string: '#8aa37b'
+        shape_string_interpolation: { fg: '#ff7a7a' attr: 'b' }
+        shape_table: { fg: '#e05070' attr: 'b' }
+        shape_vardecl: { fg: '#e05070' attr: 'u' }
+        shape_variable: '#ff2a3d'
 
-        foreground: '#d3e6f2'
-        background: '#08141f'
-        cursor: '#d3e6f2'
+        foreground: '#e6dcdc'
+        background: '#0a0a0b'
+        cursor: '#e6dcdc'
 
-        empty: '#4f7088'
-        header: { fg: '#3d9bd9' attr: 'b' }
-        hints: '#4f7088'
+        empty: '#7a5256'
+        header: { fg: '#e05070' attr: 'b' }
+        hints: '#7a5256'
         leading_trailing_space_bg: { attr: 'n' }
-        row_index: { fg: '#4fd6e0' attr: 'b' }
-        search_result: { fg: '#08141f' bg: '#3d9bd9' }
-        separator: '#4f7088'
+        row_index: { fg: '#ff7a7a' attr: 'b' }
+        search_result: { fg: '#0a0a0b' bg: '#e05070' }
+        separator: '#7a5256'
     }
 }
 
@@ -132,4 +132,4 @@ export module activate {
 use activate
 
 # fzf colours (config.nu sets the rest of FZF_DEFAULT_OPTS)
-$env.FZF_DEFAULT_OPTS = $"($env.FZF_DEFAULT_OPTS) --color=bg+:#0f2233,bg:#08141f,spinner:#7aa5ff,hl:#f0647a --color=fg:#d3e6f2,header:#3d9bd9,info:#4fd6e0,pointer:#7aa5ff --color=marker:#58d6a0,fg+:#d3e6f2,prompt:#3d9bd9,hl+:#f0647a"
+$env.FZF_DEFAULT_OPTS = $"($env.FZF_DEFAULT_OPTS) --color=bg+:#1a1011,bg:#0a0a0b,spinner:#ff2a3d,hl:#ff5566 --color=fg:#e6dcdc,header:#e05070,info:#ff7a7a,pointer:#ff2a3d --color=marker:#8aa37b,fg+:#e6dcdc,prompt:#e05070,hl+:#ff5566"
