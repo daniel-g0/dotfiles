@@ -125,7 +125,6 @@ in
   boot.loader.efi.canTouchEfiVariables        = true;
   boot.kernelPackages                         = pkgs.linuxPackages_6_12;
   boot.kernelParams                           = [ "quiet" iommuParam "iommu=pt" ];
-  boot.initrd.verbose                         = false;
   boot.kernelModules                          = [ "vfio_pci" "vfio" "vfio_iommu_type1" ];
   boot.supportedFilesystems                  = [ "ntfs" ];
 
