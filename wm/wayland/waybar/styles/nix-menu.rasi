@@ -23,7 +23,7 @@ window {
     background-color: #060606f7;
     border-radius:    16px;
     border:           1px;
-    border-color:     #3d9bd940;
+    border-color:     #e0507040;
     padding:          6px;
 }
 
@@ -53,7 +53,7 @@ element {
 }
 
 element normal.normal   { background-color: transparent; text-color: #a9b1d6; }
-element selected.normal { background-color: #3d9bd926;   text-color: #3d9bd9; }
+element selected.normal { background-color: #e0507026;   text-color: #e05070; }
 
 element-text {
     background-color: transparent;

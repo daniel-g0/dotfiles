@@ -15,13 +15,13 @@
   --tn-blue:      #e05070;
   --tn-cyan:      #ff7a7a;
   --tn-green:     #8aa37b;
-  --tn-yellow:    #f2c76e;
+  --tn-yellow:    #e8a04c;
   --tn-red:       #ff5566;
 
   /* Swaync semantic vars */
   --cc-bg:                    rgba(10, 10, 11, 0.97);
   --noti-border-color:        rgba(26, 16, 17, 0.9);
-  --noti-bg:                  10, 10, 11;     /* #08141f as r,g,b for rgba() */
+  --noti-bg:                  10, 10, 11;     /* #0a0a0b as r,g,b for rgba() */
   --noti-bg-alpha:            0.97;
   --noti-bg-opaque:           rgb(10, 10, 11);
   --noti-bg-darker:           rgb(8, 8, 9);
@@ -68,9 +68,9 @@
 @define-color noti-bg-focus    rgba(36, 40, 59, 0.7);
 @define-color noti-close-bg    rgba(65, 72, 104, 0.5);
 @define-color noti-close-bg-hover rgba(247, 118, 142, 0.25);
-@define-color text-color       #d3e6f2;
+@define-color text-color       #e6dcdc;
 @define-color text-color-disabled rgba(192, 202, 245, 0.4);
-@define-color bg-selected      #3d9bd9;
+@define-color bg-selected      #e05070;
 
 /* ── Globals ── */
 
