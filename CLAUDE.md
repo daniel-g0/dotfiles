@@ -4,7 +4,7 @@
 
 - **Teams screen share unverified** — switched Hyprland to UWSM (`configuration.nix`) to get `graphical-session.target` → `xdg-desktop-portal` up. Needs `nixos-re-sw`, re-login, then the `systemctl --user is-active …` check and a share test in Teams (see "System" in [docs/nixos.md](docs/nixos.md)).
 
-- **Mouse-click freeze: mitigation undecided** — clicks died session-wide on 2026-11-18; suspected Hyprland 0.56.2 `window.resize()` bug (see "Mouse clicks dead" in [docs/known-issues.md](docs/known-issues.md)). Pick one: drop the `Super+RMB` resize bind for `resize_on_border`, or overlay upstream fix `1c4fbb6`. Or wait for a release that has it.
+- **Left-click freeze: root cause unknown** — 3 episodes on 2026-11-18 (Hyprland 0.56.2). Only BTN_LEFT dropped by Hyprland; episode 3 started on lock → unlock. Quick fix: `systemctl suspend`. Next: test whether lock → unlock reproduces it reliably, then report upstream (Hyprland discussions). The resize-bug theory doesn't explain episode 3. See "Mouse clicks dead" in [docs/known-issues.md](docs/known-issues.md).
 
 - **Waybar layout unverified** — clock-in-centre + 6/6 icon split was done without a screenshot. Check the expanded bar: gaps equal? clock centred? If not, measure the real clock height and adjust `CLOCK_H` in `scripts/toggle-layout`.
 

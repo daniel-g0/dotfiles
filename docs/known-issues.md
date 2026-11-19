@@ -4,7 +4,24 @@ Investigated problems: symptoms, root cause (proven or suspected), recovery, and
 
 ## Mouse clicks dead (investigated 2026-11-18, Hyprland 0.56.2 `efb50993`)
 
-**Symptom:** no click reached any app, from any device (Logitech mouse **and** touchpad). Pointer motion and scroll worked. Lasted the whole session until Hyprland restarted.
+**Symptom:** no left click reached any app, from any device (Logitech mouse **and** touchpad). Pointer motion and scroll worked.
+
+**Quick fix (keeps all windows): `systemctl suspend`, wake, unlock.** Worked on 2026-11-18 (episode 3). Why it works is unknown. Restarting Hyprland also works but kills every window.
+
+**Episodes (2026-11-18):**
+1. ~10:33–11:10: found already broken; no hotplug in the journal. Fixed by restarting Hyprland.
+2. ~12:27–12:51: around an undock/re-dock (dock outputs renamed, `c542` receiver on port `3-3` flapping 6×, libseat `Couldn't close device at /dev/input/event2/3`). Healed by itself; trigger and cure unknown.
+3. ~13:00–14:04: **started right after lock → unlock (hyprlock)**. Fixed by `systemctl suspend`.
+
+**Episode 3 live tests (the decisive ones):**
+- `wev` (`nix shell nixpkgs#wev -c wev`) got 845 `motion` events, **0 left-button**, but **right click pressed+released**. Modifiers sent to clients: `depressed: 00000000`.
+- That rules out (each would also eat right clicks): stuck drag/resize (`ensureMouseBindState()` runs for every button), stuck Super in Hyprland's mod state (`Super+RMB` is the resize bind), input capture (`onMouseButton` returns early for all buttons while `PROTO::inputCapture->isCaptured()`).
+- **Not the `Super+LMB` drag bind:** `hyprctl eval 'hl.unbind("SUPER + mouse:272")'` didn't bring left clicks back (restored with `hyprctl reload`).
+- Not fixed by: `hyprctl dispatch 'hl.dsp.release_input_capture()'`, opening/closing rofi (`Super+E`, Esc; refocus calls `releaseAllMouseButtons()`, which is a no-op while a drag-and-drop is active).
+- Teams (teams-for-linux 2.25.0) was open. xdg-desktop-portal-hyprland 1.4.1 provides InputCapture, but the journal shows no capture session ever opened.
+- No code in `onMouseButton` / `processMouseDownNormal` (v0.56.2) checks for left specifically. Left-only loss is **unexplained**. Leads: a stuck Wayland drag-and-drop (DnD starts from a left press; not logged at this log level), or state in a path not yet read (seat / data-device).
+
+The analysis below was written after episode 1. Its resize-bug theory **doesn't explain episode 3**, where no resize happened and the drag theory was ruled out.
 
 **Isolated to the Hyprland process:**
 
@@ -23,7 +40,7 @@ Investigated problems: symptoms, root cause (proven or suspected), recovery, and
 - Click swallowing: on every mouse event `KeybindManager::onMouseEvent` calls `ensureMouseBindState()`. If the drag controller still has a target, it ends the drag and suppresses that click. A drag target that never clears → every click suppressed forever. While a target exists, `changeMouseBindMode` returns early, so `Super+click` can't start a new drag to "finish" the stuck one (tried, didn't help).
 - **Not proven:** the drag-end code wasn't read, so *why* the target stays stuck is unknown. It's also unknown whether `Super+RMB` was used before the freeze. Same symptom reported upstream since 2024 (hyprwm/Hyprland#6551, closed as not planned, still reported on 0.56.2), so it may have more than one cause.
 
-**Recovery:** nothing short of restarting Hyprland worked (reload, keyd restart, replug, `Super+click`). Restart kills all windows; save first:
+**Recovery:** first try `systemctl suspend` (see Quick fix above). Not effective: reload, keyd restart, replug, `Super+click`, rofi open/close, unbinding `Super+LMB`. Last resort is restarting Hyprland, which kills all windows; save first:
 ```
 hyprctl dispatch 'hl.dsp.exit()'     # then log back in; fallback: pkill Hyprland
 ```
