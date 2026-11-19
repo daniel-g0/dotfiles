@@ -23,7 +23,7 @@
     "defaultMode": "auto",
     "blockReadsOutsideWorkingDirectories": true
   },
-  "model": "sonnet",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "bash \"/home/user/.claude/statusline-command.sh\""
@@ -74,6 +74,9 @@
   "modelSettings": {
     "claude-sonnet-5-5": {
       "effortLevel": "medium"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "high"
     }
   },
   "awaySummaryEnabled": false,
