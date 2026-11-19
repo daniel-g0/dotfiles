@@ -20,6 +20,10 @@ Compositor config, keybindings, input, plus hyprlock and hypridle. Known bugs li
 **Tool:** `wdisplays` GUI for display layout (Super+M)  
 Configure monitor arrangement, resolution, refresh rate graphically.
 
+Work desk, left → right, all scale 1.33 (1440 px logical steps): **Dell U2417H** `0x0` · **Dell U2419H** `1440x0` · **eDP-1** (laptop) `2880x0`.
+- **Externals are matched by `desc:` (model + serial), not connector name.** The dock renumbers its MST outputs on every re-dock (DP-3/DP-4 → DP-5/DP-6 on 2026-11-18). Name rules then match nothing: scale falls back to 1 and the externals land right of the laptop. Descriptions: `hyprctl monitors` (or `drm: Description … (DP-n)` in the Hyprland log).
+- Apply a rule live without reload: `hyprctl eval 'hl.monitor({ output = "desc:…", position = "0x0", scale = "1.33" })'`.
+
 ### Keybindings (Super key)
 | Binding | Action |
 |---------|--------|

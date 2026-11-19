@@ -22,8 +22,13 @@ end)
 -- Monitor profiles managed by hyprmon: run `hyprmon`, create work/home profiles
 -- hyprmon saves to ~/.config/hypr/monitors.conf (non-symlink, avoids write issues)
 -- Profiles:
---   Work: DP-3 (left), DP-4 (middle), eDP-1 (right)
+--   Work: Dell U2417H (left), Dell U2419H (middle), eDP-1 (right)
 --   Home: eDP-1 only
+
+-- Externals are matched by description (model + serial), NOT connector name:
+-- the dock's MST outputs get renumbered on every re-dock (DP-3/DP-4 came back
+-- as DP-5/DP-6 on 2026-11-18), so name rules stop matching and Hyprland falls
+-- back to scale 1 + auto placement right of eDP-1. Get descs: hyprctl monitors
 
 -- Explicit left-to-right order matching PHYSICAL desk layout: 1 - 2 - portatil
 -- Fixed pixel positions (not auto/auto-right) because Hyprland resolves those
@@ -32,13 +37,13 @@ end)
 -- regardless of where it was declared. Logical width per monitor @ scale 1.33
 -- is 1920/1.3333 = 1440px, so positions step by 1440.
 hl.monitor({
-    output   = "DP-3",
+    output   = "desc:Dell Inc. DELL U2417H 5K9YD87IDMBL",
     mode     = "preferred",
     position = "0x0",
     scale    = "1.33",
 })
 hl.monitor({
-    output   = "DP-4",
+    output   = "desc:Dell Inc. DELL U2419H CT0J623",
     mode     = "preferred",
     position = "1440x0",
     scale    = "1.33",
