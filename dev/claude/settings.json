@@ -70,7 +70,7 @@
   },
   "skipWebFetchPreflight": true,
   "feedbackSurveyRate": 0,
-  "effortLevel": "high",
+  "effortLevel": "medium",
   "modelSettings": {
     "claude-sonnet-5-5": {
       "effortLevel": "medium"
