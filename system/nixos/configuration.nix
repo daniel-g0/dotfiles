@@ -309,7 +309,6 @@ in
       claude-code
       lua-language-server
       taskwarrior3
-      (gittype.overrideAttrs (_: { doCheck = false; }))
       nethack
       sshs
 
