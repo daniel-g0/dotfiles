@@ -2,6 +2,34 @@
 
 Investigated problems: symptoms, root cause (proven or suspected), recovery, and gotchas. Newest first.
 
+## Steam won't open / "Steam is already running" (investigated 2026-11-19, nixpkgs `steam` 1.0.0.87, client Nov 13 build)
+
+**Symptom:** clicking a game (RIDE 4) or running `steam` did nothing: no window, no error. Every relaunch logged `Steam is already running, exiting (command line was forwarded)` in `~/.local/share/Steam/logs/console-linux.txt`.
+
+**Cause (observed chain, trigger unproven):**
+1. The client update of 2026-11-18 was cut off at ~114 of 410 MB. The next launch segfaulted in `steamui.so` right after `SteamUpdateUI: An X Error occurred / BadValue` and the XRandR probing.
+2. Finishing that update hung at `Installing update...` (`logs/bootstrap_log.txt`). `strace -p` showed the updater thread blocked in `write()` to the update-UI socket, while the child (`steam -child-update-ui`) sat in `futex_wait` and never read it. **Deadlock in the update-UI window.**
+3. The Nov 13 client is 64-bit (`steamrt64/steam`) and re-execs into the SteamRT container (`ReexecToLauncher: steamrt3 client enabled`). The hung `-child-update-ui` (PPID 1, ignores SIGTERM) survived and kept the single-instance lock, so the real client always exited with "already running".
+
+**Fix that worked:** kill the hung UI child (let the update finish), `kill -9` any leftover `-child-update-ui`, relaunch; a reboot cleared the last stale state. Disk, RAM, the `package/` download and the game install (`/gaming/SteamLibrary`, `StateFlags 4`) were all fine.
+
+**If it happens again:**
+```
+ps -eo pid,ppid,etime,stat,cmd | grep -E 'child-update-ui|steamwebhelper'   # orphan with PPID 1?
+kill -9 <pid of every -child-update-ui>                                    # SIGTERM is ignored
+steam
+```
+Last resort, still reversible: `mv ~/.local/share/Steam/package ~/.local/share/Steam/package.bak` and relaunch (forces a clean client re-download). That alone did **not** fix this case, because the hang is in the UI window, not the package.
+
+**Not proven:** why the update-UI window hung. Prime suspect is the `X Error BadValue` under Hyprland + rootless Xwayland (monitor scale 1.3333334, `xwayland:force_zero_scaling = true`). XRandR output itself looked sane (`xrandr` 2560x1440).
+
+**Gotchas from this investigation:**
+- **Don't `strace -ff` a whole Steam launch.** It breaks Chromium's sandbox/zygote and `steamwebhelper` restarts every ~10 s, a false crash loop. Attach with `strace -p` to one process instead.
+- `pkill -f 'ubuntu12_32/steam'` matches your own shell's command line when run inside `bash -c`; kill by pid.
+- `pgrep -f steamwebhelper` / `ps | grep steamwebhelper` also match the grepping shell; use `grep -E '[s]teamwebhelper'`.
+- NixOS runs Steam in a bwrap FHS env (`/nix/store/…-steam-1.0.0.87-bwrap`); the client self-updates inside `~/.local/share/Steam`, independent of the nixpkgs version.
+- `/gaming` (the game library) is an `ntfs3` mount. Not the cause here, but a suspect if a game's Proton prefix misbehaves later.
+
 ## Mouse clicks dead (investigated 2026-11-18, Hyprland 0.56.2 `efb50993`)
 
 **Symptom:** no left click reached any app, from any device (Logitech mouse **and** touchpad). Pointer motion and scroll worked.

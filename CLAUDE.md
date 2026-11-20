@@ -25,7 +25,7 @@ Details live in `docs/`. Read the file for the area you're touching before chang
 | [docs/hyprland.md](docs/hyprland.md) | Hyprland (autostart, look, **keybindings**, rules, input, keyd), Hyprlock, Hypridle |
 | [docs/waybar.md](docs/waybar.md) | Waybar modules + styling, Swaync |
 | [docs/nixos.md](docs/nixos.md) | NixOS system, packages, certs, UWSM, uv-managed tools |
-| [docs/known-issues.md](docs/known-issues.md) | Investigated bugs: mouse clicks dead (Hyprland 0.56.2), waybar CPU/thermals |
+| [docs/known-issues.md](docs/known-issues.md) | Investigated bugs: Steam won't open (hung update-UI child), mouse clicks dead (Hyprland 0.56.2), waybar CPU/thermals |
 
 ---
 
