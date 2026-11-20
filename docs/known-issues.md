@@ -2,6 +2,32 @@
 
 Investigated problems: symptoms, root cause (proven or suspected), recovery, and gotchas. Newest first.
 
+## Waybar: VPN / bell / power icons drift left (investigated 2026-11-20, Waybar 0.16.0) — UNFIXED
+
+**Symptom:** in the vertical bar the `custom/vpn` (󰦞), `custom/notifications` (󰂛) and `custom/power` (󰒲, looks like `zz`) icons sit left of the others; power ends up on the left border. Native modules (bluetooth, pulseaudio, network) are centred.
+
+**Measured** (pixel centroids in user screenshots, bar centre = 0): native icons -1.5 px; VPN ≈ -11, bell ≈ -18, power ≈ -16 (screenshot px, ~1.3 px per logical px). Matches a label **pinned to the left edge at its natural width** in the 36 px inner width (glyph centre ≈ 12 px left of centre).
+
+**Ruled out:**
+- Font: `JetBrainsMono Nerd Font Mono` has every icon, advance 600/1000, ink centred (offset +0.000 for all glyphs in `modules.jsonc`; parsed the TTF `cmap/hmtx/glyf` by hand).
+- Stray characters: each `format` / `format-icons` / vpn-script text is exactly one glyph.
+- CSS: no horizontal margin/padding on these modules; layout-gap margins (`waybar-layout.css`) are vertical only.
+- `min-length`/`max-length` on `custom/vpn` (labels are centred inside it; bell and power have none).
+- Waybar `justify`/`align` (default is already 0.5).
+
+**Suspected cause (strong, source not read):** upstream regression after 0.15.0, [Alexays/Waybar#5338](https://github.com/Alexays/Waybar/issues/5338): `custom/*` modules became an `AIconLabel`, the label sits at natural width inside a wider box, so `align`/`justify` do nothing. Fix: [PR #5346](https://github.com/Alexays/Waybar/pull/5346) (merge/release status unchecked). Only `custom/*` modules are affected, which is exactly the set that drifts. Launch log also says `Requested width: 40 is less than the minimum width: 72 required by the modules`, then reconfigures at 40: cause unknown, may be related.
+
+**Tried, made it worse (reverted):** `min-width: 36px` on `#custom-vpn, #custom-notifications, #custom-power` (+ `*` children), expecting the label to fill the bar and centre the glyph. User reported the bar "got fucked up" after it; exact breakage not seen (no screenshot access). Don't retry blindly.
+
+**Next options:** pin Waybar 0.15.0, build `waybar-git` containing PR #5346, or wait for a release; JetBrainsMono Nerd Font **Propo** for icons is a reported side workaround. Verify with a before/after screenshot.
+
+**Gotchas from this investigation:**
+- `launch` resets the bar to **minimal** mode (`rm /tmp/waybar-mode`); click the clock for full.
+- Waybar vanished (no process, no coredump, nothing in the journal) twice right after `style.css` was replaced (edit / `git checkout`) while it was running. Cause unknown; relaunch with `nohup setsid ~/.config/waybar/launch &`. Check `hyprctl layers | grep waybar` shows exactly one layer.
+- `pkill -f 'swaync-client -swb'` from `bash -c` kills your own shell too (exit 144) and removes Waybar's bell feed. Recover with `kill -USR2 <waybar pid>` (respawns module commands).
+- On this machine the process is named `waybar`, not `.waybar-wrapped`.
+- Measuring screenshots without PIL: `magick img.png -depth 8 txt:-` and parse with stdlib Python.
+
 ## Steam won't open / "Steam is already running" (investigated 2026-11-19, nixpkgs `steam` 1.0.0.87, client Nov 13 build)
 
 **Symptom:** clicking a game (RIDE 4) or running `steam` did nothing: no window, no error. Every relaunch logged `Steam is already running, exiting (command line was forwarded)` in `~/.local/share/Steam/logs/console-linux.txt`.

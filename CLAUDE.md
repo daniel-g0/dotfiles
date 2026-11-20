@@ -6,6 +6,8 @@
 
 - **Left-click freeze: root cause unknown** — 3 episodes on 2026-11-18 (Hyprland 0.56.2). Only BTN_LEFT dropped by Hyprland; episode 3 started on lock → unlock. Quick fix: `systemctl suspend`. Next: test whether lock → unlock reproduces it reliably, then report upstream (Hyprland discussions). The resize-bug theory doesn't explain episode 3. See "Mouse clicks dead" in [docs/known-issues.md](docs/known-issues.md).
 
+- **Waybar 0.16: VPN/bell/power icons drift left — unfixed** — `custom/*` modules are left-pinned in the vertical bar (upstream Alexays/Waybar#5338, PR #5346). A `min-width: 36px` CSS workaround made the bar worse and was reverted. Next: pin Waybar 0.15.0 or build with the PR. See "Waybar: VPN / bell / power icons drift left" in [docs/known-issues.md](docs/known-issues.md).
+
 - **Waybar layout unverified** — clock-in-centre + 6/6 icon split was done without a screenshot. Check the expanded bar: gaps equal? clock centred? If not, measure the real clock height and adjust `CLOCK_H` in `scripts/toggle-layout`.
 
 ## Repo
@@ -25,7 +27,7 @@ Details live in `docs/`. Read the file for the area you're touching before chang
 | [docs/hyprland.md](docs/hyprland.md) | Hyprland (autostart, look, **keybindings**, rules, input, keyd), Hyprlock, Hypridle |
 | [docs/waybar.md](docs/waybar.md) | Waybar modules + styling, Swaync |
 | [docs/nixos.md](docs/nixos.md) | NixOS system, packages, certs, UWSM, uv-managed tools |
-| [docs/known-issues.md](docs/known-issues.md) | Investigated bugs: Steam won't open (hung update-UI child), mouse clicks dead (Hyprland 0.56.2), waybar CPU/thermals |
+| [docs/known-issues.md](docs/known-issues.md) | Investigated bugs: Waybar 0.16 icon drift, Steam won't open (hung update-UI child), mouse clicks dead (Hyprland 0.56.2), waybar CPU/thermals |
 
 ---
 
